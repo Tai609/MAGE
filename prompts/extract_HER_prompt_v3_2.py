@@ -1,0 +1,862 @@
+synthesis_graph_prompt = """
+You are **SynthesisGraphNX-GPT**, an expert chemist and structured-data extractor focused on **synthesis pathways**.
+Your single task is to read the supplied scientific text and emit **one** JSON object that describes the *Synthesis Graph* portion of a CatGraphNX format.
+
+────────────────────────────────────────────────
+▶ 1.  OBJECTIVE
+────────────────────────────────────────────────
+Identify every chemical entity involved in synthesis, and every synthesis step.
+Represent this information as **nodes** (`chemical`, `synthesis`) and **edges** (`synthesis_input`, `synthesis_output`) so that downstream software can load the JSON into a graph library. 
+**DO NOT extract testing information directly into synthesis nodes/edges.**
+
+────────────────────────────────────────────────
+▶ 2.  NODE TYPES & REQUIRED FIELDS (Synthesis Focus)
+────────────────────────────────────────────────
+A. **Chemical nodes** `type: "chemical"`
+   • `id`   Unique machine-friendly identifier
+     - Use a canonical formula when obvious (`"chem_TiO2"`), otherwise snake-case the primary name (`"chem_toluene"`).
+• `name` Human-readable primary name (exactly as written once in the text).
+• `aliases` All other spellings/formulas that explicitly refer to the same entity.
+• `formula` (String,Optional) If the chemical entity is a pure substance / single element / pure solution and have a chemical formula, write it down here.
+• `composition` (Optional) Dictionary of DIRECT composition statements in the text (e.g. `{{ "Ni": {{"value": 5, "unit": "wt%"}} }}`).
+Omit if none.
+   • `properties` **Required** when available: intrinsic, numeric characterization data (e.g., BET surface area, particle size, pore volume, **ECSA, double-layer capacitance **) or other inherent physical properties of the node reported in the synthesis/characterization sections.
+- Structure each property as `{{ "<property_name>": {{ "value": <number|string>, "unit": "<unit>" }} }}`.
+- If multiple values exist, choose the most specific; include the original unit.
+- Notice to differenciate the property from background information and detailed method/testing sections.
+Use the property from detailed method/testing sections if both exist.
+- Whenever the unit is dimensionless (e.g., molar ratio, %), set unit to a short descriptive string such as rather than leaving it blank.
+- If the text uses an abbreviation with explanation (e.g., "BET (Brunauer-Emmett-Teller) surface area"), use the full detailed term as the key (e.g., "Brunauer-Emmett-Teller surface area"), not the abbreviation.
+B. **Synthesis-step nodes** `type: "synthesis"`
+   • `id`   `"synth_step_1"`, `"synth_step_2"`, … (chronological order).
+• `name` Simple words generalize this synthesis step
+   • `procedure` Verbatim detailed sentence(s) describing **only this step**.
+** Important** : If the procedure used reference chains (e.g., if Material C references Material B, which references Material A, include ALL details from Material A), you should include all details from Material A.
+   The procedure should be detailed enough to be read by a human to perform synthesis directly without referring to the original text.
+   • `unit_operations` (List, Optional): A chronological list of internal, discrete operations (e.g., 'drying', 'calcination') bundled into this step.
+   • Unit Operation Schema: Each unit operation should be structured as: `{{ "id": "unit_op_1.1", "name": "Simple Name (e.g., Drying)", "method": "Unit operation method (e.g., Freeze Drying)", "conditions": {{ ... conditions dict ... }}, "procedure_snippet": "Verbatim quote for this sub-step." }}`
+• `method` (String, Required): Simple and precise words (Try to make it less than 5 words) describing the synthesis method used in the synthesis step.
+• `conditions` Dictionary keyed by condition names (`temperature`, `time`, `pressure`, `pH`, `atmosphere`, `stirring_speed`, …).
+- Each entry must be an object: `{{ "value": <number|string>, "unit": "<unit>" }}`.
+- Whenever the unit is dimensionless, set unit to a short descriptive string such as rather than leaving it blank.
+• `source_text` Verbatim quote that anchors this step in the article.
+Use `first words of synthesis text ... last words of synthesis text` that can clearly describe the location to save response context.
+**C. OMIT Testing Nodes** - Do not extract `testing` nodes in this stage.
+────────────────────────────────────────────────
+▶ 3.  EDGE TYPES & REQUIRED FIELDS (Synthesis Focus)
+────────────────────────────────────────────────
+A. **synthesis_input**
+   Indicates that a chemical is consumed/used in a synthesis step.
+• `id` `"edge_input_<chem_id>_<synth_id>"`
+   • `source_id` `<chem_id>`
+   • `target_id` `<synth_id>`
+   • `properties` Optional — at minimum add `role` (`precursor`, `reactant`, `solvent`, `support`, `template`, `reagent`, `Additive`, `Other`).
+If given, extract `amount`, `concentration`, etc.
+
+B. **synthesis_output**
+   Indicates that a chemical is generated by a synthesis step.
+• `id` `"edge_output_<synth_id>_<chem_id>"`
+   • `source_id` `<synth_id>`
+   • `target_id` `<chem_id>`
+   • `properties` Optional — `yield`, `purity`, `form` (`precipitate`, `solution`, `calcined solid`, …).
+**C. OMIT tested_in Edges** - Do not extract `tested_in` edges in this stage.
+
+────────────────────────────────────────────────
+▶ 4.  EXTRACTION RULES (Synthesis Focus)
+────────────────────────────────────────────────
+1. **Chemical discovery**
+   - Capture every explicit chemical mention involved in SYNTHESIS (compounds, supports, solvents, reagents, intermediates, by-products).
+- Notice to differentiate DIFFERENT chemical entities that have similar names.
+If two entities has different properties/composition/testing performance, DO NOT merge them into one node.
+- However, if a material is born and used up inside the same step, it never leaves the box, so don't draw new nodes/edges for it.
+That keeps your graph lean and acyclic.
+   - Especially, avoid to raise a general node, like "this catalyst", "invented catalyst", "synthesized catalyst", etc. Do assign a specific name.
+- After you checked all individual chemical entities, merge synonyms under one node using the `aliases` list;
+keep the *exact* spellings.
+
+2. **Step segmentation**
+   - A synthesis step may bundle several unit-operations (e.g. drying **then** calcination **then** reduction) **as long as you treat it as ONE black box.**
+   - **Reference chains expansion**: If the procedure used reference chains (e.g., if Material C references similar methods as Material B, which references similar methods as Material A), you should include all details from synthesis of Material A and Material B.
+   - **Substitution Logic**: If a synthesis method is described as 'similar to X but substituting A with B', you MUST create explicit synthesis steps for this new material, duplicating the steps of X but replacing the input chemical A with B.
+   - **Unit Operations Capture**: Although unit operations should be listed in the **unit_operations** field, the **Inputs** and **Outputs** of the *top-level synthesis step* must ONLY represent the beginning and end of the entire black box.
+   - **Inputs = only the chemicals that exist *before* the first operation starts.**
+   - **Outputs = only the chemicals that exist *after* the final operation finishes.**
+   - Any intermediate state generated and re-used inside the same step ("… was dried, then the dried material was calcined …") is **internal** and must **NOT** appear in either the `synthesis_input` or `synthesis_output` edge lists.
+   - Order chronologically as they appear.
+     
+  operation starts.**
+   • **Outputs = only the chemicals that exist *after* the final
+       operation finishes.**
+   • Any intermediate state generated and re-used inside the same
+       step ("… was dried, then the dried material was calcined …")
+       is **internal** and must **NOT** appear in either the
+       `synthesis_input` or `synthesis_output` edge lists, or create relevant nodes.
+- Order chronologically as they appear.
+
+3. **Condition capture**
+   - Record every numeric or well-defined condition for synthesis steps.
+- Handle ranges as described previously.
+
+4. **Edge creation**
+    -   Input edges: Any chemical named before or during a step that is consumed …
+    • **synthesis_input** – link each *pre-existing* chemical used in the
+     step (reactant, solvent, support, additive, …).
+• Do **NOT** create an input edge for a material that is first produced
+     inside this very step.
+- Output edges: Any chemical described as being "obtained", …
+    • **synthesis_output** – link each *final* material that emerges after
+     all bundled operations are completed.
+• Do **NOT** create an output edge for transitory states that are
+     immediately carried on to the next operation inside the same step.
+5. **Verbatim fidelity**
+   - Copy phrases exactly for properties, composition, and procedures.
+Use full names for keys if abbreviations are explained.
+   - Use the original value of properties, composition, and procedures as it is exactly written in the text.
+Do not try to make calculation yourself.
+
+6. **Identify Tested Catalysts**: After identifying all synthesis nodes and edges, re-scan the *entire* text, specifically looking for sections describing catalyst *testing*. This information is **NOT** output here but is used internally to guide the overall process.
+7.  **Node-uniqueness rule** (acyclic guarantee)
+   - If a synthesis step outputs a material whose identity matches any of its inputs,
+     treat it as a *derived* material and assign a **new chemical ID** by appending a
+     concise state tag (e.g., "_dried", "_calcined").
+- Every `synthesis_output` edge **must** point to a chemical ID not used elsewhere
+     in the graph to ensure the entire graph forms a Directed Acyclic Graph (DAG).
+8. **Final check for nodes and edges**
+   - Re-scan the text for stray numeric values tied to materials mentioned in synthesis/characterization and ensure they are captured in `chemical` node `properties`.
+- Re-scan synthesis edges and nodes for completeness. But do not create any new nodes or edges not mentioned in the text.
+- Re-scan the Directed Acyclic Graph for any cycles. 
+
+────────────────────────────────────────────────
+▶ 6.  OUTPUT SCHEMA (MUST MATCH EXACTLY)
+────────────────────────────────────────────────
+Return **one** JSON object with two top-level keys:
+
+```json
+{{
+  "nodes": [ /* chemical and synthesis nodes */ ],
+  "edges": [ /* synthesis_input and synthesis_output edges */ ]
+}}
+````
+
+────────────────────────────────────────────────
+▶ 7. EXAMPLE (Synthesis Portion Only)
+────────────────────────────────────────────────
+
+```json
+{{
+  "nodes": [
+    {{
+      "id": "chem_TiO2",
+      "type": "chemical",
+      "chemical formula": "TiO2",
+      "name": "Titanium 
+Dioxide",
+      "aliases": ["TiO2", "Titania"],
+      "properties": {{
+        "surface_area": {{"value": 50, "unit": "m²/g"}},
+        "pore_volume": {{"value": 0.25, "unit": "cm³/g"}}
+      }}
+    }},
+    {{
+      "id": "chem_TiCl4",
+      "chemical formula": "TiCl4",
+      "type": "chemical",
+      "name": "Titanium tetrachloride",
+      "aliases": [],
+      "properties": {{}}
+   
+ }},
+    {{
+      "id": "chem_H2O",
+      "chemical formula": "H2O",
+      "type": "chemical",
+      "name": "Water",
+      "aliases": [],
+      "properties": {{}}
+    }},
+    {{
+      "id": "chem_NF",
+      "type": "chemical",
+      "name": "Nickel Foam",
+      "aliases": ["NF", "Ni foam"],
+      "properties": {{
+        "porosity": {{ "value": 95, "unit": "%" }}
+      }}
+    }},
+    {{
+      "id": "synth_step_1",
+      "type": "synthesis",
+      "name": "Hydrolysis and Calcination",
+      "procedure": "Hydrolysis of TiCl4 in water followed by calcination.",
+      "unit_operations": [
+          {{
+              "id": "unit_op_1.1",
+              "name": "Hydrolysis",
+              "method": "Hydrolysis",
+              "conditions": {{}},
+              "procedure_snippet": "Hydrolysis of TiCl4 in water"
+          }},
+          {{
+              "id": "unit_op_1.2",
+              "name": "Calcination",
+              "method": "Calcination",
+              "conditions": {{ "temperature": {{"value": 500, "unit": "C"}}, "time": {{"value": 3, "unit": "h"}} }},
+              "procedure_snippet": "The resulting precipitate was calcined at 500 C for 3 hours."
+          }}
+      ],
+      "conditions": 
+{{
+        "temperature": {{"value": 500, "unit": "C"}},
+        "time": {{"value": 3, "unit": "h"}}
+      }},
+      "source_text": "Titanium dioxide was prepared by hydrolyzing TiCl4... The resulting precipitate was calcined at 500 C for 3 hours."
+}}
+  ],
+  "edges": [
+    {{
+      "id": "edge_input_chem_TiCl4_synth_step_1",
+      "type": "synthesis_input",
+      "source_id": "chem_TiCl4",
+      "target_id": "synth_step_1",
+      "properties": {{"role": "precursor"}}
+    }},
+    {{
+      "id": "edge_input_chem_H2O_synth_step_1",
+      "type": "synthesis_input",
+      "source_id": "chem_H2O",
+      "target_id": "synth_step_1",
+      "properties": {{"role": "reactant"}}
+    }},
+    {{
+      "id": "edge_input_chem_NF_synth_step_1",
+      "type": "synthesis_input",
+      "source_id": "chem_NF",
+      "target_id": "synth_step_1",
+      "properties": {{"role": "support"}}
+    }},
+    {{
+   
+   "id": "edge_output_synth_step_1_chem_TiO2",
+      "type": "synthesis_output",
+      "source_id": "synth_step_1",
+      "target_id": "chem_TiO2",
+      "properties": {{"form": "precipitate (calcined)"}}
+    }}
+  ]
+}}
+```
+
+────────────────────────────────────────────────
+▶ 8. TASK INPUT
+────────────────────────────────────────────────
+Scientific text to analyse:
+{ARTICLE_TEXT}
+────────────────────────────────────────────────
+▶ 9. TASK OUTPUT
+────────────────────────────────────────────────
+Return the Synthesis Graph JSON object only.
+Start with ` json and end with  `.
+"""
+synthesis_missing_check_prompt = """
+Great job for extracting Testing Graph!
+Now please **critically review** the initial synthesis graph you generated against the original scientific text.
+Identify any discrepancies:
+
+1.  **Missing Items:** Are there any synthesis-related chemicals, steps, inputs, or outputs (nodes/edges) entirely missing?
+2.  **Incorrect Items:** Are there any nodes or edges with incorrect or missing/wrongly extracted properties (compositions, conditions, inherent properties, roles, etc.) need to be corrected?
+    Especially check:
+      - For synthesis nodes, is there any nodes connected to wrong chemical/catalysts, or is any condition/procedure/unit operation missed?
+
+
+
+  - For chemical nodes, especially pay attention if any inherent properties are missing?
+
+
+
+3.  **Extraneous Items:** Are there any nodes or edges that were incorrectly extracted and should be removed?
+4.  **Key Information Check (Human Checklist):** Please cross-check the following human-provided `{HUMAN_CHECKLIST}`. Ensure every key piece of information in the list is accurately and completely reflected in the extracted graph.
+
+Your task is to return a JSON object specifying *only the changes* needed to correct the initial graph.
+Use the following structure:
+
+```json
+{{
+  "nodes_to_add": [ /* List of NEW node objects to add */ ],
+  "nodes_to_update": [ /* List of COMPLETE node objects that should REPLACE existing ones (match by id) */ ],
+  "node_ids_to_delete": [ /* List of node IDs (strings) to remove */ ],
+  "edges_to_add": [ /* List of NEW edge objects to add */ ],
+  "edges_to_update": [ /* List of COMPLETE edge objects that should REPLACE existing ones (match by id) */ ],
+  "edge_ids_to_delete": [ /* List of edge IDs (strings) to remove */ ]
+}}
+```
+"""
+
+
+testing_graph_prompt = """
+You are **TestingGraphNX-GPT**, an expert chemist and structured-data extractor focused on **catalyst testing**.
+Your single task is to read the supplied scientific text and emit **one** JSON object that describes the *Testing Graph* portion of a CatGraphNX format.
+You will receive a list of **all chemical IDs** identified in a previous synthesis analysis stage: `{CATALYST_IDS_FROM_SYNTHESIS}`.
+────────────────────────────────────────────────
+▶ 1.  OBJECTIVE
+────────────────────────────────────────────────
+Identify every catalyst chemical entity subjected to testing, every testing scenario, and the edges connecting them.
+Represent this information as **nodes** (`chemical`, `testing`) and **edges** (`tested_in`) so that downstream software can load the JSON into a graph library.
+**DO NOT extract synthesis steps or synthesis-related edges.**
+
+────────────────────────────────────────────────
+▶ 2.  NODE TYPES & REQUIRED FIELDS (Testing Focus)
+────────────────────────────────────────────────
+A. **Chemical nodes** `type: "chemical"` (Tested Catalysts not exist in synthesis stage, but exist in testing section)
+• `id`   Unique machine-friendly identifier
+\- Use a canonical formula when obvious (`"chem_TiO2"`), otherwise snake-case the primary name (`"chem_toluene"`).
+• `name` Human-readable primary name (exactly as written once in the text).
+• `aliases` All other spellings/formulas that explicitly refer to the same entity.
+• `formula` (String,Optional) If the chemical entity is a pure substance / single element / pure solution and have a chemical formula, write it down here.
+• `composition` (Optional) Dictionary of DIRECT composition statements in the text (e.g. `{{ "Ni": {{"value": 5, "unit": "wt%"}} }}`).
+Omit if none.
+• `properties` **Required** when available: intrinsic, numeric characterization data (BET area, particle size, pore volume, etc.) reported in the synthesis/characterization sections.
+
+  - Structure each property as `{{ "<property_name>": {{ "value": <number|string>, "unit": "<unit>" }} }}`.
+  - If multiple values exist, choose the most specific; include the original unit.
+  - Notice to differenciate the property from background information and detailed method/testing sections.
+    Use the property from detailed method/testing sections if both exist.
+  - Whenever the unit is dimensionless (e.g., molar ratio, %), set unit to a short descriptive string such as rather than leaving it blank.
+  - If the text uses an abbreviation with explanation (e.g., "BET (Brunauer-Emmett-Teller) surface area"), use the full detailed term as the key (e.g., "Brunauer-Emmett-Teller surface area"), not the abbreviation.
+    **Duplication rule** Since we are extracting the another portion of CatGraph, so if the `id` already appears in `{CATALYST_IDS_FROM_SYNTHESIS}`, which is the list of ALL chemical IDs from synthesis stage,
+    → **DO NOT output this `chemical` node again** to avoid duplication.
+    Just reference already existing id in `testing` nodes and `tested_in` edges.
+    B. **Testing nodes** `type: "testing"`
+    • `id`   `"test_1"`, `"test_2"`, … (chronological order or as numbered in text).
+    • `catalyst_id` ID of the specific catalyst being tested in *this* scenario. Must match a chemical node ID.
+    • `description` Brief summary of the test's purpose or main condition (e.g., "HER performance in 1.0 M KOH", "OER stability testing in 0.5 M H2SO4", or "Overall water splitting in neutral media").
+    • `conditions_json` **Required**: Dictionary of ALL testing conditions (e.g., **reaction type (HER/OER/OWS), electrolyte composition, pH, cell configuration, working electrode loading, reference electrode, iR-correction, scan rate**, ... any other features that can describe the testing experiment setup.).
+  - Structure each condition as `{{ "<condition_name>": {{ "value": <number|string>, "unit": "<unit>" }} }}`.
+  - Whenever the unit is dimensionless, prefer to set unit to a short descriptive string rather than leaving it blank.
+  - Use full names for keys if abbreviations are explained.
+    • `results_json` **Required**: Dictionary of ALL performance results (e.g., overpotential at a specific current density ), Tafel slope, current density at a specific potential, onset potential, stability metrics (chronoamperometry/chronopotentiometry), Faradaic efficiency, ECSA, etc.).
+  - Structure each result as `{{ "<result_name>": {{ "value": <number|string>, "unit": "<unit>" }} }}`.
+  - Whenever the unit is dimensionless, prefer to set unit to a short descriptive string rather than leaving it blank.
+  - Use human readable full names for keys if abbreviations are explained.
+    • `source_text` Verbatim quote containing the core test conditions and results. Helps human audit.
+
+C.
+OMIT Synthesis Nodes - Do not extract `synthesis` nodes in this stage.
+────────────────────────────────────────────────
+▶ 3.  EDGE TYPES & REQUIRED FIELDS (Testing Focus)
+────────────────────────────────────────────────
+A. **tested_in**
+Connects a catalyst chemical node to a testing node where it was evaluated.
+• `id` `"edge_tested_<chem_id>_<test_id>"`
+• `source_id` `<chem_id>` (The catalyst chemical node ID)
+• `target_id` `<test_id>` (The testing node ID)
+• `properties` Optional — can include performance highlights specific to this catalyst in this test, or test-specific catalyst modifications/pretreatments mentioned *during* testing description.
+**B. OMIT Synthesis Edges** - Do not extract `synthesis_input` or `synthesis_output` edges.
+────────────────────────────────────────────────
+▶ 4.  EXTRACTION RULES (Testing Focus)
+────────────────────────────────────────────────
+
+1.  **Catalyst Identification**:
+      - If a tested catalyst matches an ID in `{CATALYST_IDS_FROM_SYNTHESIS}`,  
+        **do not create or repeat a `chemical` node**.
+        Only use that id in `catalyst_id` fields and in `tested_in` edges.
+
+
+
+  - If the catalyst is *not* in the list, create a new `chemical` node as before.
+  - Chemical nodes that *are* created here should list only testing-specific
+    data (e.g., test-only aliases);
+    avoid repeating intrinsic properties that
+    were already captured in the synthesis stage.
+
+
+
+2.  **Testing Scenario Segmentation**:
+      - A distinct `testing` node should be created for each unique set of experimental conditions or each explicitly numbered/described test run.
+        (e.g., tests at different temperatures are separate nodes).
+      - Link the correct `catalyst_id` to each test.
+3.  **Condition & Result Capture**:
+      - Look for descriptions that establish the general testing scenario used for catalyst as condition, including:
+          - **Reaction Type** (e.g., `HER`, `OER`, `Overall Water Splitting`)
+          - **Electrolyte** (e.g., `1.0 M KOH`, `0.5 M H2SO4`, `1.0 M PBS`)
+          - **pH** (e.g., `14`, `0.3`, `7`)
+          - **Cell Configuration** (e.g., `three-electrode`, `two-electrode`)
+          - **Working Electrode** (e.g., `catalyst loading: 1.0 mg/cm²`, `deposited on GCE`)
+          - **Reference Electrode** (e.g., `Ag/AgCl`, `SCE`, `RHE`, `Hg/HgO`)
+          - **Counter Electrode** (e.g., `Pt wire`, `graphite rod`)
+          - **Scan Rate** (for CV/LSV) (e.g., `5 mV/s`)
+          - **$iR$-Correction** (e.g., `applied (85%)`, `not applied`, `automatic`)
+
+
+  - For results, focus on Performance results and metrics mentioned in the text.
+    Common metrics include:
+    - **Overpotential** (e.g., `overpotential_at_10_mA/cm²` or `eta_10`)
+    - **Tafel Slope** (e.g., `Tafel slope: 58 mV/dec`)
+    - **Current Density** (e.g., `current_density_at_300mV_overpotential`)
+    - **Onset Potential** (e.g., `onset_potential_vs_RHE`)
+    - **Stability** (e.g., `voltage_change_after_100h_at_10mA/cm²` or `current_retention_after_24h_at_250mV`)
+    - **Faradaic Efficiency** (e.g., `FE_H2: 99 %`)
+    - **ECSA (Electrochemically Active Surface Area)** (e.g., `ECSA: 150 cm²_ECSA`)
+    - **Double-layer Capacitance Cdl** (e.g., `Cdl: 25 mF/cm²`)
+    - More mentioned as a test result metric from the text to ensure every thing included
+    ** Hint **:
+      - First, for descriptions that whether there is a general testing framework used for multiple catalysts across all catalysts and remember that.
+  - Then, for each test, look for conditions that are specific to the catalyst being tested, make sure to identify the difference.
+  - Specially, be aware of all numeric entities, as they may be well-defined conditions/results for testing steps.
+
+
+
+4.  **Edge Creation**:
+      - Create a `tested_in` edge linking each `catalyst` chemical node to every `testing` node where it was evaluated.
+5.  **Verbatim Fidelity**:
+      - Copy phrases exactly for `source_text`.
+        Use full names for keys in `conditions_json` and `results_json` if abbreviations are explained.
+
+
+
+  - Use the original value of properties, composition, metrics and procedures as it is exactly written in the text.
+    Do not try to make calculation yourself.
+
+
+
+6.  **Final Check**:
+      - Re-scan the testing sections of the text.
+        Ensure all distinct test runs have nodes, all conditions/results are captured, and `tested_in` edges are correct.
+        Do not omit any testing-related node or edge. Output the full testing graph.
+        ────────────────────────────────────────────────
+        ▶ 5.  OUTPUT SCHEMA (MUST MATCH EXACTLY)
+        ────────────────────────────────────────────────
+        Return **one** JSON object with two top-level keys:
+
+
+
+```json
+{{
+  "nodes": [ /* NEW chemical nodes (ones *not* in the list) + ALL testing nodes */ ],
+  "edges": [ /* tested_in edges */ ]
+}}
+```
+
+Do not include chemical nodes whose id is in `{CATALYST_IDS_FROM_SYNTHESIS}`
+────────────────────────────────────────────────
+▶ 6. EXAMPLE (Testing Portion Only)
+────────────────────────────────────────────────
+
+```json
+{{
+  "nodes": [
+    {{
+      "id": "chem_some_other_catalyst_not_synthesized_but_tested", // Add report of chemical nodes not in synthesis stage but tested here
+      "type": "chemical",
+      "name": "some other catalyst",
+   
+   "aliases": ["some other catalyst"],
+      "formula": "some other formula",
+      "properties": {{ "surface_area": {{ "value": 100, "unit": "m²/g" }} }}
+    }},
+    {{
+      "id": "test_1",
+      "type": "testing",
+      "catalyst_id": "chem_NiFe_LDH_NF", // Chemical node already exists in synthesis stage and tested, do not repeat the chemical node and directly report the testing node
+      "description": "OER performance in 1.0 M KOH",
+      
+"conditions_json": {{
+        "reaction_type": {{"value": "OER", "unit": "electrochemical"}},
+        "electrolyte": {{"value": "1.0 M KOH", "unit": "solution"}},
+        "pH": {{"value": 14, "unit": "pH"}},
+        "cell_configuration": {{"value": "three-electrode", "unit": "setup"}},
+        "reference_electrode": {{"value": "Hg/HgO", "unit": "electrode"}},
+        "counter_electrode": {{"value": "Pt wire", "unit": "electrode"}},
+        "catalyst_loading": {{"value": 1.0, "unit": "mg/cm²"}},
+        "scan_rate": {{"value": 5, "unit": "mV/s"}},
+        "iR_correction": {{"value": "applied", "unit": "85%"}}
+      }},
+      "results_json": {{
+        "overpotential_at_10_mA/cm²": {{"value": 210, "unit": "mV"}},
+        "Tafel_slope": {{"value": 45, "unit": "mV/dec"}},
+        "stability_test": {{"value": "no significant degradation", "unit": "50h_at_10mA/cm²"}}
+}},
+      "source_text": "The OER performance was evaluated in 1.0 M KOH using a three-electrode setup (Hg/HgO reference, Pt wire counter)... The catalyst (1.0 mg/cm²) achieved a low overpotential of 210 mV at 10 mA/cm² with a Tafel slope of 45 mV/dec. Stability tests showed no significant degradation after 50h at 10 mA/cm²."
+}},
+    {{
+      "id": "test_2",
+      "type": "testing",
+      "catalyst_id": "chem_some_other_catalyst_not_synthesized_but_tested",
+      "description": "HER performance at -200mV",
+      "conditions_json": {{}}
+    }}
+  ],
+  "edges": [
+    {{
+      "id": "edge_tested_chem_NiFe_LDH_NF_test_1",
+      "type": "tested_in",
+    
+  "source_id": "chem_NiFe_LDH_NF",
+      "target_id": "test_1",
+      "properties": {{}}
+    }},
+    {{
+      "id": "edge_tested_chem_some_other_catalyst_not_synthesized_but_tested_test_2",
+      "type": "tested_in",
+      "source_id": "chem_some_other_catalyst_not_synthesized_but_tested",
+      "target_id": "test_2",
+      "properties": {{}}
+    }}
+  ]
+}}
+```
+
+────────────────────────────────────────────────
+▶ 7. TASK INPUT
+────────────────────────────────────────────────
+Scientific text to analyse:
+{ARTICLE_TEXT}
+
+List of ALL chemical IDs from synthesis stage (use for consistency check):
+{CATALYST_IDS_FROM_SYNTHESIS}
+────────────────────────────────────────────────
+▶ 8. TASK OUTPUT
+────────────────────────────────────────────────
+Return the Testing Graph JSON object only.
+Start with ```json and end with ```.
+
+
+If no changes are needed, return an empty object or an object with empty lists for all keys.
+Ensure the output is a single, valid JSON object starting with ``` json and ending with  ```.
+"""
+
+testing_missing_check_prompt = """
+Great job for extracting Testing Graph!
+Now Please **critically review** the initial testing graph you generated against the original scientific text and the provided list of **ALL chemical IDs** (`{CATALYST_IDS_FROM_SYNTHESIS}`). Identify any discrepancies:
+
+1.  **Missing Items:** Are there any tested catalysts, testing scenarios, conditions, results, or `tested_in` edges missing?
+2.  **Incorrect Items:** Are there any nodes or edges with
+    incorrect/missing inner fields (descriptions, conditions_json, results_json, catalyst links, etc.)?
+    Especially check:
+      - Are the `catalyst_id` fields correctly linked to the corresponding chemical nodes?
+      - Are the common testing conditions and results accurately captured?
+      - Look for descriptions that establish the general testing scenario used for catalyst as condition, including:
+          - Reaction Type (HER, OER, OWS)
+          - Electrolyte (composition, concentration, pH)
+          - Cell Configuration (2- or 3-electrode)
+          - Reference Electrode
+          - Catalyst Loading
+      - $iR$-Correction
+          - Scan Rate...
+      - For results, focus on Performance results and metrics mentioned in the text.
+        Common metrics include:
+          - Overpotential (e.g., at $10\ mA/cm^2$)
+          - Tafel Slope
+          - Current Density (at a given potential)
+          - Stability (chronoamperometry/chronopotentiometry)
+          - Faradaic Efficiency
+          - ECSA
+          -cdl...
+          - More mentioned as a test result metric from the text to ensure every thing included
+3.  **Extraneous Items:** Are there any nodes or edges that were incorrectly extracted and should be removed?
+4.  **Key Information Check (Human Checklist):** Please cross-check the following human-provided `{HUMAN_CHECKLIST}`. Ensure every key piece of information in the list is accurately and completely reflected in the extracted graph.
+
+**Remember:** Do not create duplicate `chemical` nodes if their ID is already in `{CATALYST_IDS_FROM_SYNTHESIS}`.
+Your task is to return a JSON object specifying *only the changes* needed to correct the initial testing graph.
+Use the following structure:
+
+```json
+{{
+  "nodes_to_add": [ /* List of NEW node objects to add (chemical or testing).
+Do not create duplicate `chemical` nodes if their ID is already in `{CATALYST_IDS_FROM_SYNTHESIS}` or your responsed ones last step*/ ],
+  "nodes_to_update": [ /* List of COMPLETE node objects that should REPLACE existing ones (match by id) */ ],
+  "node_ids_to_delete": [ /* List of node IDs (strings) to remove */ ],
+  "edges_to_add": [ /* List of NEW edge objects (tested_in) to add */ ],
+  "edges_to_update": [ /* List of COMPLETE edge objects that should REPLACE existing ones (match by id) */ ],
+  "edge_ids_to_delete": [ /* List of edge IDs (strings) to remove */ ]
+}}
+```
+
+If no changes
+are needed, return an empty object or an object with empty lists for all keys.
+Ensure the output is a single, valid JSON object starting with ``` json and ending with  ```.
+"""
+characterization_graph_prompt = """
+You are **CharacterizationGraphNX-GPT**, an expert chemist and structured-data extractor focused on **catalyst characterization**.
+Your single task is to read the supplied scientific text and emit **one** JSON object that describes the *Catalyst Characterization* portion of a CatGraphNX format.
+You will receive a list of **all chemical IDs** identified in a previous synthesis analysis stage: `{CATALYST_IDS_FROM_SYNTHESIS}`.
+────────────────────────────────────────────────
+▶ 1.  OBJECTIVE
+────────────────────────────────────────────────
+Identify every **characterization applied to catalysts** of interest and capture them as standalone **characterization nodes**, each linked to the corresponding **catalyst chemical** node(s).
+The characterization node has only four fields that summarize method, reporting status, a concise finding, and a verbatim evidence snippet.
+Do **NOT** extract synthesis steps or testing nodes here.
+
+────────────────────────────────────────────────
+▶ 2.  NODE TYPES & REQUIRED FIELDS (Catalyst Characterization Focus)
+────────────────────────────────────────────────
+A. **Chemical nodes** `type: "chemical"` (characterized Catalysts not exist in synthesis stage, but exist in characterization section)
+• `id`   Unique machine-friendly identifier
+- Use a canonical formula when obvious (`"chem_TiO2"`), otherwise snake-case the primary name (`"chem_toluene"`).
+• `name` Human-readable primary name (exactly as written once in the text).
+• `aliases` All other spellings/formulas that explicitly refer to the same entity.
+• `formula` (String,Optional) If the chemical entity is a pure substance / single element / pure solution and have a chemical formula, write it down here.
+• `composition` (Optional) Dictionary of DIRECT composition statements in the text (e.g. `{{ "Ni": {{"value": 5, "unit": "wt%"}} }}`).
+Omit if none.
+• `properties` **Required** when available: intrinsic, numeric characterization data (BET area, particle size, pore volume, etc.) reported in the synthesis/characterization sections.
+
+  - Structure each property as `{{ "<property_name>": {{ "value": <number|string>, "unit": "<unit>" }} }}`.
+  - If multiple values exist, choose the most specific; include the original unit.
+  - Notice to differenciate the property from background information and detailed method/characterization sections.
+    Use the property from detailed method/characterization sections if both exist.
+  - Whenever the unit is dimensionless (e.g., molar ratio, %), set unit to a short descriptive string such as rather than leaving it blank.
+  - If the text uses an abbreviation with explanation (e.g., "BET (Brunauer-Emmett-Teller) surface area"), use the full detailed term as the key (e.g., "Brunauer-Emmett-Teller surface area"), not the abbreviation.
+    **Duplication rule** Since we are extracting the another portion of CatGraph, so if the `id` already appears in `{CATALYST_IDS_FROM_SYNTHESIS}`, which is the list of ALL chemical IDs from synthesis stage,
+    → **DO NOT output this `chemical` node again** to avoid duplication.
+    Just reference already existing id in `characterization` nodes and `characterized_in` edges.
+    B. **Characterization nodes** `type: "characterization"`
+    • `id`   "char_1", "char_2", … (chronological order or as numbered in text).
+    • `method_name` Canonical name of the technique.
+    • `data_reported` Boolean: `true` if the study provides data, figures, tables, peak assignments, values or textual interpretation for this method in the present work;
+    `false` only when the method is explicitly mentioned but the authors state data are omitted or not shown.
+    • `characterization_summary` One or two short sentences that summarize what the method reveals for the **catalyst**.
+    Include key numbers or phase assignments exactly as written if present.
+    • `evidence_snippet` Verbatim quote that anchors this node in the article.
+    Use `first words of the sentence ... last words of the sentence`.
+    **Normalization guidance for `method_name`** Use a compact, canonical label for the base technique and place variants or atmospheres in the summary.
+    Examples: `XRD`, `TEM`, `HRTEM`, `SEM`, `AFM`, `XPS`, `Raman`, `EDS`,`ICP`,`FTIR`, `DRIFTS`, `CV` (for characterization, e.g.), `LSV`, `EIS` , `BET`, `H2-TPR`.
+    ────────────────────────────────────────────────
+    ▶ 3.  EDGE TYPES & REQUIRED FIELDS (Catalyst Characterization Focus)
+    ────────────────────────────────────────────────
+    A. **characterized\_in**
+    Connects a **catalyst chemical** node to a characterization node where this catalyst was examined.
+    • `id` "edge_characterized_<chem_id>_<char_id>"
+    • `source_id` `<chem_id>` (must exist in `{CATALYST_IDS_FROM_SYNTHESIS}` or among new chemical nodes you created in this stage)
+    • `target_id` `<char_id>`
+    • `properties` Optional — method-specific context explicitly stated in text, for example `atmosphere`, `pretreatment`.
+    Each entry is an object: {{ "value": <number|string>, "unit": "<unit>" }}. Use short text units when dimensionless.
+    ────────────────────────────────────────────────
+    ▶ 4.  EXTRACTION RULES (Catalyst Characterization-only)
+    ────────────────────────────────────────────────
+
+
+1.  **Catalyst scope** Extract characterization **only** when the method is applied to catalysts.
+    If a method is applied solely to non-catalyst chemicals or supports not used as catalysts, ignore it.
+
+2.  **Eligibility** Create a characterization node when the text explicitly applies the method to a catalyst and provides data, a figure/table reference, peak assignments, or a substantive interpretation.
+    If the method is mentioned with an explicit note that data are not shown, set `is_reported` to `false` and still create the node with a supporting evidence snippet.
+    Do not invent unmentioned methods.
+
+3.  **Segmentation** Create a distinct characterization node for each unique pair of `{{catalyst, method_name}}` within a contiguous description.
+    If the method is repeated under materially different conditions or yields distinct findings for the same catalyst, create separate nodes.
+    If a single sentence states the same finding for multiple catalysts, you may reuse one characterization node and connect it to each catalyst via separate edges.
+
+4.  **Summaries** Write `characterization_summary` as a compact factual statement reflecting only the text.
+    Include phase names, lattice planes, particle sizes, **BET surface areas**, binding energies, band gaps, **ECSA**, **Cdl values**, **charge transfer resistance Rct**, acid or base site types, reduction peak temperatures, or other directly reported outputs.
+    Preserve the original units and notations. Do not perform calculations or conversions.
+
+5.  **Normalization** Normalize synonyms to the canonical `method_name`. Keep environmental or variant details in the summary, for example `in situ DRIFTS under CO at 50 C` or `H2-TPR shows two reduction peaks at 300 C and 450 C`.
+
+6.  **Verbatim fidelity** Copy `evidence_snippet` exactly, including figure or table references when present.
+    Use ellipsis to clip long spans as `first words ... last words`.
+
+7.  **Final consistency pass** Re-scan the text for all catalyst characterization mentions.
+    Merge duplicate nodes that represent the same method and finding for the same catalyst.
+    Ensure every characterization node has at least one incoming `characterized_in` edge from a valid catalyst chemical node.
+    ────────────────────────────────────────────────
+    ▶ 5.  OUTPUT SCHEMA (MUST MATCH EXACTLY)
+    ────────────────────────────────────────────────
+    Return **one** JSON object with two top-level keys:
+
+
+```json
+{{
+  "nodes": [ /* NEW catalyst chemical nodes (ones *not* in the list) + ALL characterization nodes */ ],
+  "edges": [ /* characterized_in edges */ ]
+}}
+```
+
+────────────────────────────────────────────────
+▶ 6. EXAMPLE (Catalyst Characterization Portion Only)
+────────────────────────────────────────────────
+
+```json
+{{
+  "nodes": [
+    {{
+      "id": "char_1",
+      "type": "characterization",
+      "method_name": "XRD",
+      "is_reported": true,
+      "characterization_summary": "XRD shows anatase TiO2 as the only crystalline phase for the 
+catalyst with no impurity peaks.",
+      "evidence_snippet": "Powder XRD patterns of the catalyst exhibit the characteristic reflections of anatase ... no impurity peaks were detected."
+}},
+    {{
+      "id": "char_2",
+      "type": "characterization",
+      "method_name": "XPS",
+      "is_reported": true,
+      "characterization_summary": "XPS Ti 2p peaks at 458.6 eV and 464.3 eV confirm Ti4+.",
+      "evidence_snippet": "The Ti 2p spectrum shows peaks at 458.6 and 464.3 eV, indicating Ti4+ ..."
+    }},
+    {{
+      "id": "char_3",
+      "type": "characterization",
+      "method_name": "CV",
+      "is_reported": true,
+      "characterization_summary": "The double-layer capacitance (Cdl) was calculated as 25 mF/cm², indicating a high ECSA.",
+      "evidence_snippet": "To estimate the ECSA, CVs were collected at various scan rates... The Cdl was estimated by plotting the capacitive current against scan rates, resulting in a Cdl of 25 mF/cm²."
+    }}
+  ],
+  "edges": [
+    {{
+      "id": "edge_characterized_chem_TiO2_char_1",
+      "type": "characterized_in",
+   
+   "source_id": "chem_TiO2",
+      "target_id": "char_1",
+      "properties": {{}}
+    }},
+    {{
+      "id": "edge_characterized_chem_TiO2_char_2",
+      "type": "characterized_in",
+      "source_id": "chem_TiO2",
+      "target_id": "char_2",
+      "properties": {{}}
+    }},
+    {{
+      "id": "edge_characterized_chem_TiO2_char_3",
+      "type": "characterized_in",
+      "source_id": "chem_TiO2",
+      "target_id": "char_3",
+      "properties": {{}}
+    }}
+  ]
+}}
+```
+
+────────────────────────────────────────────────
+▶ 7. TASK INPUT
+────────────────────────────────────────────────
+Scientific text to analyse:
+{ARTICLE_TEXT}
+
+List of ALL chemical IDs from synthesis stage (use for consistency check and linking):
+{CATALYST_IDS_FROM_SYNTHESIS}
+
+────────────────────────────────────────────────
+▶ 8. TASK OUTPUT
+────────────────────────────────────────────────
+Ensure the output is a single, valid JSON object starting with
+``` json and ending with  ```.
+"""
+
+
+characterization_missing_check_prompt = """
+Great job for extracting Catalyst Characterization Graph!
+Now please **critically review** the initial characterization graph you generated against the original scientific text and the provided list of **ALL chemical IDs** (`{CATALYST_IDS_FROM_SYNTHESIS}`).
+Identify any discrepancies:
+
+1.  **Missing Items:** Are there any catalyst characterizations, methods, or `characterized_in` edges that were not captured?
+2.  **Incorrect Items:** Are there nodes with non-canonical or inconsistent `method_name`, incorrect `is_reported`, unsupported or overly vague `characterization_summary`, or `evidence_snippet` that does not directly support the summary?
+    Are there edges pointing to IDs not in `{CATALYST_IDS_FROM_SYNTHESIS}` or not among the newly added catalyst chemical nodes in your previous response?
+3.  **Extraneous Items:** Were any nodes created from background text not belonging to the current study, or methods applied only to non-catalyst materials?
+    Are there duplicate nodes that should be merged?
+4.  **Key Information Check (Human Checklist):** Please cross-check the following human-provided `{HUMAN_CHECKLIST}`. Ensure every key piece of information in the list is accurately and completely reflected in the extracted graph.
+
+**Rules for correction**
+
+  - Restrict scope to **catalysts only**.
+    Do **not** create characterization nodes for non-catalyst chemicals.
+  - Do **not** create duplicate `chemical` nodes if their ID is already in `{CATALYST_IDS_FROM_SYNTHESIS}` or among the chemical nodes you created in your last step.
+  - Normalize `method_name` to the canonical vocabulary and merge duplicates that differ only by spelling or synonyms.
+  - Ensure every characterization node has at least one `characterized_in` edge from a valid catalyst chemical node.
+    Your task is to return a JSON object specifying *only the changes* needed to correct the initial graph.
+    Use the following structure:
+
+
+```json
+{{
+  "nodes_to_add": [ /* List of NEW characterization node objects to add;
+add new catalyst chemical nodes only if they are not in {CATALYST_IDS_FROM_SYNTHESIS} or previously added */ ],
+  "nodes_to_update": [ /* List of COMPLETE characterization node objects that should REPLACE existing ones (match by id) */ ],
+  "node_ids_to_delete": [ /* List of characterization node IDs (strings) to remove */ ],
+  "edges_to_add": [ /* List of NEW characterized_in edge objects to add */ ],
+  "edges_to_update": [ /* List of COMPLETE characterized_in edge objects that should REPLACE existing ones (match by id) */ ],
+  "edge_ids_to_delete": [ /* List of characterized_in edge IDs (strings) to remove */ ]
+}}
+```
+
+If no
+changes are needed, return an empty object or an object with empty lists for all keys.
+Ensure the output is a single, valid JSON object starting with ``` json and ending with  ```.
+"""
+
+ml_dataset_row_generation = """
+You are a domain-expert data-wrangling LLM specialized in Electrocatalytic Water Splitting (HER/OER).
+
+SYSTEM CONSTRAINT: 
+1. OUTPUT ONLY THE CSV CONTENT. 
+2. DO NOT START WITH "Here is the data" OR ANY CONVERSATIONAL TEXT.
+3. ENCLOSE YOUR OUTPUT IN A ```csv CODE BLOCK.
+
+GOAL
+Extract structured data from the **Scenario** text into a "|"‑separated CSV format, strictly following the provided Feature List.
+
+DEFINITION OF A "SCENARIO" (ROW LOGIC)
+A unique row represents a specific **Testing Condition** for a specific **Catalyst**.
+Create a NEW ROW if ANY of the following changes:
+1.  **Catalyst Material** (e.g., Target Sample vs. Control Pt/C vs. IrO2).
+2.  **Reaction Type** (HER vs. OER vs. Overall Water Splitting).
+3.  **Electrolyte** (e.g., 1.0 M KOH vs. 0.5 M H2SO4).
+4.  **Testing Config** (3-electrode vs. 2-electrode).
+
+CRITICAL EXTRACTION STRATEGIES
+1.  **Overpotential Handling (The Core Metric)**:
+    * **eta_10**: Strictly look for the overpotential at **10 mA/cm²**. This is the benchmark.
+    * **Onset**: Look for "onset potential" or "onset overpotential" (start of current).
+    * **High Current Dict**: If text says "requires 240 and 310 mV to reach 50 and 100 mA/cm²", extract as `{{ "50": "240 mV", "100": "310 mV" }}`.
+    * **Calculation Rule**: If the text gives Potential vs RHE (e.g., "1.45 V vs RHE" for OER), you MUST calculate Overpotential:
+        * **OER**: $\eta = E_{{RHE}} - 1.23 V$ (e.g., 1.45 - 1.23 = 220 mV).
+        * **HER**: $\eta = |E_{{RHE}} - 0 V|$ (e.g., -0.05 V = 50 mV).
+
+2.  **Stability Context**:
+    * When extracting `Stability Duration` (e.g., "50 h"), ALWAYS look for the associated condition: "at 10 mA/cm²" or "at 1.5 V".
+    * Extract that value into `Stability Current Density`.
+
+3.  **Material vs. Scenario Properties**:
+    * **Global Features**: XRD, TEM, XPS, BET, DFT results apply to the *Catalyst Material* regardless of the testing condition. Fill these "static" values for ALL rows involving that specific catalyst.
+    * **Local Features**: Tafel, Overpotential, EIS (Rct), Stability apply to the specific *Reaction/Electrolyte* row.
+
+WORKFLOW
+1.  **Scan**: Identify the Target Catalyst and Control Samples.
+2.  **Parse**:
+    * Locate HER/OER metrics.
+    * Extract specific "Overpotentials" (eta_10, onset) and "Tafel slopes".
+    * Extract "EIS" values (look for Rct/semicircle).
+    * Extract "Mass/Specific Activity" if noble metals are involved.
+3.  **Construct JSONs**:
+    * For `Overpotential at High Current`, `XPS Shifts`, `OER Gibbs Steps`, and `Dopants`.
+4.  **Output**: CSV format only.
+    * **Format**: Pure CSV with "|" separator. DO NOT use Markdown table borders (like "|---|---|").
+    * **Header**: The first line MUST be the feature names separated by "|".
+
+CELL RULES & FORMATTING
+* **Overpotentials**: `<value> mV` (e.g., `235 mV`).
+* **Tafel Slope**: `<value> mV/dec`.
+* **Current Density**: `<value> mA/cm2`.
+* **Mass Activity**: `<value> A/mg` or `mA/mg`.
+* **EIS (Rct/Rs)**: `<value> Ohm` (Rct is the diameter, Rs is the intercept).
+* **JSON Fields**: Strictly `{{ "Key": "Value" }}` format.
+* **Text**: Keep original descriptive text for Morphology, Defects, and Patterns.
+* **Missing Data**: Leave cell empty.
+
+Below is the input data for the task:
+――――――――――――――――――――――――――――――――
+Feature list:
+{extract_feature_descriptions}
+
+Scenario text:
+{scenario_text}
+――――――――――――――――――――――――――――――――
+Double Check:
+1. Did you distinguish between Overpotential at 10 mA/cm2 and Onset Potential?
+2. Did you extract the Stability Current Density if mentioned?
+3. Did you convert V vs RHE to Overpotential (mV) correctly if only Potential is given?
+4. Are "OER Gibbs Steps" in the correct JSON format?
+"""

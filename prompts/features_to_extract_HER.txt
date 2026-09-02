@@ -1,0 +1,70 @@
+Catalyst Material Properties:
+Property name| Type| Description
+Catalyst Composition/Formula| Text| The chemical formula or name of the active catalyst material (e.g., Pt/C, RuO2, NiFe-LDH, MoS2).
+Morphology/Structure| Text| Physical structure description (e.g., Nanowires, Nanosheets, Single-atom, Amorphous).
+Substrate/Support Material| Text| The substrate used to load the catalyst (e.g., Nickel Foam, Carbon Cloth, GCE). Differentiate active material from current collector.
+Synthesis Method| Text| Method used to prepare the catalyst (e.g., Hydrothermal, Electrodeposition).
+Mass Loading| Numeric| The mass of catalyst loaded per unit area (usually in mg/cm2).
+Dopants/Modifiers| Dict| Elements or substances introduced to modify the catalyst (e.g., {Fe: doped, P: vacancy}).
+ECSA (Electrochemically Active Surface Area)| Numeric| Active surface area measured via electrochemical methods (cm2).
+Double-layer Capacitance (Cdl)| Numeric| The double-layer capacitance value (usually in mF/cm2), used to estimate ECSA.
+BET Specific Surface Area| Numeric| Surface area measured using BET method (m2/g).
+
+Characterization & Physical Evidence:
+Property name| Type| Description
+--- Morphology & Microstructure (SEM/TEM) ---| |
+SEM Morphology Description| Text| Visual description from Scanning Electron Microscopy (e.g., "Hierarchical porous nanosheets", "Smooth nanowire array").
+TEM Particle Size/Shape| Text| Shape and size observed under TEM. Includes average particle size (nm) if noted.
+AFM Thickness/Roughness| Numeric| For 2D materials (Thickness) or films (Roughness Ra/RMS), usually in nm.
+--- Atomic Structure & Defects (HRTEM/SAED/XRD) ---| |
+HRTEM Lattice Spacing| Numeric| The d-spacing value measured in HRTEM (Angstrom or nm). Used to identify crystal planes.
+HRTEM Interface/Defects| Text| Key observations: "Grain boundaries", "Amorphous-crystalline heterojunction", "Lattice distortion", "Dislocations".
+SAED Pattern Description| Text| Selected Area Electron Diffraction pattern (e.g., "Polycrystalline rings", "Single-crystal spots").
+Crystal Phase (XRD)| Text| The crystal phase identified by XRD (e.g., Cubic, Hexagonal, 1T-phase). Include JCPDS card if given.
+--- Elemental Composition & Distribution (EDS/XPS/EELS) ---| |
+EDS/EDX Mapping Result| Text| Elemental mapping results (e.g., "Uniform distribution", "Phase segregation", "Core-shell").
+Elemental Ratio (EDS/XPS)| Dict| Quantitative atomic ratio. Express as {Element: Atomic% or Ratio}.
+Valence States (XPS)| Text| Dominant oxidation states (e.g., "Ni2+", "Mixed Co2+/Co3+", "Metallic Pt0").
+XPS Binding Energy Shifts| Dict| Shifts indicating electronic interaction. Express as {Element_Orbital: Shift} (e.g., {Pd 3d: +0.6 eV}).
+--- Fine Structure & Spectroscopy (XAS/Raman/EPR) ---| |
+Raman Features| Text| Key peaks identifying bonds or disorder (e.g., "D/G band ratio", "M-O vibrational modes").
+EPR/ESR Signal (Defects)| Text| Signals used to identify vacancies (e.g., "g=2.003 for Oxygen Vacancies").
+Coordination Number (EXAFS)| Numeric| Average coordination number (N) for single-atom/cluster catalysts.
+Bond Length (EXAFS)| Numeric| Bond length (R) from EXAFS fitting (Angstrom).
+In-situ/Operando Evidence| Text| Techniques and observations during reaction (e.g., "In-situ Raman showed reversible CoOOH formation").
+
+Electrochemical Testing Setup:
+Condition/Metric name| Type| Description
+Reaction Type| Text| The specific reaction: HER, OER, or Overall Water Splitting.
+Electrolyte Type| Text| The chemical solution used (e.g., KOH, H2SO4, PBS, Seawater).
+pH Value| Numeric| The pH value of the electrolyte.
+Cell Configuration| Text| 3-electrode system (half-reaction) or 2-electrode system (full cell).
+Reference Electrode| Text| The electrode used as reference (e.g., Ag/AgCl, Hg/HgO, SCE).
+iR Correction| Text| Indicates if potentials are iR-corrected (e.g., "95% iR-compensated", "No").
+
+Performance Metrics (Experimental):
+Condition/Metric name| Type| Description
+Onset Overpotential (eta_onset)| Numeric| The overpotential (mV) where catalytic current starts to increase sharply (or at 1 mA/cm2).
+Overpotential at 10 mA/cm2 (eta_10)| Numeric| The overpotential (mV) required to reach 10 mA/cm2 current density. The benchmark metric.
+Overpotential at High Current| Dict| Overpotentials at other densities if reported (e.g., {50: value, 100: value}), in mV.
+Tafel Slope| Numeric| The Tafel slope value (mV/dec). Smaller values indicate faster kinetics.
+Mass Activity| Numeric| Current normalized by catalyst mass (A/mg or mA/mg) at a specific overpotential. Crucial for noble metals.
+Specific Activity| Numeric| Current normalized by ECSA (mA/cm2_ECSA) at a specific overpotential.
+Charge Transfer Resistance (Rct)| Numeric| Extracted from EIS (Nyquist plot). Diameter of the semi-circle (Ohm).
+Solution Resistance (Rs)| Numeric| The series/solution resistance extracted from EIS (Ohm).
+Turnover Frequency (TOF)| Numeric| Intrinsic activity (s^-1) at a specific overpotential.
+Faradaic Efficiency (FE)| Numeric| Efficiency of charge transfer for the desired product (%).
+Stability Duration| Numeric| The time duration of the stability test (Hours).
+Stability Current Density| Numeric| The constant current density (mA/cm2) or potential applied during the stability test.
+Stability Retention| Numeric| The percentage of activity retained after stability test (%).
+
+Theoretical Calculations (DFT/MD):
+Property name| Type| Description
+Computational Method| Text| The method used (e.g., DFT, AIMD).
+Calculation Model| Text| The crystal facet or model surface used (e.g., "Pt(111)", "NiFe(001) slab").
+Gibbs Free Energy of H* (Delta G_H*)| Numeric| For HER: The free energy of hydrogen adsorption (eV).
+Gibbs Free Energy of OER Steps| Dict| For OER: Free energies of intermediates {OH*: val, O*: val, OOH*: val} (eV).
+Rate Determining Step (RDS)| Text| The elementary step with the highest energy barrier.
+Water Dissociation Barrier (Volmer)| Numeric| Energy barrier for water dissociation step (H2O -> H* + OH*) (eV).
+d-band Center| Numeric| The energy level of the d-band center relative to the Fermi level (eV).
+Adsorption Energy (E_ads)| Numeric| Binding energy of specific molecules (e.g., H2O) on the surface (eV).

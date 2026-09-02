@@ -1,0 +1,23 @@
+{
+  "catgraph_tree": {
+    "catalyst_id": "chem_demo_catalyst",
+    "nodes": [
+      {
+        "id": "synth_demo_1",
+        "type": "synthesis",
+        "name": "Hydrothermal growth",
+        "conditions": {"temperature": {"value": 120, "unit": "C"}, "time": {"value": 6, "unit": "h"}},
+        "synthesis_level": 1
+      },
+      {
+        "id": "chem_demo_catalyst",
+        "type": "chemical",
+        "name": "Demo-NiFe catalyst",
+        "composition": {"Ni": {"value": 60, "unit": "wt%"}, "Fe": {"value": 40, "unit": "wt%"}}
+      }
+    ],
+    "edges": [
+      {"id": "edge_demo_output", "type": "synthesis_output", "source_id": "synth_demo_1", "target_id": "chem_demo_catalyst", "properties": {}}
+    ]
+  }
+}

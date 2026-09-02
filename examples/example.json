@@ -1,0 +1,38 @@
+{
+  "synthesis": {
+    "nodes": [
+      {
+        "id": "chem_demo_catalyst",
+        "type": "chemical",
+        "name": "Demo-NiFe catalyst",
+        "composition": {"Ni": {"value": 60, "unit": "wt%"}, "Fe": {"value": 40, "unit": "wt%"}},
+        "properties": {"support": "nickel foam"},
+        "is_tested_catalyst": true
+      },
+      {
+        "id": "synth_demo_1",
+        "type": "synthesis",
+        "name": "Hydrothermal growth",
+        "conditions": {"temperature": {"value": 120, "unit": "C"}, "time": {"value": 6, "unit": "h"}},
+        "source_text": "Synthetic demonstration record."
+      }
+    ],
+    "edges": [
+      {"id": "edge_demo_output", "type": "synthesis_output", "source_id": "synth_demo_1", "target_id": "chem_demo_catalyst", "properties": {}}
+    ]
+  },
+  "testing": {
+    "nodes": [
+      {
+        "id": "test_demo_1",
+        "type": "testing",
+        "catalyst_id": "chem_demo_catalyst",
+        "conditions_json": {"electrolyte": {"value": "1 M KOH", "unit": "solution"}},
+        "results_json": {"overpotential_10mA": {"value": 210, "unit": "mV"}}
+      }
+    ],
+    "edges": [
+      {"id": "edge_demo_tested", "type": "tested_in", "source_id": "chem_demo_catalyst", "target_id": "test_demo_1", "properties": {}}
+    ]
+  }
+}

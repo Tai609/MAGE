@@ -1,0 +1,47 @@
+# Local credentials and provider configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# Local inputs, uploads, model responses, and generated graphs
+data/
+inputs/
+outputs/
+output/
+output_extract/
+assistant_chat_sessions/
+chat_uploads/
+processed_papers/
+logs/
+reports/
+scratch/
+runtime_logs/
+*_extract_log_*.json
+
+# Caches and local databases
+__pycache__/
+*.py[cod]
+.cache/
+.pytest_cache/
+.mypy_cache/
+*.db
+*.sqlite
+*.sqlite3
+
+# Local environments and editor files
+.venv/
+venv/
+env/
+.idea/
+.vscode/
+*.egg-info/
+
+# OS files
+.DS_Store
+Thumbs.db
+

@@ -1,0 +1,7 @@
+file_id,relative_path,kind,description,supports_figures_or_tables,source_or_provenance,licence,access,sha256
+mage-code-001,extract_main.py,code,Text-image extraction and multimodal fusion entry point,,MAGE release,software licence,public,
+mage-prompt-001,prompts/extract_HER_prompt_v3_2.py,prompt,Text extraction and validation prompts,,MAGE release,software licence,public,
+mage-prompt-002,prompts/image_prompts.py,prompt,Vision extraction and entity-resolution prompts,,MAGE release,software licence,public,
+mage-example-001,examples/example_catgraph_tree.json,example,Minimal non-sensitive CatGraph fixture,,MAGE release,CC0 or repository default,public,
+data-raw-001,[replace-with-archive-path],raw,Raw or permitted article-derived input data,[Fig/Table IDs],[source repository or licence],[licence],[public or controlled],
+data-processed-001,[replace-with-archive-path],processed,Processed graph/source data used for reported results,[Fig/Table IDs],MAGE processing run,[licence],[public or controlled],

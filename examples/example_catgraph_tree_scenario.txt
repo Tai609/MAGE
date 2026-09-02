@@ -1,0 +1,4 @@
+Synthetic demonstration scenario (not derived from a published article):
+
+Grow a NiFe catalyst on nickel foam by a 120 °C hydrothermal treatment for 6 h.
+Record the composition, synthesis conditions and an illustrative HER/OER test result.
