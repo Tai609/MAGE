@@ -1,0 +1,4 @@
+# Preserve deposited source-data bytes so per-file SHA-256 checksums remain stable.
+source_data/original_data/** -text -diff
+source_data/original_data_manifest.csv text eol=lf
+source_data/original_data_summary.md text eol=lf

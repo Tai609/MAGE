@@ -1,0 +1,2953 @@
+{
+ "summary": {
+  "dataset": "electrocatalysis_100_morphology_four_way",
+  "n": 100,
+  "metric_definitions": {
+   "hit": "G∩P≠∅",
+   "full": "G⊆P",
+   "strict": "G=P",
+   "macro_f1": "逐条 2|G∩P|/(|G|+|P|) 宏平均"
+  },
+  "evaluators": {
+   "kg_causal": {
+    "note": "图谱因果链",
+    "stats": {
+     "hit": 85,
+     "full": 50,
+     "strict": 47,
+     "macro_f1": 0.7114
+    }
+   },
+   "expert": {
+    "note": "专家",
+    "stats": {
+     "hit": 69,
+     "full": 24,
+     "strict": 18,
+     "macro_f1": 0.4654
+    }
+   },
+   "no_kg": {
+    "note": "无图谱",
+    "stats": {
+     "hit": 66,
+     "full": 23,
+     "strict": 22,
+     "macro_f1": 0.4764
+    }
+   },
+   "plain_rag": {
+    "note": "RAG",
+    "stats": {
+     "hit": 67,
+     "full": 29,
+     "strict": 26,
+     "macro_f1": 0.5114
+    }
+   }
+  },
+  "reason_note": "reason 为图谱因果链推理过程（全量深检+半同系迁移研判输出，≤280字，含 doc/链/迁移引用）；confidence 为该研判置信度"
+ },
+ "items": [
+  {
+   "doi": "10.1039/d5sc02536b",
+   "morphology_category": "纳米棒阵列",
+   "synthesis_process": "（1）泡沫镍预处理：NF 先经乙醇和去离子水超声洗涤去除表面有机物，再以 3 M HCl 浸泡去除氧化层与有机残留，最后乙醇多次洗涤，80 ℃ 干燥 30 min。（2）Ni-LDH/NF 模板制备：将 NiCl2·6H2O (275 mg, 1.2 mmol)、尿素 (380 mg, 6.23 mmol) 与 10 mL 去离子水加入 50 mL 聚四氟乙烯内衬高压釜，放入清洗后的 NF (0.8 cm × 1 cm)，120 ℃ 水热 12 h；冷却后用去离子水洗涤，80 ℃ 干燥 2 h，得 Ni-LDH/NF。（3）Ni-BPM/NF-x（x = 8、16、24、40、52 h）：将 Ni-LDH/NF 浸入 20 mL 玻璃瓶中含 H2dobpdc（4,4′-二羟基联苯-3,3′-二甲酸，10.3 mg, 0.0375 mmol）、DMF 2 mL、乙醇 2 mL、去离子水 2 mL 的溶液中，80 ℃ 分别反应 8–52 h；冷却后取出，乙醇超声多次洗涤，80 ℃ 干燥过夜。以 Ni-LDH 为牺牲模板经溶剂热配位转化生成 Ni-BPM。（4）对照 Ni-BPM/NF-D（无模板直接生长）：将 NF (1.5 × 2 cm²) 浸入含 NiCl2·6H2O (27.5 mg, 0.12 mmol)、H2dobpdc (10.3 mg, 0.0375 mmol) 及 DMF/乙醇/去离子水各 2 mL 的玻璃瓶中，80 ℃ 反应 24 h，洗涤干燥。（5）NiM (M = Co, Fe)-BPM/NF：同法，金属源分别改为 NiCl2·6H2O (0.6 mmol) + CoCl2·6H2O (0.6 mmol) 或 NiCl2·6H2O (0.6 mmol) + FeCl2 (0.6 mmol)。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米棒阵列",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米棒/纳米线阵列（NF 上垂直阵列，继承 LDH 模板形貌）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①产物 NiM(M=Co,Fe)-BPM/NF：NiCl2+尿素 120℃ 水热在 NF 得 Ni-LDH，再 H2dobpdc/DMF 80℃ 配位转化（牺牲模板）。②尿素缓释 OH⁻ 生成 α-Ni(OH)2 纳米棒阵列；LDH→MOF 配体交换为拓扑转变保形。③库链 chem_Ni5Co3Mo-OH 形态标签 nanosheets（同 TM 氢氧化物水热体系）；先例 Porous Hollow NiFe LDH@NiFe Framework（同 LDH 族）。④预测 NF 上 Ni-BPM 纳米棒阵列。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-026-71943-6",
+   "morphology_category": "空心纳米笼(合金)",
+   "synthesis_process": "(1) Ag 种子 (约 29 nm)：将 1.2 mL 冰浴 NaBH4 (0.1 M) 注入 30 mL 含 0.5 wt% PVP (MW 360,000) 与 1 mM AgNO3 的水溶液制种子液，25 °C 老化 6 h；生长液由 3 mL PVP (5 wt%)、1 mL 乙腈、400 μL AgNO3 (0.1 M)、300 μL L-抗坏血酸 (0.1 M) 溶于 5 mL 水配制；注入 16 mL 种子液剧烈搅拌 30 min，离心收集 Ag 种子并重悬于 43 mL 乙二醇 (Ag: 1.28 mM)。(2) Ag@RuIr：7 mL PVP (2.86 wt%) 175 °C 加热 30 min 除水汽；加入 2 mL Ag 种子，逐滴加 RuCl3 (0.12 mM) 0.71 mL 搅拌 1 h，重复 4 次共 3.55 mL；再逐滴加 IrCl3 (0.08 mM) 0.67 mL 搅拌 1 h，重复 3 次共 2.68 mL；175 °C 继续搅拌 2 h，冷却至 25 °C 过夜；离心收集、水洗 3 次，重悬于 3 mL 水。(3) 刻蚀合金化：向 Ag@RuIr 分散液加入 3 mL HNO3 (30 wt%)（最终 HNO3 浓度 15 wt%），25 °C 反应 30 min，离心收集得 Ag0.19Ru1Ir0.48 合金。对比样 RuIr/C 用浸渍法：RuCl3 (0.012 mM 乙醇) 6.9 mL 与 IrCl3 (0.008 mM 乙醇) 4.8 mL 与 22.6 mg Vulcan XC-72 碳混匀，25 °C 干燥后管式炉 5% H2 + 95% N2 气氛 500 °C 煅烧 5 h。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "空心纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "中空/多孔合金纳米颗粒（Ag@RuIr 刻蚀合金化）",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "多孔/纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①产物 Ag0.19Ru1Ir0.48 合金：Ag 种子(29nm)于 175℃ 乙二醇/PVP 逐滴沉积 Ru、Ir 壳，再 15wt% HNO3 室温刻蚀去合金化。②种子法保持颗粒几何；HNO3 选择性溶出 Ag 核，去合金化产生内部空隙，残余 19%Ag 成合金骨架。③库 doc output_768（RuIr 同体系）形态标签 Ru-based Nanoparticle；节点 IrCl3 标签 Nanoparticles/Porous Aggregated Material。④预测合金纳米颗粒，刻蚀致空腔倾向空心。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1016/j.isci.2026.115872",
+   "morphology_category": "纳米颗粒/纳米片(GO 负载)",
+   "synthesis_process": "(1) GO：改良 Hummers 法——石墨粉 (1.0 g) + NaNO3 (0.75 g) 分散于 34 mL 浓 H2SO4，冰浴 4 °C 搅拌 1 h；缓慢加入 KMnO4 (4.5 g) 保持 <10 °C，25 °C 搅拌 5 天充分氧化；升温 90 °C 保持 2 h，加 50 mL 5 wt% H2SO4，滴加 2.7 mL 30 wt% H2O2 终止氧化再搅拌 3 h；过滤，依次用 30 mL H2SO4、10 mL H2O2、300 mL 3 wt% HCl 洗涤至中性，真空干燥。(2) 羧化：200 mg GO 分散于 100 mL 水超声 1 h，加入氯乙酸 (1.0 g) + NaOH (1.2 g) 混合液再超声 2 h，稀 HCl 中和、水洗、真空干燥得 COOH-GO。(3) 活化接枝：200 mg COOH-GO 分散于 2.0 mL DMF 超声 1 h，过量 SOCl2 65 °C 搅拌过夜活化羧基为酰氯；旋蒸除 SOCl2，THF 洗涤离心、真空干燥得 GO–COCl；取 100 mg GO–COCl 与 128 mg 2-(苯碲基)乙胺 (H2N-CH2-CH2-Te-Ph) 在 DMF 中 N2 保护回流，形成酰胺键接枝得 GO–CO-NH-CH2-CH2-Te-Ph。(4) 负载 Pd：50 mg 功能化 GO 分散于蒸馏水超声 1 h，逐滴加入 Na2PdCl4 水溶液 (30 mg) 室温搅拌过夜使 Pd(II) 与有机碲配位；用 1.0 M NaOH 调 pH 约 13，50 °C 继续搅拌 6 h 原位还原成核生成 Pd；离心、水洗除去残余碱，乙醇洗除有机物，真空干燥。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "二维纳米片（GO/rGO 片）负载 Pd 纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒/纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①产物碲功能化 GO 负载 Pd：Hummers GO 羧化、SOCl2 活化接枝苯碲乙胺，Pd(II) 与 Te 配位后 pH13、50℃ 原位还原成核。②GO 为二维片层；Te 软配体强螯合锚定 Pd，约 20wt% 负载下 Pd 以小颗粒/团簇为主，锚定于片上。③库 doc output_58 形态标签 Platinum Atoms/Clusters、Blue Nanoparticles，示贵金属在载体呈原子簇/颗粒；先例 Ga-S Polyhedron 不采信（组成方法均不符）。④预测 GO 纳米片负载 Pd 纳米颗粒。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.3390/gels12050409",
+   "morphology_category": "3D 分级异质结构（多孔微球 + 垂直纳米片）",
+   "synthesis_process": "（1）溶胶-凝胶合成钙钛矿 La1−xSrxCoO3（LC 为 x=0；LSC 为 x=0.4）：将 10 mmol Co(NO3)2·6H2O、La(NO3)3·6H2O（LC 用 10 mmol，LSC 用 6 mmol）与 Sr(NO3)2（LC 0、LSC 4 mmol）溶于 100 mL 去离子水，加入 24 mmol 柠檬酸和 16 mmol EDTA，用氨水调 pH 至 8–9，90 °C 搅拌浓缩成凝胶；凝胶 250 °C 干燥 5 h 后研磨，空气气氛下以 5 °C/min 升温至 800 °C 煅烧 5 h，得钙钛矿粉末。（2）水热原位生长 NiFe-LDH：将 1.8 mmol Ni(NO3)2·6H2O、0.06 mmol 尿素 (CO(NH2)2)、0.9 mmol Fe(NO3)3·9H2O 与 0.6 mmol LC 或 LSC 粉末分散于 40 mL 去离子水，搅拌 0.5 h 后密封于高压釜，120 °C 水热 12 h；自然冷却后离心收集沉淀，去离子水充分洗涤，70 °C 干燥 12 h 得 LSC/NiFe-LDH 复合物。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/异质结",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米颗粒/纳米片复合（钙钛矿颗粒 + 垂直 LDH 纳米片）",
+     "hit": true,
+     "f1": 0.333
+    },
+    "no_kg": {
+     "prediction": "异质结/纳米片",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米片/异质结",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①产物 LSC/NiFe-LDH：柠檬酸-EDTA 溶胶凝胶 800℃ 煅烧得 LSC 钙钛矿粉，120℃ 尿素水热在其表面生长 NiFe-LDH。②尿素缓释 OH⁻ 使 LDH 在钙钛矿表面垂直成核；LDH 本征层状呈片状。③库链 chem_Ni5Co3Mo-OH 标签 nanosheets（TM 氢氧化物同族）；doc output_3（NiFe-LDH 同体系）标签 Flake-like Structures/Surface Morphology。④预测钙钛矿颗粒上垂直 LDH 纳米片异质结。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1038/ncomms5477",
+   "morphology_category": "纳米片/单层二维纳米片",
+   "synthesis_process": "CoCo/NiCo LDH 采用拓扑化学法合成：将 2.5 mmol CoCl2·6H2O（或 1.25 mmol NiCl2 + 2.5 mmol CoCl2·6H2O）与 45 mmol 六次甲基四胺（HMT）溶于 500 mL 去离子水，在 N2 气氛下 95 °C 回流 5 h 得苦草结构氢氧化物，离心（3000 r.p.m, 10 min）洗涤干燥；再将 100 mg 氢氧化物分散于 Br2/乙腈溶液（Co(OH)2: 0.269 mL Br2 + 83 mL 乙腈搅拌 1 天；Ni1/3Co2/3(OH)2: 0.185 mL Br2 + 54 mL 乙腈搅拌 5 天）氧化为 LDHs-Br。阴离子交换：100 mg LDHs-Br 分散于 80 mL 1.5 M NaNO3 的乙醇/水（1:1）溶液，N2 下搅拌 24 h 得 LDHs-NO3。NiFe LDH 采用尿素+TEA 水热法：Ni(NO3)2·6H2O 与 Fe(NO3)3·9H2O 溶于 200 mL 去离子水（总金属浓度 20 mM，Ni:Fe≈3:1，TEA 浓度为 Fe3+ 的 2.5 倍），加入 7.0 mmol 尿素，转入不锈钢高温釜 150 °C 保持 2 天；随后先后以 NaCl(1 M)+HCl(4 mM) 和 NaClO4(2.5 M)+HCl(2.5 mM) 交换为 NiFe LDH-ClO4。剥离：将 50 mg LDHs-NO3（或 LDHs-ClO4）分散于 100 mL 除气甲酰胺中，超声 10 min 后在 N2 气氛下机械搅拌 24 h，得到澄清胶体（Tyndall 效应证实单层剥离）",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米片/单层剥离纳米片（LDH 花状团聚）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为剥离态 LDH：CoCl2/NiCl2+HMT 95℃ 回流得氢氧化物，Br2/乙腈拓扑氧化为 LDHs-Br，交换为 LDHs-NO3/ClO4，最后甲酰胺剥离得澄清胶体。②Tyndall 效应证实单层剥离；LDH 层状本征二维，剥离产物为超薄单层片。③库 doc output_361（LDHs 同体系）形态标签 NiFe LDHs nanosheets；doc output_2 形态标签 Crumpled Nanoscale Sheets；链 chem_Ni5Co3Mo-OH 标签 nanosheets。④预测单层 LDH 纳米片。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1039/d5ra03052h",
+   "morphology_category": "纳米线阵列/核壳",
+   "synthesis_process": "（1）泡沫镍预处理：将泡沫镍浸入 0.1 M 盐酸 1 h，取出后超声清洗，去离子水冲洗 3 次，60 ℃ 烘箱干燥 12 h。（2）两步水热制备 CuCo2S4 基体：将 4 mM Cu(NO3)2·3H2O、4 mM Co(NO3)2·6H2O、4 mM NH4F 和 3 mM 尿素溶于 70 mL 去离子水，搅拌 45 min；预处理泡沫镍 (4 × 4 cm) 与溶液一同置于 100 mL 高压釜，150 ℃ 保持 7 h；自然冷却后依次用无水乙醇和去离子水洗涤，60 ℃ 干燥 12 h 以上。随后硫化处理：0.35 g Na2S·9H2O 溶于 60 mL 去离子水，与上述泡沫镍一起放入高压釜，120 ℃ 反应 4 h；自然冷却后同样洗涤干燥，得 CuCo2S4 基体。（3）一步水热复合 Co/V 前驱体：在基体上分别以 0.045 g Co(NO3)2·6H2O（CuCo2S4@CoF2）、0.045 g Co(NO3)2·6H2O + 0.009 g NH4VO3（CuCo2S4@Co–V–O–F.1）、0.045 g Co(NO3)2·6H2O + 0.018 g NH4VO3（CuCo2S4@Co–V–O–F.2），并加入 4 mM NH4F 和 3 mM 尿素，装入高压釜 120 ℃ 反应 4 h；自然冷却后洗涤干燥。（4）氟化煅烧：产物与 15 mg 氟化铵一同在 Ar 气氛下以 2.5 ℃ min−1 升温至 450 ℃ 保持 1 h，炉冷至室温，分别得 CuCo2S4@CoF2、CuCo2S4@Co–V–O–F.1、CuCo2S4@Co–V–O–F.2。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米线阵列/核壳",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米片/纳米线阵列（CuCo2S4 阵列）表面覆盖颗粒层",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "纳米线阵列",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物 CuCo2S4@CoF2(Co-V-O-F)/NF：Cu/Co 硝酸盐+NH4F+尿素 150℃ 水热得前驱体阵列，Na2S 120℃ 硫化，再水热镀壳并于 Ar 450℃ 氟化。②尿素/NH4F 缓释体系在 NF 上长 TM 氢氧化物片状阵列；硫化与氟化均为拓扑转化保形，外壳包覆构成核壳。③库链 chem_Ni5Co3Mo-OH 标签 nanosheets（同 TM 氢氧化物水热体系，半同系迁移）；链 chem_CuOH2_nw 标签 Cu(OH)2 nanowires（同 Cu 元素，示线状可能）。④综合预测 NF 上纳米线阵列+核壳。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1039/d5sc06522d",
+   "morphology_category": "纳米片阵列/纳米颗粒/异质结构",
+   "synthesis_process": "（1）泡沫镍预处理：NF (3 × 4 cm) 依次用丙酮、1 M HCl 和去离子水彻底清洗。（2）WO3/NF 制备：将 60 mM 钨酸铵 (NH4)10H2(W2O7)6 与 100 mM 十二烷基硫酸钠 (SDS) 溶于 35 mL 去离子水，25 ℃ 磁力搅拌 3 h；加入处理后的 NF，继续搅拌 1 h；转入聚四氟乙烯内衬不锈钢高压釜，200 ℃ 自生压力下水热 6 h；自然冷却后去离子水和乙醇洗涤，50 ℃ 真空干燥；随后 Ar 气氛 400 ℃ 煅烧 2 h，得 WO3/NF（含氧空位）。SDS 形成油水两相界面。（3）Mo3–Ni/WO3 电沉积：将 4 mmol NiCl2·6H2O、4.3 mmol 二水合柠檬酸钠 (Na2C6H6O7·2H2O，络合剂) 和 3 mmol Na2MoO4 分散于 50 mL 去离子水，超声 10 min，用氨水调 pH 至 10；以 WO3/NF (1 × 1 cm²) 为工作电极、铂片为对电极、Ag/AgCl 为参比电极，恒电流密度 −0.18 A cm−2 沉积 600 s（计时电位法），Ni2+ 与 Mo6+ 在 WO3 粗糙表面诱导共沉积还原，得 Mo3–Ni/WO3。（4）对照系列：Na2MoO4 用量 1、2、4 mmol 对应 Mo1–/Mo2–/Mo4–Ni/WO3；沉积时间 300 s、900 s 对应 Mo3–Ni/WO3-300/-900；不加 Na2MoO4 得 Ni/WO3；以裸 NF 为工作电极得 Mo3–Ni/NF。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列/异质结",
+     "hit": true,
+     "f1": 0.8
+    },
+    "expert": {
+     "prediction": "纳米棒阵列（WO3 纳米棒，表面电沉积颗粒）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米棒阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米棒阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①产物 Mo3-Ni/WO3：钨酸铵+SDS 200℃ 水热于 NF 生长 WO3，Ar 400℃ 煅烧引氧空位，再 −0.18A/cm² 共沉积 Mo-Ni。②SDS 胶束构建油水两相界面模板，利于二维片状 WO3；电沉积在片表面附着 Mo-Ni 相构成异质界面。③库链 chem_Ni5Co3Mo-OH 标签 nanosheets（半同系迁移）；节点 Na2MoO4(doc output_236) 标签 ST-HEA on NF electrode。④预测 WO3 纳米片阵列负载 Mo-Ni 成异质结。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1021/acsami.5c20919",
+   "morphology_category": "纳米颗粒/纳米棒/异质结构",
+   "synthesis_process": "(1) FeCoNi LTH：将 Ni(NO3)2·6H2O (3 mmol)、Fe(NO3)3·9H2O (2 mmol)、Co(NO3)2·6H2O (2 mmol) 溶于 30 mL 去离子水；另配 1 mol L-1 NaOH + 0.2 mol L-1 Na2CO3 溶液 50 mL，以约 1 mL min-1 缓慢滴入盐溶液调节 pH 至 8.5；棕色胶体转移至特氟龙内衬不锈钢高压釜，150 °C 水热 20 h，自然冷却后离心收集，超纯水洗至中性再乙醇洗，真空 60 °C 干燥。(2) MnMoO4：Na2MoO4·2H2O 与 MnCl2·4H2O 各 2 mmol（1:1）分别溶于 20 mL 水，将钼盐溶液逐滴加入锰盐溶液，再加入 2 mmol Na2C2O4 与 10 mL 乙二醇 (EG)，180 °C 水热 10 h；离心收集、水/乙醇洗涤，80 °C 干燥 12 h，空气 500 °C 煅烧 4 h。(3) GO：Hummers 法制备。(4) 复合：20 mg GO 与 30 mg FeCoNi LTH、30 mg MnMoO4 在 40 kHz、35 °C 超声 1 h 分散，转移至特氟龙密封高压釜 120 °C 水热 12 h，水/乙醇洗后 60 °C 干燥。(5) 电极化：2 mg 催化剂 + 10 mL 水 + 0.6 mg 硼酸 + 0.6 mg KI 超声 1 h 制悬浮液，以 FTO 为工作电极、Pt 棒为对电极在 -2 V 恒电位 (i-t) 电沉积 1200 s，去离子水冲洗、空气干燥。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/异质结",
+     "hit": true,
+     "f1": 0.4
+    },
+    "expert": {
+     "prediction": "纳米片/纳米棒复合（LTH 片 + MnMoO4 棒，GO 桥接）",
+     "hit": true,
+     "f1": 0.4
+    },
+    "no_kg": {
+     "prediction": "纳米片",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "薄膜",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①产物 FeCoNi-LTH/MnMoO4/rGO 复合（电泳沉积于 FTO）：共沉淀-水热得 FeCoNi 层状三金属氢氧化物，MnMoO4 180℃ 水热，与 GO 超声复合后 120℃ 二次水热。②层状氢氧化物本征片状；GO 片层组装为 2D/2D 复合，组分间形成异质界面。③库链 chem_Ni5Co3Mo-OH 标签 nanosheets（同 TM 氢氧化物半同系迁移）；doc output_1247（LTH fts）标题 Mn-doped NiFe-P heterointerface nanoflowers。④预测纳米片/异质结。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1002/advs.202402889",
+   "morphology_category": "空心纳米针阵列/超薄纳米片阵列",
+   "synthesis_process": "碳纤维纸(CFP, 1×3 cm2)依次用丙酮、去离子水超声清洗 15 min，再用浓硝酸 75 ℃ 预处理 90 min 以表面羟基化。水热生长前驱体：将 Co(NO3)2·6H2O (0.349 g, 1.2 mmol)、Ni(NO3)2·6H2O (0.174 g, 0.6 mmol) 与尿素 (0.360 g, 6 mmol) 溶于 40 mL 去离子水搅拌 30 min，与处理后的 CFP 一并装入 50 mL 内衬聚四氟乙烯不锈钢反应釜，120 ℃ 保持 10 h，自然冷却，水/乙醇交替洗涤 3 次，60 ℃ 真空干燥 12 h，得 NiCo2(CO3)1.5(OH)3(CFP)。路线一（HNNs）：前驱体直接水热硒化——在 1 mL Ar 饱和水中用 NaBH4 (40 mg) + 硒粉 (39 mg) 于 0 ℃ 反应 30 min 制备 NaHSe 溶液；将前驱体置于含 30 mL 水的 50 mL 反应釜中，Ar 鼓泡 1 h 后加入新鲜 NaHSe 溶液，密封 120 ℃ 保持 20 h，洗涤干燥得 NiCo2Se4。路线二（HUNSs）：前驱体先在水平管式炉空气气氛下以 5 ℃/min 升至 400 ℃ 煅烧 2 h 得 NiCo2O4，再经相同 NaHSe 水热硒化（120 ℃, 20 h, 阴离子交换）得具有丰富硒空位的 NiCo2Se4",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.5
+    },
+    "expert": {
+     "prediction": "纳米线/纳米棒阵列（NiCo2Se4 继承碳酸盐前驱体）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "纳米针阵列",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①产物 CFP 上 NiCo2Se4（HNNs 直接硒化；HUNSs 经 400℃ 煅烧 NiCo2O4 再硒化留硒空位）：Co/Ni 硝酸盐+尿素 120℃ 水热得 NiCo2(CO3)1.5(OH)3 前驱体阵列，NaHSe 阴离子交换硒化。②尿素缓释在 CFP 上生成碳酸-氢氧化物片状阵列；硒化为拓扑阴离子交换保形。③库链 chem_Ni5Co3Mo-OH 标签 nanosheets（同 NiCo 氢氧化物尿素水热体系，半同系迁移）。④预测 CFP 上 NiCo2Se4 纳米片阵列。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1007/s40820-026-02230-8",
+   "morphology_category": "纳米片（层状氢氧化物，牺牲模板离子交换）",
+   "synthesis_process": "（1）将硝酸钴六水合物与硫酸铁六水合物逐一溶解于 25 mL 去离子水中，室温搅拌 10 min；（2）缓慢加入 MgO 粉末，室温搅拌 1 h，随后静置（不搅拌）24 h——MgO 遇水表面羟基化并转化为 Mg(OH)2 层，作为牺牲模板与溶液中的 Co、Fe 离子发生离子交换，Co2+/Co3+、Fe2+/Fe3+ 进入氢氧化物骨架形成层状 CoFe 氢氧化物（LMH），Mg2+ 释放入溶液；（3）混合物 5000 rpm 离心 3 min，弃去上清液；（4）沉淀用去离子水和乙醇反复洗涤至纯粉体；（5）热风烘箱 60 °C 干燥过夜。（6）F 掺杂样品（F-CoFe LMH）：用 25 mL 1 M NH4F 水溶液代替纯去离子水，其余参数不变；通过改变 Co/Fe 摩尔比与掺 F 与否得到 CoFe LMH-1~5 与 F-CoFe LMH-6~10 。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米片/层状聚集体（CoFe 层状氢氧化物 LMH）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①产物 CoFe 层状氢氧化物（LMH）粉体：Co/Fe 硝酸盐液中加 MgO，室温静置 24h，MgO 表面羟基化为 Mg(OH)2 牺牲模板，Co/Fe 交换入层、Mg²⁺ 释放；NH4F 掺 F 同法。②层状金属氢氧化物本征二维；静态温和离子交换承模板薄层形态，F 掺杂不改形。③库链 chem_Ni5Co3Mo-OH 标签 nanosheets（同 TM 层状氢氧化物族，半同系迁移）；doc output_1358（LMH title）标签 Core-Shell Lattice 形貌指向弱。④预测 CoFe LMH 纳米片。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1007/s40820-026-02164-1",
+   "morphology_category": "纳米颗粒+垂直纳米片",
+   "synthesis_process": "（1）电池拆解与放电：将废旧 LiCoO2 软包电池（iPhone 6 来源）浸入 1.0 M NaCl 溶液 24 h 充分放电，绝缘剪刀剥开包装取出正极片。（2）分离：正极片浸入乙醇/去离子水（v/v=1:1）混合液超声 30 min，使正极活性材料与铝箔集流体分离；离心并用乙醇洗涤 3 次，80 °C 真空干燥得废 LiCoO2 粉（S-LCO）。（3）乙醇-水浸出提锂：80 °C 下乙醇-水混合溶剂选择性浸出 Li+（形成 [Li(H2O)x(EtOH)y]+ 配合物，Li 浸出率 >90%，混合溶剂降低介电常数、削弱对 Co3+ 的溶剂化），剩余富钴残渣（主要含 Co(III) 氧化物前驱体）。（4）微波等离子体重构：自建微波等离子体系统，空气气氛（流速 50 sccm），功率 800 W 处理 5 min，过程温度约 1300 K（红外测温仪监测），钴残渣快速局部加热与离子轰击分解为 Co3O4。（5）水热复合：50 mg Co3O4 粉末超声分散于 30 mL 去离子水，加入 0.5 mmol Ni(NO3)2、0.5 mmol Fe(NO3)3、2 mmol NH4F 与 2.5 mmol 尿素，搅拌 30 min 后转入高压反应釜，120 °C 反应 10 h；产物离心收集、洗涤、60 °C 真空干燥，得 Co3O4/NiFe-LDH。（6）对照样 NiFe-LDH 用相同步骤但不添加 Co3O4 水热获得。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒（Co3O4）+ 纳米片（NiFe-LDH）复合",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "异质结/纳米片",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "纳米片/异质结",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①产物 Co3O4/NiFe-LDH：废 LiCoO2 提锂→微波等离子体 1300K 重构得 Co3O4，再与 Ni/Fe 盐+NH4F+尿素 120°C 水热 10h。②尿素缓释供碱+NH4F 为 LDH 垂直纳米片生长经典体系，LDH 层状本征致片形；等离子体重构 Co3O4 呈颗粒。③库 doc output_3《…NiFe-LDH…》标签 Flake-like Structures（同 NiFe-LDH）；链 chem_Ni5Co3Mo-OH→nanosheets（同氢氧化物可迁移）。④预测：LDH 纳米片包覆 Co3O4 纳米颗粒。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.3390/molecules30234654",
+   "morphology_category": "核壳/纳米球/纳米片",
+   "synthesis_process": "NiO 前驱体：将 Ni(NO3)2·6H2O (1 mM)、NH4F (6 mM) 与尿素 (12.5 mM) 溶于 50 mL 去离子水室温磁力搅拌 1 h，与清洗后的泡沫镍转入 100 mL 内衬聚四氟乙烯反应釜 120 ℃ 保持 6 h，自然冷却后水/乙醇洗涤，60 ℃ 干燥 12 h。硒化：将 0.5 g Se 粉与 5 g NaOH 溶于 60 mL 去离子水搅拌至均一，180 ℃ 水热 12 h 活化；所得硒源溶液与 NiO 前驱体一并置于 100 mL 反应釜，140 ℃ 保持 5 h 得 NiSe。电沉积 NiFe-LDH：三电极体系（NiSe 为工作电极，Ag/AgCl 参比，Pt 箔对电极），电解液为 10 mM Ni(NO3)2·6H2O 与 10 mM Fe(NO3)3·9H2O 水溶液，恒电位电沉积 60 s，洗涤、60 ℃ 真空干燥 12 h 得 NiSe@NiFe-LDH。Pt 引入：将 NiSe@NiFe-LDH 浸入 0.4 mM H2PtCl6 水溶液，于 1 M KOH 中在 -0.50~0.50 V (vs RHE)、5 mV/s 下循环伏安 10/20/30 圈（Pt-NiSe@NiFe-LDH-10/20/30）。氧空位引入：Pt-NiSe@NiFe-LDH 经 KBH4/NaBH4 还原处理得 Pt-NiSe@NiFe-LDH-Ov",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/核壳",
+     "hit": true,
+     "f1": 0.8
+    },
+    "expert": {
+     "prediction": "纳米片/纳米阵列（NiSe 阵 + NiFe-LDH 片）",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "纳米线阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①产物 Pt-NiSe@NiFe-LDH-Ov（泡沫镍）：NH4F+尿素 120°C 水热得 NiO，NaOH-Se 140°C 硒化转 NiSe，电沉积 NiFe-LDH，CV 引 Pt，KBH4 造氧空位。②NH4F/尿素泡沫镍水热为垂直纳米片阵列经典配方，硒化拓扑保形，LDH 片状沉积成壳构成核壳。③半同系迁移：doc output_388 标签 Nanoparticles（同 NiSe 异质界面）；doc output_3 标签 Flake-like Structures（同 NiFe-LDH）。④预测：泡沫镍上纳米片+核壳。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1039/d5ra00040h",
+   "morphology_category": "纳米颗粒/多孔",
+   "synthesis_process": "（1）制备植物提取物：水提物——5 g 番石榴 (Psidium guajava) 叶粉加入 250 mL 蒸馏水，铝箔覆盖，70 ℃ 剧烈搅拌 3 h 至溶液由澄清变深棕色，冷却后 Whatman 1 号滤纸过滤得水提物；醇提物——5 g 叶粉与 250 mL 乙醇混合，40 ℃ 搅拌 30 min，过滤得乙醇提物。（2）绿色合成 Co3O4：将 1 g 六水合硝酸钴 [Co(NO3)2·6H2O] 与 150 mL 蒸馏水混匀，加入 100 mL 番石榴叶水提物，铝箔覆盖，40 ℃ 剧烈搅拌 30 min；静置过夜使产物沉降，弃去上层清液，剩余沉淀 4000 rpm 离心 3 min；沉淀先后用水和乙醇冲洗，60 ℃ 烘箱干燥；最后 400 ℃ 马弗炉煅烧 2 h 得 (Co3O4)aq。乙醇提物以相同流程制得 (Co3O4)et。（3）rGO@Co3O4 纳米复合物：将 0.01 g rGO 分散于 50 mL 蒸馏水超声 150 min，加入 0.1 g (Co3O4)aq，继续超声 3.5 h 至均匀；10000 rpm 离心 20 min，蒸馏水洗涤 3 次（每次离心），60 ℃ 孵育箱干燥得 rGO@(Co3O4)aq；700 ℃ 马弗炉煅烧 120 min 得 rGO@(Co3O4)aqc。rGO 按文献报道方法制备（文献 35）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒/多孔",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒（Co3O4）负载于 rGO 二维片",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒/纳米片",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①产物 rGO@Co3O4：番石榴叶水提物还原 Co(NO3)2，400°C 煅烧得 Co3O4，超声复合 rGO 后 700°C 再煅烧。②植物多酚螯合封端限制成核，煅烧得类球形纳米颗粒并锚定 rGO 片层。③半同系迁移：doc output_17《…carbon skeleton decorated with Co nanoparticles》标签 Pitted Cell Wall/Fiber（同碳骨架负载 Co 纳米颗粒复合，Co 元素+方法对应）；doc output_5 电沉积体系不采信。④预测 Co3O4 多孔纳米颗粒。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-022-29929-7",
+   "morphology_category": "纳米片",
+   "synthesis_process": "（1）CVD 生长原始 MoS2：SiO2/Si 衬底依次用食人鱼溶液、异丙醇、去离子水清洗；MoO3（15 mg）与 NaCl（3 mg）混合置于中部氧化铝坩埚，SiO2/Si 衬底（1×2 cm）置于粉体上方；S 粉（320 mg）置于上游距炉中央约 15 cm 处；Ar（300 sccm）吹扫 10 min 后保持 Ar（100 sccm）；40 min 升温至 705°C 保温 5 min，自然冷却。（2）Frenkel 缺陷引入：将生长的 MoS2 置于石英管中，Ar（300 sccm）吹扫 10 min 后保持 Ar（100 sccm），60 min 升温至 400°C 并保温 3 min（FD-MoS2-3；FD-MoS2-5/-15 分别保温 5/15 min），缓慢冷却至室温；退火使部分 Mo 原子离开晶格成为间隙原子并产生 Mo 空位。（3）Pt-MoS2 对照：995 μL Na2MoO4（10 mmol）与 5 μL H2PtCl6（24.4 mmol）混合为前驱液；SiO2/Si 衬底经氧等离子体处理（60 W，1 min）后旋涂前驱液（3000 rpm，1 min）；CVD 生长：S 粉（150 mg）上游 15 cm，Ar（270 sccm）载气，40 min 升温至 850°C，推入 S 粉保温 5 min，缓慢冷却。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "单层/少层三角形纳米片（CVD MoS2 晶片）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "薄膜",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①产物 Frenkel 缺陷单层 MoS2（FD-MoS2）：MoO3+NaCl+S 于 SiO2/Si 上 CVD 705°C 生长单层，400°C Ar 退火 3-15min 引入 Mo 空位/间隙缺陷。②CVD 限域前驱体在平整衬底上外延成二维单层三角畴/连续膜；退火仅生点缺陷，保形不改形貌。③库内无同方法命中：doc output_454 标签 MoS₂ nanoparticles 为液相纳米颗粒体系，方法不符不采信；链与先例无关。④依机理预测单层 MoS2 呈纳米片。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1002/cssc.70620",
+   "morphology_category": "纳米颗粒",
+   "synthesis_process": "以 Ni(acac)2 与 Mo(CO)6 为前驱体、BMIM-NTf2 离子液体为溶剂兼模板：以 1:1 组成为例，将 Ni(acac)2 (0.103 g, 0.400 mmol) 与 Mo(CO)6 (0.106 g, 0.400 mmol) 加入含 2.5 mL (3.6 g) BMIM-NTf2 的微波瓶中密封，N2 吹扫 30 min；置入 Biotage Initiator+ 微波反应器，满功率 (300 W) 加热至 230 °C 并维持 1 min，溶液由黄色金属盐溶液变为黑色胶体悬浮液；后处理：悬浮液分装两管，加约 40 mL 丙酮涡旋+浴超声 5 min 后 6000 rpm 离心 5 min；产物以少量丙酮重悬，加入约 35 mL 己烷沉淀，再次超声/涡旋 5 min、6000 rpm 离心 5 min，弃上清，产物干燥或重悬于丙酮保存；含 IL 上清经旋蒸回收 IL（NH4OH/DCM 萃取除去未反应 Mo 盐），回收 IL 补足至 3.6 g 后按同法循环用于下一批合成。电极制备：Ti 箔 (0.25 mm) 裁剪 1×4 cm，活性区 (0.5×1 cm) 以硅脂掩膜限定，滴铸 NiMo 丙酮悬浮液至负载 0.5 mg cm-2，揭膜后在 5% H2/N2 气流下 450 °C 退火 1 h 制电极。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒（离子液体微波快速成核）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①产物 NiMo 合金纳米颗粒：Ni(acac)2+Mo(CO)6 于 BMIM-NTf2 离子液体中微波 230°C 1min 成黑色胶体，滴铸 Ti 箔后 H2/N2 450°C 退火成电极。②离子液体兼作溶剂与封端软模板，微波快速成核+IL 静电稳定抑制长大，得小尺寸胶体纳米颗粒，退火保形。③库 node doc output_904（BMIM 节点）标签 Nanoparticles×3、Pt+Co Nanoparticle（同离子液体胶体路线）。④结论：NiMo 纳米颗粒。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.3390/ma19112383",
+   "morphology_category": "多孔纳米颗粒（溶胶-凝胶钙钛矿粉体）",
+   "synthesis_process": "以溶胶-凝胶法制备 La0.6Sr0.4Co1−xRuxO3（LSCR-x，x = 0、0.05、0.1、0.15）：（1）将 Co(NO3)2·6H2O 与 RuCl3（总摩尔量 5 mmol，Co:Ru 摩尔比按 (1−x):x）、3 mmol La(NO3)3·6H2O 与 2 mmol Sr(NO3)2 溶解于 50 mL 去离子水；（2）搅拌下依次加入 12 mmol 柠檬酸与 8 mmol EDTA，用氨水调 pH 至 8–9；（3）90 °C 搅拌加热使溶胶-凝胶转变形成凝胶；（4）凝胶 200 °C 干燥 6 h；（5）研磨后于空气气氛以 5 °C/min 升温至 750 °C 煅烧 6 h 促进成相；（6）冷却后研磨成粉备用，得 LSC（x=0）、LSCR-0.05、LSCR-0.1、LSCR-0.15 系列。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒/多孔",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒/多孔团聚体（溶胶-凝胶钙钛矿）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒/多孔",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①产物 La0.6Sr0.4Co1−xRuxO3 钙钛矿粉：硝酸盐+柠檬酸+EDTA 螯合 sol-gel，200°C 干凝胶，750°C 煅烧 6h 成相。②螯合均化阳离子，煅烧燃尽有机配体造孔，典型得纳米颗粒团聚的多孔粉体。③库 node doc output_142（LSC46，同 LSC 钙钛矿化合物）标签 Nanoparticle Aggregate、Porous Composite Material；doc output_382（同 EDTA）标签 Nanoporous Material 可迁移。④结论：多孔纳米颗粒聚集体。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-019-12997-7",
+   "morphology_category": "纳米片/单原子分散",
+   "synthesis_process": "多步组装法：(1) 溶剂热合成 MoS2：24.7 mg (NH4)6Mo7O24·4H2O 与 53.2 mg 硫脲溶于 20 mL Millipore 水，转入 30 mL 特氟龙内衬不锈钢高压釜，220 °C 反应 18 h，冷却后水/乙醇多次洗涤；(2) 制备 Co 胶体：TOPO 与 15 mL 无水 DCB、0.1 mL 油胺在氩气下加热回流（182 °C），快速注入 0.54 g Co2(CO)8（溶于 3 mL DCB），反应 10 min 后冰浴淬灭，水/甲醇洗涤；(3) 组装：将 Co 胶体与 MoS2 水溶液按适当质量比混合，氩气脱气 20 min 后于恒温超声系统（4 °C、800 W、40 kHz）超声处理 24 h，使其组装在 MoS2 上；(4) 电化学浸出：组装产物滴涂于碳纤维纸电极，在 0.5 M H2SO4 中于 0.1 V~-0.4 V 之间循环扫描 50 圈，随后乙醇超声 30 min、静置 6 h，重复两次，形成 D-1T MoS2（SA Co-D 1T MoS2）。对照样 Co NPs/MoS2（自组装与原位生长法）与 Co clusters/MoS2（加入 0.3 mg CoCl2·6H2O 直接水热）同步制备",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/单原子",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米花/纳米片（MoS2 少层片组装）",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "单原子/纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片/单原子",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①产物 SA Co-D 1T MoS2：钼酸铵+硫脲 220°C 溶剂热 18h 得 MoS2，Co2(CO)8 热解制 Co 胶体超声组装于其上，0.5M H2SO4 循环伏安电化学浸出后形成共价键合单原子钴阵列。②共价键合 D-1T MoS2”；溶剂热 MoS2 本征二维片状，浸出保形。③库 doc output_454（同 MoS2 化合物）标签 MoS₂ nanoparticles 为纳米颗粒体系，不作形貌迁移；结论以原文机理为主。④结论：单原子修饰的 MoS2 纳米片（单原子+纳米片）。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1021/acscatal.5c05933",
+   "morphology_category": "微方柱 + 表面纳米颗粒（自支撑电极）",
+   "synthesis_process": "（1）基底清洗：两块泡沫镍（Ni foam，450 μm 孔，1.0 cm × 3.5 cm）依次浸入 4 M HCl、乙醇和去离子水中清洗以去除表面氧化层。（2）水热：将 0.19 mmol (NH4)6Mo7O24·4H2O（5.4 mmol/L）与 1.08 mmol Ni(NO3)2·6H2O（30.9 mmol/L）溶于 35 mL 去离子水搅拌 30 min，清洗后的泡沫镍浸入玻璃内衬高压釜，150 °C 保持 6 h，冷却后依次用去离子水和乙醇洗涤，60 °C 干燥 1 h，得 NiMoO4·xH2O@Ni-foam 前驱体。（3）还原：前驱体涂覆泡沫在 Ar/H2（95/5 vol%，流量 2 Nl/min）气氛下 500 °C 还原 0.5、2 或 3 h，得 Ni10Mo/MoO2@Ni-foam-0.5h/-2h/-3h（2 h 为最优）；还原过程中钼酸盐转化为 MoO2，同时析出含 Mo 的 Ni 基合金。（4）放大/对照：单电池测试用 3.0 cm × 3.3 cm 泡沫镍或镍纤维毡（0.28 mmol 钼酸铵 + 1.54 mmol 硝酸镍溶于 35 mL 水，还原 2 h）；纯 MoO2 电极由 1.80 mmol 钼酸铵溶于 30 mL 水、160 °C 水热 4 h 后 500 °C Ar 煅烧 2 h 制得。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米线阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米线阵列（还原为 NiMo/MoO2 多孔阵列）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米棒阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米线阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①产物 Ni10Mo/MoO2@Ni 泡沫：钼酸铵+Ni(NO3)2 泡沫镍 150°C 水热 6h 得 NiMoO4·xH2O，Ar/H2 500°C 还原 0.5-3h。②泡沫镍水热成垂直阵列，还原保形：钼酸盐转 MoO2、析出 Ni-Mo 合金并造孔。③库 doc output_693《…heterostructure array》标签 heterostructure array（同钼酸铵+泡沫镍）；doc output_34《Ni/MoO2…》（同 Ni/MoO2 族）标签 Rod-like morphology。④结论：泡沫镍上棒状阵列。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1021/acscatal.5c04915",
+   "morphology_category": "柱状薄膜/异质双层",
+   "synthesis_process": "以不锈钢 SS316L 板/毡或抛光硅片为基底，依次用丙酮、异丙醇、水超声清洗，不锈钢基底再用 10% HNO3 + 0.5% NH4F 溶液酸洗去氧化层；采用 NiFe 合金溅射靶 (Ni:Fe 原子比 9:1, 99.99% 纯度)，在真空腔 (本底压力约 2×10-6 mbar) 室温下用脉冲直流电源 (50-150 W, 120 kHz) 溅射；沉积前先用 50 W、Ar 气 5×10-3 mbar 预溅射清洗靶材；样品台距靶约 90° 并以约 5 rpm 轴向旋转。金属 NiFe 单层在 Ar 放电 (150 W, 120 kHz, 30 sccm, 5×10-3 mbar) 下沉积约 800 nm（速率约 20 nm min-1）；氧化物 NiFeOx 单层改用 Ar/O2 各 15 sccm（速率约 4 nm min-1）沉积约 1100 nm；双层样品先沉积约 800 nm 金属层，再通过每 5 min 增加 5 sccm O2 并等量减少 Ar 建立梯度过渡层，最终以 Ar/O2 = 15:15 sccm 沉积 200/500/800 nm 氧化物层得到 NiFe/NiFeOx-200/-500/-800。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "薄膜",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "致密薄膜（磁控溅射金属/氧化物膜）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "薄膜",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "薄膜",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①产物 NiFe/NiFeOx 双层膜：脉冲直流磁控溅射，SS316L/硅片上先沉积约 800nm 金属 NiFe，梯度增 O2 溅射 200-800nm 氧化物 NiFeOx。②物理气相沉积无溶液化学与自模板，室温溅射得致密保形涂层，随基底呈连续薄膜，不生成片/花等自组装形貌。③半同系迁移：doc output_60 标签 High-Entropy Oxide Film、Crystalline film（同为氧化物薄膜体系）；doc output_3（NiFe-LDH 水热法）方法不符不采信。④结论：薄膜。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1021/acsomega.5c06367",
+   "morphology_category": "纳米管阵列/量子点",
+   "synthesis_process": "(1) TiO2：钛板 (2×10 cm) 依次经 dextran (10% w/w)、丙酮、超纯水各超声清洗 10 min；以钛板为阳极、铜板为阴极（暴露面积各 38 cm2），在含乙二醇 + 0.5 wt% NH4F + 10 wt% 超纯水的电解液中 45 V 恒电位阳极氧化 110 min（25 °C）；阳极氧化后于 400 °C 热处理 3 h 形成锐钛矿相并增强机械强度。(2) MoS2：配对电合成，恒电流 -30 mA、总电荷 -46 C；三室电化学池：钼板阳极（产生 Mo4+）、中央室含 0.2 mol L-1 NaCl + 0.065 mol L-1 3-巯基丙酸 (MPA，稳定剂，pH 7)、石墨粉+硫粉 (3.0 mmol : 0.1 mmol, 3.2 kg cm-2 压片) 阴极（产生 HS-）；全程 N2 吹扫，合成后回流加热 10 min，4 °C 保存，纤维素醋酸膜透析 5 h 除 NaCl。(3) 敏化：Ti/TiO2 板 (2×1 cm) 浸入 0.5 mg mL-1 MoS2 溶液，4 °C 恒温静置 1/6/12/24 h，去离子水洗 3 次、空气干燥、避光保存。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米管阵列/纳米颗粒",
+     "hit": true,
+     "f1": 0.5
+    },
+    "expert": {
+     "prediction": "高度有序 TiO2 纳米管阵列（表面 MoS2 敏化）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米管",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米管",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①产物 MoS2 敏化 TiO2 纳米管阵列：钛板于乙二醇+NH4F+水 45V 阳极氧化 110min 得 TiO2 纳米管，400°C 退火成锐钛矿；配对电合成 MoS2（MPA 稳定），浸渍敏化。②NH4F/乙二醇阳极氧化场致蚀刻是自有序 TiO2 纳米管阵列经典机制；电合成 MoS2 为胶体小颗粒吸附管壁。③半同系迁移：doc output_454（同 MoS2 化合物）标签 MoS₂ nanoparticles；链 chem_CoPGT→Nanosheet 为 CoP 体系不采信。④结论：纳米管阵列负载 MoS2 纳米颗粒。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1039/d4na00930d",
+   "morphology_category": "纳米颗粒/多孔",
+   "synthesis_process": "（1）Co3Te4：取 0.2 mM 乙酸钴 [Co(CH3COO)2·4H2O] 与 0.2 mM 碲粉，浸入 10 mL 含 6 M KOH 的均相水相电解液中，加入 5 mL 水合肼，磁力搅拌 3 h 获得均匀混合液；转移至聚四氟乙烯内衬高压釜，180 ℃ 水热处理 5 h；自然冷却后分别用乙醇和去离子水反复洗涤，60 ℃ 干燥；随后在管式炉中于 Ar 气氛下 70 ℃ 退火，得 Co3Te4。（2）Fe3C（Fe 基 MOF 前驱体法）：将 7 mL 环己烷、7 mL 去离子水与 140 mmol 均苯三甲酸（BTC）溶于 200 mmol 硝酸铁中，搅拌 30 min；逐滴加入 1 mL 2 M NaOH 引发反应；转入 80 mL 密封高压釜，按原文在 370 ℃ 保持 48 h 完成反应（数值原文如此）；自然冷却后过滤，用去离子水和乙醇多次洗涤，333 K 干燥过夜；所得 Fe 基 MOF 粉体在 N2 载气下以 5 K min−1 升温至 673 K 碳化，研磨得 Fe3C。（3）Co3Te4–Fe3C 复合物：与 Fe3C 步骤完全平行，但在热处理前向上述混合液中加入 0.5 g 已合成的 Co3Te4。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒/多孔",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米棒/纳米线（Co3Te4）+ 纳米颗粒（Fe3C）复合",
+     "hit": true,
+     "f1": 0.4
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为 Co3Te4–Fe3C 复合物：Co3Te4 水热合成后加入 Fe-BTC(MOF) 前驱体体系，N2 673K 碳化。②MOF 限域热解使 Fe 相以细小 Fe3C 颗粒嵌入衍生碳基质并保留孔道；Co3Te4 水热颗粒共嵌于碳中。③库 doc output_199（Fe3C 命中）形貌标签 Nanoparticles；doc output_170（Fe3C 命中）标签 Cluster。④结论：MOF 衍生 Fe3C/碳复合物呈纳米颗粒/多孔。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-024-46553-9",
+   "morphology_category": "纳米颗粒/单原子/负载型",
+   "synthesis_process": "电极预处理：碳纤维纸（CFP，1 cm×1 cm）先用 1.0 M HNO3 浸泡 30 min，再在 0.5 M H2SO4 中于 0.2–1.5 V（vs. RHE）区间循环伏安活化 5 圈。电沉积：配制 100 mL 镀液，含 NiCl2·6H2O（150 mM）、RuCl3·xH2O（5 mM）、H3BO3（160 mM）、NH4Cl（20 mM）和 PVP（1.0 g），用 NH3·H2O 调 pH 至 2.7；采用三电极体系（饱和 Ag|AgCl 参比、铂丝对电极、CFP 工作电极），以单极性脉冲电沉积（UPED）法在 −0.8 V（vs. Ag|AgCl）脉冲电压下沉积 4000 次脉冲（共 8000 s），负载量约 1.25 mg cm−2，得到 UP-RuNiSAs/C。机理上通电时 Ru3+ 优先还原，断电时离子扩散恢复浓度。对照样品：UP-Ru/C 与 UP-Ni/C（镀液中分别不加 NiCl2·6H2O 或 RuCl3·xH2O）、UP-RuNiSAs/Ti（钛毡工作电极）、CP-RuNi/C 等（恒压 −0.8 V 计时电位法 8000 s）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "单原子",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米颗粒膜（脉冲电沉积 RuNi 于碳纤维）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "单原子",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "单原子",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物 UP-RuNiSAs/C：碳纤维纸上单极性脉冲电沉积 RuNi 共 8000 s。②脉冲断电期离子浓度恢复+表面限域使沉积原子级分散。③库 doc output_1369（RuNiSAs 命中，同用 UPED+CFP+Ni 单原子设计）与 doc output_40（Single-Atom Alloy 命中）佐证原子级分散。④结论：RuNi 单原子。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1038/s41467-019-08877-9",
+   "morphology_category": "纳米片阵列",
+   "synthesis_process": "分两步：(1) 合成 Anderson 型多金属氧酸盐前驱体 NiMo6（(NH4)4[NiH6Mo6O24]·5H2O）：将 (NH4)6Mo7O24·4H2O（5.19 g, 4.2 mmol）溶于 80 mL 水并加热至 100 °C，加入溶于 20 mL 水的 Ni(NO3)2·6H2O（1.16 g, 4 mmol），加热搅拌至深绿色溶液，蒸发过滤后粗产物在 80 °C 热水中重结晶两次、真空干燥（产率 79.1%）；FeMo6、CoMo6 前驱体按类似方法制备；(2) 水热硫化制备 NiO@1T-MoS2/CFP：将 NiMo6（50 mg, 0.042 mmol）、硫代乙酰胺 TAA（80 mg, 1.065 mmol）与 CFP（1×2 cm²）混合于 10 mL 水中，转入 20 mL 特氟龙高压反应釜，180 °C 反应 24 h；通过改变反应温度（160/180/200/220 °C，对应 T-160~T-220）调控氧掺入量，最佳为 180 °C。对比样品 1T-MoS2/CFP 用 Mo7 前驱体、FeO/CoO@1T-MoS2 用 FeMo6/CoMo6 按相同流程制备",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米花/纳米片（1T-MoS2 于 CFP）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物 NiO@1T-MoS2/CFP：NiMo6 POM+硫代乙酰胺于 CFP 上 180°C 水热硫化 24h。②分子级 POM 前驱体水热硫化使 MoS2 在碳纤维表面垂直生长为纳米片。③库链 chem_Ni5Co3Mo-OH（Ni-Mo 氢氧化物水热体系）形貌标签 nanosheets（半同系：同 Ni-Mo 水热）；doc output_350 水热氧化物体系标签 Nanoflake-like/flower。④结论：纳米片阵列。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-026-74827-x",
+   "morphology_category": "纳米片/多孔/掺杂氧化物",
+   "synthesis_process": "将 26.1 mg RuCl3·xH2O（0.1 mmol）溶于 7 mL 无水乙二醇，加入 35 mg TiB2（0.54 mmol，50 nm）；混合物先超声 15 min 均匀分散，随后将超声探头（24 kHz）浸入悬浮液，室温（约 25 °C）声化学反应 4 min，利用空化微射流选择性腐蚀 TiB2 释放活性硼并与 Ru 反应，形成黑色沉淀 B-Ru/TiO2；离心（4300×g，5 min）分离，去离子水洗 3 次，60 °C 干燥过夜。收集粉末于空气中 350 °C 煅烧 3 h（升温速率 5 °C min−1）得到 B-RuO2/TiO2；煅烧产物浸入 40 wt% 氢氟酸溶液 10 min 以去除残留 TiO2，离心、去离子水洗涤，60 °C 真空干燥得到最终 B-RuO2。纯 RuO2 对照除不添加 TiB2 外流程相同。对照路线：油浴（乙二醇，160 °C，4 min 或 3 h）与溶剂热（PTFE 反应釜，160 °C，4 min 或 3 h）。放大实验：乙二醇体积增至 20/50/100 mL，TiB2 与 RuCl3·xH2O 用量按比例增加，超声功率不变。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒（声化学刻蚀-反应产物）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物 B-RuO2：超声空化选择性腐蚀 TiB2 释放活性硼与 Ru 反应得 B-Ru/TiO2，350°C 煅烧后 HF 去除 TiO2。②slash 记号表明 B-Ru 系负载于 TiO2 而非包覆核；超声成核快、颗粒细小，去 TiO2 后得独立 B-RuO2 粒子。③库 doc output_35（Ru/r-TiO2 节点）标签 Dispersed Nanoparticles；doc output_46（TiO2 节点）标签 Nanoparticles。④结论：B-RuO2 呈纳米颗粒。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1039/d6ra01930g",
+   "morphology_category": "纳米颗粒/多孔碳负载",
+   "synthesis_process": "(1) FeMoO4：将 0.1 M FeCl3 与 0.2 M Na2MoO4·2H2O 分别溶于 35 mL 二次蒸馏水，均相后混合于 250 mL 烧杯持续搅拌；加入 0.5 g 尿素（溶于 10 mL 水）继续搅拌 1 h；转移至 100 mL 特氟龙内衬不锈钢高压釜，180 °C 水热 24 h，自然冷却；离心收集，二次蒸馏水与乙醇多次洗涤除未反应物，60 °C 过夜干燥；最后空气气氛 550 °C 煅烧 4 h。(2) Ds-AC：枣核洗净 110 °C 干燥 24 h，300 °C 真空碳化 4 h、研磨得预碳化碳 (Ds-PCC)；20 g Ds-PCC 与 100 mL 3 M KOH 浆料室温搅拌 24 h，110 °C 干燥后于 N2 气氛 700 °C 活化 1 h（升温 5 °C min-1）；去离子水反复洗至中性，110 °C 干燥 24 h 得 Ds-AC。(3) 复合：5 mg FeMoO4 与 5 mg Ds-AC 分散于 100 mL 二次蒸馏水超声 30 min，离心收集、60 °C 干燥 12 h 得 FeMoO4@Ds-AC。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "花状微球",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米棒（FeMoO4）复合多孔碳（Ds-AC）",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "纳米棒",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物 FeMoO4@Ds-AC：FeCl3+Na2MoO4+尿素 180°C 水热 24h、550°C 煅烧，再与枣核活性炭超声复合。②尿素缓释 OH⁻ 促进均匀成核，水热自组装成花状分级微球，煅烧保形。③半同系迁移：库先例 Ni-Mo Nanoflowers（output_258，同 Mo 基水热+缓释碱体系）；doc output_200（Na2MoO4 命中）含纳米棒/纤维分级形貌标签。④结论：FeMoO4 以花状微球为主。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1002/advs.202417521",
+   "morphology_category": "纳米片阵列/异质结构",
+   "synthesis_process": "泡沫镍(3×2 cm2)依次用 3 M 盐酸、无水乙醇、去离子水清洗数分钟。第一步水热：将 Co(NO3)2·6H2O (0.5 mmol)、Fe(NO3)3·9H2O (0.5 mmol)、NH4F (2 mmol)、尿素 (4 mmol) 溶于 25 mL 水剧烈搅拌成均一溶液，与泡沫镍一并转入内衬聚四氟乙烯不锈钢反应釜，120 ℃ 保持 3 h，冷却后水洗、70 ℃ 真空干燥得 Co-Fe 前驱体/NF。第二步水热：将 Co-Fe 前驱体置于 0.05 M KMnO4 溶液中，120 ℃ 反应 1 h，水洗、70 ℃ 真空干燥过夜得 Mn-Co-Fe 前驱体/NF（高价位 Mn 被还原并参与反应）。磷化：瓷舟装载前驱体置于管式炉下游，上游放置 300 mg NaH2PO2，Ar 气氛下以 2 ℃/min 升温至 350 ℃ 保持 2 h，自然冷却得 Mn-Co-Fe-P/NF。对照样通过改变 Co/Fe 摩尔比(0.75/0.25、0.25/0.75)、KMnO4 浓度(0、0.01、0.1 M)或替换第三金属盐(Ni/Zn/Cu 盐)制得",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米片阵列（Mn-Co-Fe-P/NF，磷化保形）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物 Mn-Co-Fe-P/NF：Co/Fe 硝酸盐+NH4F+尿素在泡沫镍上 120°C 水热，KMnO4 二次水热，NaH2PO2 350°C 磷化。②尿素/NH4F 水热在 NF 上原位生长 LDH 纳米片阵列，磷化为拓扑保形转化，阵列形貌保留。③库链 chem_Ni5Co3Mo-OH（Ni-Co 氢氧化物水热体系）形貌标签 nanosheets；半同系迁移：库内 NiFe LDH 体系（output_3）同水热碱式盐前驱体路线。④结论：磷化物呈纳米片阵列。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1126/sciadv.aed8479",
+   "morphology_category": "纳米颗粒(高熵氧化物)/碳负载",
+   "synthesis_process": "先将 5 g XC-72R 碳黑加入 300 mL 1 mol L-1 HNO3，油浴 160 °C 回流搅拌 6 h 亲水化；冷却后真空抽滤、去离子水洗 5 次，冷冻干燥 24 h 得亲水碳载体。取等质量预处理碳装入 60 孔陶瓷板的每孔中（高通量固体分装工作站 MT-HTP/SD100）；以高通量液体分装工作站 (MT-HTP/LD100) 自动配制 0.5 mol L-1 金属盐前驱体水溶液（去离子水为溶剂），按等摩尔设计（从强调元素集 Co/Ni/Fe/Cu/Ti/Mo 中选 3 种 + 潜在活性元素集 Cr/Zn/Sb 中选 1 种 + Ru，共 C(6,3)·C(3,1) = 60 个配方）分装到载体上，目标理论总金属负载 20 wt%；随后高通量阵列超声 (MT-HTP/UA100)、预冻 4 h、冻干 12 h 得金属盐前驱体；最后用高通量先进材料合成工作站 (ESHOCK-2024A) 在空气气氛下脉冲热辐射：陶瓷板置于碳纸加热器下方，逐行快速加热至约 1500 °C 后快速冷却（加热 1 s、冷却 5 s，单循环），即得 Ru-HEO 催化剂。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒（高熵氧化物 Ru-HEO）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物 Ru-HEO：60 组金属盐浸渍亲水炭黑、冻干后经脉冲热辐射 ~1500°C 加热 1 s/冷却 5 s 合成。②秒级高温使盐分解-成核一步完成，急冷抑制 Ostwald 熟化，得成分均匀的高熵氧化物细颗粒。③库 doc output_60（HEO 命中）标签 Particle Distribution（同 HEO 体系）；闪烧法与碳热冲击法机理一致产出纳米颗粒。④结论：Ru-HEO 呈纳米颗粒。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-025-55854-6",
+   "morphology_category": "微球/核壳结构/异质结构",
+   "synthesis_process": "Al-MoOx 前驱体：将 MoCl5（250 mg）、PVP（20 mg）与 NaAlO2（40 mg）溶于 50 mL 无水乙醇，搅拌 30 min 形成均匀绿色溶液；转入 100 mL 聚四氟乙烯内胆高压釜，180 °C 溶剂热 12 h；纯化离心收集黑色 Al-MoOx 产物。有机包覆（DA-Al-MoOx）：将 Al-MoOx 粉末浸入 100 mL 多巴胺（DA，80 mg）、P123（40 mg）与 Tris（20 mg）混合水溶液，连续搅拌 24 h，纯化离心收集黑色有机物改性前驱体。碳化：将 DA-Al-MoOx 在 Ar 气氛下 720 °C 热解 2 h，得到 AlP-MoO2@Mo2C（ICP-OES 测定 Al 含量 0.49 wt%）；MoO2@Mo2C 与裸 C 对照在相同条件下由不加 Al 源的对应前驱体制备。模型催化剂：商业 Mo 板经 Ar 刻蚀与真空退火预处理，吸附 Al3+ 后在 0.3 mbar C2H4 气氛 873 K 原位碳化，再于 0.3 mbar O2、573 K 氧化得到 Al-MoO2@Mo2C。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "微球/核壳",
+     "hit": true,
+     "f1": 0.8
+    },
+    "expert": {
+     "prediction": "纳米颗粒/核壳（MoO2@Mo2C 碳包覆）",
+     "hit": true,
+     "f1": 0.4
+    },
+    "no_kg": {
+     "prediction": "核壳/纳米颗粒",
+     "hit": true,
+     "f1": 0.4
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物 AlP-MoO2@Mo2C：MoCl5+PVP 乙醇溶剂热得 Al-MoOx，多巴胺包覆后 Ar 720°C 热解。②PVP 软模板导向溶剂热成球，聚多巴胺壳碳化并使表面渗碳生成 Mo2C，构成球状核壳（MoO2 核@Mo2C/C 壳）。③库 doc output_58（Mo2C 节点 Pt1-MoL-Mo2C）标签 nanoparticle histogram/cluster；产物名 @ 记号指向核壳结构。④结论：球状核壳纳米颗粒。",
+   "confidence": "低"
+  },
+  {
+   "doi": "10.1038/s41467-018-07792-9",
+   "morphology_category": "微球/纳米片/纳米颗粒",
+   "synthesis_process": "第一步（MoS2 生长）：Ti 箔（纯度 >99.99%，40 × 30 × 0.5 mm）先用浓 HCl（37 wt%）清洗 30 min，再分别于去离子水和乙醇中超声各 5 min；将钼酸铵 (NH4)6Mo7O24·4H2O (0.1766 g) 与硫脲 CS(NH2)2 (0.484 g) 加入 36 mL 去离子水中搅拌成清液；将溶液与 Ti 箔转入 50 mL 聚四氟乙烯内衬不锈钢反应釜，180 °C 水热 24 h 在 Ti 箔上生长 MoS2；取出后用去离子水和乙醇充分冲洗，60 °C 真空干燥 6 h。第二步（MoS2/Mo2C 制备）：将长有 MoS2 的 Ti 箔放入 1.5 英寸水平石英管式炉，在 Ar（100 sccm）+ H2（30 sccm）气氛下 30 min 升温至 750 °C；随后通入 CH4（10 sccm），于 750 °C 进行 CVD 反应不同时间（0、20、60 或 100 min）制备 MoS2/Mo2C；反应结束后关闭 CH4，在 Ar（100 sccm）+ H2（30 sccm）气氛下冷却至室温。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 0.5
+    },
+    "expert": {
+     "prediction": "纳米片/纳米花（MoS2→MoS2/Mo2C 片状）",
+     "hit": true,
+     "f1": 0.4
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物 MoS2/Mo2C/Ti：钼酸铵+硫脲在 Ti 箔上 180°C 水热 24h 生长 MoS2，再于 CH4/H2 750°C CVD 部分碳化。②水热 MoS2 在 Ti 箔表面垂直生长为纳米片；CH4-CVD 使 MoS2 表面转化为 Mo2C，片状骨架保留。③库 doc output_454（MoS2 标题命中，MoS2 纳米催化剂经典文献）标签 MoS₂ nanoparticles；CVD 节点（output_6）同气相转化体系。④结论：纳米片。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1002/adfm.202402966",
+   "morphology_category": "纳米片/纳米颗粒",
+   "synthesis_process": "CeOx：以乙酸铈(III)（cerium(III) acetate）为前驱体，在苄醚（benzyl ether）中、以油胺（oleylamine）和油酸（oleic acid）为表面活性剂进行热分解得到 CeOx。将 CeOx 负载到 Vulcan 炭上得到 CeOx/C，随后在空气中 200 °C 退火以去除有机表面活性剂（退火后 Ce3+ 比例由 81.1% 降至 55.2%，部分氧化为 Ce4+）。Pt 制备：将乙酰丙酮铂（platinum acetylacetonate）溶解于 1-十八烯（1-Octadecene），以甲醛为温和还原剂、油胺为表面活性剂进行还原合成，通过调节金属盐与油胺浓度控制粒径。最后将不同尺寸的 Pt 负载到 CeOx/C（及纯 C 对照）上，再进行空气热处理以去除 Pt 表面配体并使 Pt 与 CeOx 直接接触，得到 Pt/CeOx/C 与 Pt/C 催化剂。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "超薄纳米片 CeOx（~53 nm×1.2 nm）+ Pt 纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物 Pt/CeOx/C：苄醚中热分解得 CeOx 负载炭黑，胶体 Pt 再负载并空气退火。②CeOx 纳米片；Pt 胶体纳米颗粒。③链 chem_CeNiFe_CuO（含 Ce）形貌标签 nanosheets array 佐证；doc output_67 同为 CeOx 界面体系。④结论：CeOx 纳米片负载 Pt 纳米颗粒。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1038/s41467-019-13415-8",
+   "morphology_category": "纳米颗粒/异质结",
+   "synthesis_process": "（1）将 5 mmol Ni(NO3)2·6H2O 与 1 mmol FeCl2·4H2O 溶于 2 mL 去离子水和 1 mL 乙醇的混合液，另将 4 g 油酸钠（Na(oleate)）溶于 4 mL 去离子水和 3 mL 乙醇，两溶液混合形成 Ni、Fe 离子-油酸盐络合物；加入 14 mL 正己烷（非极性溶剂）诱导胶束形成，400 r.p.m. 搅拌 60 min，金属-油酸络合物转移至己烷相（金属浓度 0.43 mmol/mL）。（2）电极制备：将己烷溶液滴涂于碳纸（CFP，180 μL/3 cm2）或泡沫镍（NF，300 μL/0.22 g）表面，晾干形成蜡状薄膜。（3）热还原：在 Ar 保护的水平管式炉中 350 °C 退火 2 h（升温速率 10 °C/min，Ar 流速 5 mL/min），自然冷却，即得 Ni-γFe2O3 异质结构电极（负载量 CFP 1.5、NF 2.5 mg/cm2）。对照组 Ni-Fe 合金样另经胶束 70 °C 孵育 7 h 后在 H2 气氛 700 °C 退火 2 h 制得。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒/异质结",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒膜（Ni-γFe2O3 细小颗粒异质结构）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "薄膜/异质结",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为Ni-γFe2O3异质结电极：Ni/Fe油酸盐络合物在正己烷中自组装成胶束，滴涂碳纸/泡沫镍后350°C Ar退火热还原。②油酸盐胶束限域+低温热分解：成核受胶束尺寸约束，产物为均一纳米颗粒，Ni与γFe2O3两相界面构成异质结。③库内证据：doc output_374《Self-assembled ultralow Ru, Ni-doped Fe2O3 lily》(Fe2O3+Ni同组成)形态标签含Nanoparticles，可作组成匹配的半同系佐证；其余命中为弱匹配不采。④结论：胶束热解路径预测纳米颗粒/异质结。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-026-74540-9",
+   "morphology_category": "纳米棒/单原子",
+   "synthesis_process": "β-MnO2 粉末：将 1.69 g MnSO4·H2O 与 2.28 g (NH4)2S2O8 溶于 80 mL 超纯水，搅拌 30 min 后转入聚四氟乙烯内胆不锈钢高压釜，140 °C 水热 12 h；冷却后离心收集黑色沉淀，依次用超纯水与乙醇各洗 3 次，80 °C 烘箱干燥 6 h。自支撑 β-MnO2 电极：在镀铂钛毡（Pt/Ti felt）上于含 0.3 M MnSO4 与 0.36 M H2SO4 的 94 °C 水溶液中进行阳极电沉积，恒定电流密度 7 mA cm−2 沉积 1 h；随后空气中 450 °C 退火 5 h。RuxMn1-xO2：采用改进的位点选择性离子交换法，将一定量 β-MnO2 粉末分散于预设浓度的 RuCl3 水溶液中，60 °C 连续搅拌 24 h 完成离子交换；离心收集产物，去离子水多次洗涤去残留离子，干燥后在空气中 200 °C 煅烧 1 h，得到 RuxMn1-xO2（x = 0.01、0.03、0.05、0.08，通过调节 RuCl3 溶液初始浓度控制，最优为 Ru0.03Mn0.97O2）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米棒",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米棒/纳米线（β-MnO2，离子交换保留）",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "纳米棒",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米棒",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为Ru0.03Mn0.97O2：β-MnO2由MnSO4+(NH4)2S2O8于140°C水热12h制得，再经60°C位点选择性Ru离子交换24h+200°C煅烧。②水热氧化Mn2+生成β-MnO2具有经典一维择优生长习惯（纳米棒），离子交换为拓扑化学过程，晶格与形貌遗传，低温煅烧保形。③库内证据：MnSO4命中docs(output_9/249)标签多为颗粒，属组成弱同系；因果链指向CoP体系纳米片，组成方法均不符不采。④机理主导：水热β-MnO2纳米棒+保形交换→纳米棒。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1021/acs.chemmater.6c00125",
+   "morphology_category": "纳米枝晶",
+   "synthesis_process": "标准合成：将 2 mL 水相 CTAC (100 mM) 与 130 μL 水相 NaBH4 (100 mM) 在 20 mL 玻璃瓶中 600 rpm 磁力搅拌、90 °C 混合；约 5 s 后一次性注入 200 μL Na3RhCl6 水溶液 (2.0/5.0/10.0 mM，新鲜配制或空气 25 °C 老化 3 周)，90 °C 反应 30 min–4 h；固体产物 17500 rpm 离心 40 min、去离子水洗 2 次。10 倍放大合成在 50 mL 三颈瓶中同法进行。对照 Rh 样 (5 nm)：13 mL 乙二醇溶液含抗坏血酸 (52.8 mg)、KBr (108 mg)、PVP (133 mg) 于三颈瓶中 140 °C、380 rpm 搅拌加热 1 h；另取 6 mL 含 Na3RhCl6 (46.2 mg) 的乙二醇溶液，先以 60 mL h-1 注入 1.1 mL、再以 4 mL h-1 注入其余 4.9 mL；3 h 后离心收集，丙酮洗 1 次、乙醇/丙酮 (3:1) 混合液洗 3 次，分散于去离子水备用。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒（Rh 多面体/小颗粒）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为CTAC/NaBH4体系Rh纳米晶：90°C下CTAC(大过量)与NaBH4混合后注入Na3RhCl6，30min–4h生长；另设KBr/PVP/乙二醇对照样为5nm颗粒。②CTAC胶束模板+Cl-面选择性钝化、极高表面活性剂/金属比与老化3周前驱体的缓释水解，抑制各向同性聚集、利于二维各向异性生长。③库内证据：KBr命中docs(output_53 Ru metallene、output_321)仅同试剂弱匹配，按规则仅说明对照颗粒非主产物形貌。④机理+半同系迁移预测纳米片，不确定性大。",
+   "confidence": "低"
+  },
+  {
+   "doi": "10.1038/s41467-025-58623-7",
+   "morphology_category": "纳米片阵列/异质结构/多孔",
+   "synthesis_process": "Ni 泡沫（2.5 cm×3.5 cm×1.5 mm）依次用丙酮、1 M 盐酸与乙醇各超声清洗 15 min 去除氧化物与有机残留；随后将 Ni 泡沫放入含 PVP（0.3000 g）、方酸（squaric acid，C4H2O4，2.5 mmol）、Fe(NO3)3·9H2O（0.5 mmol）与 30 mL 去离子水的溶液中（酸性环境原位刻蚀 NF 提供 Ni 源），转入 100 mL 聚四氟乙烯内胆不锈钢高压釜，120 °C 保持 6 h；去离子水冲洗、60 °C 真空干燥得到深绿色 NiFe-SQ/NF。最后在 1 M KOH 中进行电化学活化：三电极体系、CV 扫描范围 0–1.488 V（vs. RHE）、扫速 10 mV s−1、共 10 圈，得到重构产物 NiFe-SQ/NF-R。对照 NiFe-LDH/NF：改用 Ni(NO3)2·6H2O（1.0 mmol）、Fe(NO3)3·9H2O（0.5 mmol）、NH4F（2.5 mmol）、CO(NH2)2（6 mmol）与 30 mL 去离子水，常规水热法制备。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列/多孔",
+     "hit": true,
+     "f1": 0.8
+    },
+    "expert": {
+     "prediction": "纳米片/纳米棒阵列（NiFe-SQ 配位聚合物/NF）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①最终产物为NiFe-SQ/NF-R：方酸+Fe(NO3)3水热中酸刻蚀泡沫镍原位供Ni，生成NiFe-方酸配位框架，KOH中CV活化重构为(oxy)hydroxide。②酸刻蚀-配位沉淀路径与库doc output_3 高度对应；其标签Flake-like Structures/Flake-like Surface Morphology/Porous NiFe Framework可直接迁移，活化重构仍保片状多孔框架。③引用doc output_3形貌标签。④原文档级对应：纳米片/多孔。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1038/ncomms15113",
+   "morphology_category": "纳米片/薄膜",
+   "synthesis_process": "（1）CVD 生长连续 2H-MoS2：MoO3 与 S 粉分装于氧化铝舟，MoO3 置于管式炉中央 750°C，S 粉置于上游约 200°C，Ar 载气常压输运 S 蒸汽，SiO2/Si 晶圆为生长衬底，生长连续 MoS2；将 MoS2 转移至 Au(80 nm)/Ti(10 nm) 镀层 SiO2/Si 电极，依次在热丙酮（56°C，10 min）与氯仿（60°C，1 h）中清洗。（2）多晶 2H-MoS2 制备：将 (NH4)2MoS4 溶于 DMF（1.25 wt%），搅拌并超声溶解后浸涂于碳棒/碳泡沫，50°C 空气干燥；再于管式炉中 S 蒸汽/Ar 气氛、400°C、1 atm 热解 1 h 分解为多晶 MoS2。（3）电化学脱硫：三电极体系，0.5 M H2SO4 电解液（脱硫与 HER 同槽），单层样品用线性扫描伏安（50 mV/s）扫描至 −1.0 V vs RHE 生成硫空位（约 25% S 空位）；多层样品用计时电流法（每 60 s 一档）脱硫；脱硫后样品在 −0.32 V vs RHE 恒电位下测试稳定性。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "薄膜",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "单层/少层 MoS2 薄膜（连续膜或三角晶片）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "薄膜",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "薄膜",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为含S空位的MoS2：CVD在SiO2/Si上生长连续单层2H-MoS2并转移至Au/Ti电极；(NH4)2MoS4浸涂碳棒/碳泡沫后400°C硫蒸气热解得多晶MoS2涂层；电化学脱硫造约25%S空位。②CVD外延与浸涂热解均为表面覆盖式生长，产物为连续二维覆盖层而非分散颗粒；脱硫仅引入点缺陷，保形。③库内证据：MoO3/MoS4命中docs(output_1499纳米纤维阵列、output_525纳米棒)为不同方法弱同系，不采。④结论：薄膜。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1007/s40820-026-02238-0",
+   "morphology_category": "空心/棱柱",
+   "synthesis_process": "pre-Ni：将 PVP (4.5 g) 与 Ni(CH3COO)2·4H2O (2.1 g) 溶于 300 mL 无水乙醇（500 mL 圆底烧瓶、室温形成澄清绿色溶液），90 ℃ 回流连续磁力搅拌 5 h；产物离心、无水乙醇洗涤、60 ℃ 真空干燥过夜。pre-NiFe：20 mg pre-Ni 重新分散于 5 mL 乙醇（溶液 A）；30 mg K3[Fe(CN)6] 先溶于 5 mL 去离子水与 5 mL 乙醇（溶液 B）；A 与 B 混合后室温老化 24 h，黄色产物离心、乙醇洗涤、60 ℃ 真空干燥过夜。磷化：20 mg pre-NiFe 与 200 mg NaH2PO2 分置于瓷舟两端（NaH2PO2 位于管式炉上游），Ar 气氛下以 5 ℃/min 升温至 350 ℃ 保持 2 h，冷却收集 NiFeP（NaH2PO2 用量 0.1-2.0 g 系列优化，最优 0.2 g）。NixPy 用 pre-Ni 直接磷化制得；NiFeO 为 pre-NiFe 空气煅烧（不磷化）",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "多孔/纳米片",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒（NiFeP，继承前驱体小颗粒）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "立方块/多孔",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "立方块",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为NiFeP：PVP辅助乙醇回流制Ni前驱体，再与K3[Fe(CN)6]室温老化24h得NiFe-氰化物中间体，NaH2PO2于350°C Ar磷化。②PVP软模板抑制晶体各向同性长大，预-Ni作模板的表面转化与低温气固磷化为拓扑保形过程，阴离子交换产气形成孔隙；NiFe-P/LDH同系多为片状。③库内证据：doc output_364《NiFeP0.32 LDH》标签NiFe LDH Nanosheets；因果链种子节点标签nanosheets(score 1.0)，同属NiFe-OH/P体系可迁移。④结论：保形磷化→多孔纳米片。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1021/acsnanoscienceau.6c00016",
+   "morphology_category": "纳米簇/介孔架构",
+   "synthesis_process": "(1) GMS：以 MgO 为模板、CH4 为碳源经 CVD 沉积碳（2–3 层石墨烯）；所得碳包覆 MgO 用 5 M HCl 溶解去除 MgO 模板得碳海绵 (CMS)；CMS 在真空下 1800 °C 石墨化 1 h 得高互连 GMS。(2) 电极墨：5 mg GMS 分散于 950 μL 异丙醇/水 (1:1 v/v) + 50 μL Nafion 溶液，浓度 5 mg mL-1；取 1.42 μL 滴于抛光玻碳电极 (GCE)，55 °C 干燥作工作电极。(3) Ru 电沉积：电解液为 1 mM RuCl3（RuCl3·xH2O 溶于 0.1 M H2SO4），N2 吹扫 30 min；三电极体系（GMS/GCE 工作极、石墨棒对极、Ag/AgCl 3 M KCl 参比极），LSV 从 -0.5 至 0.4 V vs Ag/AgCl、20 mV s-1 扫描，循环 2/10/20/50/100/150 圈分别得 Ru2…Ru150；随后超纯水冲洗、55 °C 干燥 30 min。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米簇/三维网络",
+     "hit": true,
+     "f1": 0.5
+    },
+    "expert": {
+     "prediction": "三维多孔石墨烯网络（GMS 石墨烯海绵）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "三维网络/纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为Ru_x/GMS电极：MgO模板CVD沉积2–3层石墨烯，HCl脱模板+1800°C石墨化得高互连三维石墨烯海绵GMS，再于GMS/GCE上LSV循环2–150圈电沉积Ru。②三维互连石墨烯骨架保留模板反演的多孔宏观网络；稀RuCl3低圈数电沉积在碳表面成核尺寸小，呈亚纳米团簇弥散锚定。③库内证据：GMS命中doc output_619为机器学习论文，形貌标签无关不采；其余命中为试剂弱匹配。④机理主导：纳米簇负载于三维网络骨架→纳米簇/三维网络。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-018-07790-x",
+   "morphology_category": "纳米片阵列",
+   "synthesis_process": "①水热生长 ICLDH/NF：将 1 mmol 硝酸钴（cobalt nitrate）、5 mmol 尿素、0.25 mmol 氯化亚铁（ferrous chloride）与 2 mmol 氟化铵（NH4F）加入 28 mL 去离子水与 5 mL 乙醇的混合溶液，搅拌 30 min 后转入 50 mL 聚四氟乙烯内衬高压釜内，放入 2 cm×2 cm 镍泡沫，120 °C 反应 8 h，取出用去离子水充分洗涤，40 °C 真空干燥；②GDY 原位插层-剥离：将 ICLDH/NF 与若干铜箔（2.0×2.0 cm2）置于含丙酮/吡啶/四甲基乙二胺（TMEDA，体积比 100:5:1）的三颈烧瓶中，将 0.07 mmol 六乙炔基苯（HEB）溶于 50 mL 吡啶后缓慢加入，Ar 气氛下 50 °C 反应 25 h（Glaser-Hay 偶联在 LDH 层间原位生长 GDY 实现插层与剥离），产物依次以 2 M HCl、2 M NaOH、丙酮、DMF 和去离子水洗涤（依据全文 Methods）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米片（GDY 插层剥离的少层 LDH）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为GDY插层剥离的CoFe-ICLDH/NF：Co(NO3)2+FeCl2+尿素+NH4F在泡沫镍上120°C水热8h，再在LDH层间原位Glaser-Hay偶联HEB生长GDY实现插层剥离。②尿素缓释OH⁻+NH4F刻蚀驱动CoFe-LDH沿泡沫镍表面垂直取向生长，为经典LDH纳米片阵列；层间GDY插层扩层-剥离不改变片状阵列骨架。③库内证据：LDH命中doc output_69(NiFe-LDH/泡沫镍体系)仅方法弱同系；无原文档命中，因果链缺。④机理+同系：纳米片阵列。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.3390/nano15120883",
+   "morphology_category": "纳米片阵列",
+   "synthesis_process": "钴泡沫(2.5×1.0 cm)依次在无水乙醇超声 10 min、0.5 M H2SO4 超声 2 min 去除有机物与氧化层，水洗、乙醇洗、N2 吹干。CoOOH/CF 生长：洁净钴泡沫浸入 4.0 M NaOH 溶液超声 1 min，取出后用 N2 吹去表面溶液，转入玻璃瓶 80 ℃ 烘箱加热 12 h，表面生成 CoOOH，水/乙醇洗后 N2 吹干。磷化：将 1.0 g NaH2PO2·H2O 与 CoOOH/CF 分别置于石英管两只瓷舟（NaH2PO2 位于上游），Ar 吹扫 30 min，Ar 气氛下以 5 ℃/min 升温至 300 ℃ 保持 1 h，自然冷却得 CoP/CF。NiFeP 负载：将 CoP/CF 浸入含 0.05 M NiCl2 与 0.05 M FeCl3 的混合溶液后取出，80 ℃ 加热 4 h，反复浸渍-加热，再按相同条件磷化得 NiFeP-CoP/CF。对照样包括直接磷化钴泡沫(Co-P/CF)、单金属 FeP/NiP 掺杂及不同离子浓度系列",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米片阵列（CoP/CF，继承 CoOOH 片）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为NiFeP-CoP/CF：钴泡沫浸4M NaOH于80°C/12h表面生成CoOOH片层，NaH2PO2 300°C磷化得保形CoP，再浸渍NiCl2/FeCl3并二次磷化负载NiFeP。②碱刻蚀-氧化在泡沫表面外延生长CoOOH纳米片，磷化拓扑保形。③库内证据：doc output_77《Co(OH)2/NiPx Nanosheets》同为氢氧化物→磷化物异质结构筑法，标签纳米片；doc output_278 NiCoFeP@LDH亦磷化物/氢氧化物复合体系。④结论：纳米片阵列。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1039/d6ra02304e",
+   "morphology_category": "多孔/纳米片阵列/纳米颗粒",
+   "synthesis_process": "取 FeNi36 (Invar36) 合金片 (0.02 mm 厚)，裁剪为 1×2 cm，依次经丙酮、乙醇、去离子水各超声清洗 5 min；(1) 阳极氧化：以铂为对电极、间距约 2 cm，将洗净合金片浸入 100 mL 含 0.54 M NH4F 和 2.5 M H2O 的乙二醇电解液，10 V 恒电位阳极氧化 0.5/1.0/1.5 h（温和搅拌除气泡），得 FeNi-LDH0.5/1/1.5；(2) 硒化：将 Se 粉 (0.03–0.09 M) 与 0.07 M NaBH4 溶于 5 mL N2H4·H2O 与 50 mL 去离子水混合液，剧烈搅拌 60 min 至浅红色溶液；将 FeNi-LDH1 样品浸入该溶液，密封于 100 mL 特氟龙内衬高压釜 130 °C 反应 12 h；自然冷却后取出，去离子水充分洗涤去除残留硒物种与副产物，60 °C 烘箱干燥 1 h，得 FeNi-LDH1-Se03/Se05/Se07/Se09（按 Se 浓度命名）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列/多孔",
+     "hit": true,
+     "f1": 0.8
+    },
+    "expert": {
+     "prediction": "纳米孔/纳米片阵列（阳极氧化 FeNi-LDH 硒化）",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①最终产物为FeNi-LDH-Se：Invar36合金片在NH4F/乙二醇中10V阳极氧化0.5–1.5h得FeNi-LDH层，再以Se+NaBH4/水合肼130°C水热硒化。②氟化物辅助阳极氧化自组织形成多孔纳米阵列，LDH层状水滑石呈片状习性；水热硒化为转化反应，保形并增加孔隙。③库内证据：doc output_3节点FeNiF/NCF(同FeNi-LDH+NH4F体系)标签Flake-like Structures/Porous Framework，可半同系迁移。④结论：纳米片阵列/多孔；阳极氧化形貌细节不确定，置信低。",
+   "confidence": "低"
+  },
+  {
+   "doi": "10.1038/s41467-023-37091-x",
+   "morphology_category": "纳米棒阵列/纳米片阵列/核壳",
+   "synthesis_process": "①水热：将镍泡沫（2×3 cm2）浸入含 0.04 M Ni(NO3)2·6H2O 和 0.01 M (NH4)6Mo7O24·4H2O 的 15 mL 水溶液，转入 25 mL 聚四氟乙烯内衬高压釜，150 °C 保温 6 h，得 NiMoO4·H2O，去离子水与乙醇洗涤后 60 °C 干燥；②氨化：NiMoO4·H2O 在 NH3 气氛中按 5 °C/min 升温至 500 °C 保温 2 h，自然冷却得 Ni0.2Mo0.8N（NiMoN）；③电沉积：以 NiMoN 为工作电极、铂网为对电极、Ag/AgCl(饱和)为参比，在含 0.06 M Ni(NO3)2·6H2O 和 0.048 M Fe(NO3)3·9H2O 的水溶液中于 -1.0 V (vs. Ag/AgCl) 电沉积 200 s，得 NiMoN/NiFe LDH，水与乙醇冲洗后 60 °C 干燥，催化剂负载量约 15.8 mg cm-2（依据全文 Methods）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米棒阵列/核壳",
+     "hit": true,
+     "f1": 0.8
+    },
+    "expert": {
+     "prediction": "纳米线/纳米棒阵列（NiMoN）+ 表面 LDH 纳米片",
+     "hit": true,
+     "f1": 0.333
+    },
+    "no_kg": {
+     "prediction": "纳米线阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米棒阵列",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①最终产物NiMoN/NiFe LDH：泡沫镍上水热生长NiMoO4·H2O→NH3中500°C氮化得NiMoN→再电沉积NiFe LDH。②氮化为气相拓扑保形转变，继承NiMoO4形貌；NiFe LDH电沉积为共形薄壳，不改变阵列骨架。③库doc output_1329《Hierarchical Interconnected NiMoN…》形态标签：Hydrothermal NiMoO4 nanorods、Nanorod 1-3，与本条同体系同方法（水热NiMoO4→氮化NiMoN）直接对上。④NiMoN纳米棒阵列负载NiFe LDH壳层。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1002/smll.202504837",
+   "morphology_category": "纳米片/纳米棒",
+   "synthesis_process": "泡沫镍(1×4.5 cm2)依次用丙酮超声 20 min、3 M HCl、去离子水、乙醇各处理 3 次。将 Ni(NO3)2·6H2O (0.292 g)、Co(NO3)2·6H2O (0.146 g)、Ce(NO3)3·6H2O (0.065 g) 与尿素 (0.276 g) 溶于 70 mL 去离子水搅拌 1 h，与预处理泡沫镍转入 100 mL 内衬聚四氟乙烯不锈钢反应釜，160 ℃ 保持 14 h，产物用乙醇和纯水多次洗涤，60 ℃ 真空干燥 12 h 得 Ce0.10-NiCoO 前驱体。磷化：将 Ce0.10-NiCoO 置于管式炉下游、1.2 g 无水 NaH2PO2 置于上游，N2 气氛(20 sccm, 真空 24 Pa)下以 5 ℃/min 升温至 300 ℃ 保持 2 h，得 Ce0.10-NiCoP。Ce 掺量 0/0.05/0.15 对照样通过调整 Ce(NO3)3·6H2O 用量(0/0.033/0.098 g)同法制备",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米片阵列（Ce-NiCoP/NF，磷化保形）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物Ce0.10-NiCoP：泡沫镍上Ni/Co/Ce硝酸盐+尿素160°C水热得NiCoO前驱体，300°C NaH2PO2气相磷化。②尿素缓释OH-使LDH型前驱体沿NF垂直长成纳米片阵列；低温磷化为拓扑转变，片状保形保留，Ce掺杂不改骨架。③因果链score1.0：Ce-decorated NiFe LDH nanosheets array，Ce修饰氢氧化物纳米片阵列同构；doc output_75 NiCo-LDH/NiCoP同体系佐证。④产物为自支撑NiCoP纳米片阵列。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1039/d5na00350d",
+   "morphology_category": "微球/纳米片",
+   "synthesis_process": "（1）泡沫镍预处理：将泡沫镍 (5 × 5 cm²) 浸入无水乙醇超声清洗 30 min，再转入去离子水超声清洗，交替 3 次以去除表面氧化层与杂质；清洗后置于 60 ℃ 真空干燥箱干燥 24 h 以上。（2）水热合成 NiFe-LDH：以尿素和氟化铵为沉淀剂，控制 Fe 与 Ni 浓度比分别为 1:1、2:1、4:1 和 6:1。将 Ni(NO3)2·6H2O（用量原文未标明）与 0.8 mmol Fe(NO3)3·9H2O、16 mmol 尿素、8 mmol 氟化铵溶于 60 mL 去离子水，搅拌 40 min；处理后的泡沫镍放入高压反应釜，于恒温干燥箱中 120 ℃ 反应 16 h；冷却至室温后取出泡沫镍，用乙醇和去离子水至少冲洗 3 次，60 ℃ 干燥 8 h。按 Fe:Ni 浓度比将产物命名为 NiFe-LDH-1、NiFe-LDH-2、NiFe-LDH-4、NiFe-LDH-6（即 Fe:Ni = 1:1、1:2、1:4、1:6）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "垂直纳米片阵列（NiFe-LDH/NF）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物NiFe-LDH：尿素+NH4F为沉淀剂水热120°C在泡沫镍上直接生长NiFe-LDH。②尿素缓释OH-促层状LDH在NF上成核，NH4F刻蚀造成各向异性，得垂直互锁纳米片阵列；Fe:Ni比仅调片厚与密度。③库doc output_3（同NiFe-LDH组成）形态标签Flake-like Structures、Flake-like Surface Morphology，片状一致；doc output_1为Ni-Fe LDH节点。④产物为NiFe-LDH纳米片阵列。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1038/s41467-019-09666-0",
+   "morphology_category": "纳米片/单原子分散",
+   "synthesis_process": "①共沉淀制备 CoFe-LDHs：将 4 mmol Co(NO3)2·6H2O 与 2 mmol Fe(NO3)3·9H2O 溶于 40 mL 去离子水（溶液 A，Co:Fe=2:1），另配 3 mmol Na2CO3 与 21 mmol NaOH 的 40 mL 水溶液（溶液 B），两溶液同时滴加到 80 mL 去离子水中至 pH 8.5，室温搅拌 24 h，黄褐色沉淀离心收集，水与乙醇各洗涤 3 次，60 °C 常压干燥过夜；②水解-沉积单原子 Ru：将 5 mg RuCl3·xH2O 溶于含 0.01 M NaOH 的 40 mL 去离子水（0.6 mM 钌溶液），加入 0.5 g CoFe-LDHs，室温搅拌 12 h，灰色沉淀离心收集、水与乙醇洗涤，60 °C 真空干燥过夜得 Ru/CoFe-LDHs；不同 Ru 含量样品通过改变 RuCl3·xH2O 用量（2、4、10、15、20 mg）制得（依据全文 Methods）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/单原子",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米片（CoFe-LDH 片状花团）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物Ru/CoFe-LDHs：共沉淀（pH8.5）制CoFe-LDH，再在0.6 mM RuCl3+0.01 M NaOH中水解-沉积Ru。②共沉淀LDH层状本征二维，室温得六方纳米片聚集体；稀浓度弱碱水解使Ru以孤立位点锚定而非成核为颗粒。③库doc output_361形态标签NiFe LDHs nanosheets（同LDH族）；因果链Ni5Co3Mo-OH nanosheets（score1.0，氢氧化物纳米片）。④CoFe-LDH纳米片负载Ru单原子。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1038/s41467-024-51521-4",
+   "morphology_category": "纳米片阵列/花状",
+   "synthesis_process": "将 1.5 mm 厚 Ni 泡沫切割成 2 cm×2 cm 矩形片，依次用盐酸、丙酮、去离子水与乙醇各超声洗涤 10 min；将 0.5 mmol FcDA（二茂铁二甲酸，ferrocene dicarboxylic acid）溶于 8 mL DMF、0.5 mmol Ni(NO3)2·6H2O 溶于 4 mL 去离子水，两者混合后连同 Ni 泡沫一起转入 25 mL 聚四氟乙烯内胆高压反应釜，125 °C 保持 12 h；取出样品用乙醇与去离子水多次冲洗，60 °C 真空干燥 12 h，得到 FcNiOF/Ni 泡沫（负载量约 0.9 mg cm−2）。FcxNi1-xOF 系列（x = 0、0.3、0.5、0.7、1.0，即 Ni-MOF、Fc0.3Ni0.7OF、Fc0.5Ni0.5OF、Fc0.7Ni0.3OF、Fc-MOF）以不同 Ni/Fc 比例在相同条件下合成；大尺寸（9 cm×10 cm）电极可通过卷曲 Ni 泡沫放大制备。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米棒/纳米片阵列（FcNiOF MOF/NF）",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物FcNiOF：DMF/H2O中Ni(NO3)2与二茂铁二甲酸125°C溶剂热，在泡沫镍上原位生长Ni-二茂铁二甲酸有机骨架。②羧酸配体与Ni2+配位聚合沿NF骨架外延成膜，负载仅0.9 mg/cm²呈连续超薄片层，9×10 cm可卷曲放大说明柔性膜式涂层。③库doc output_197同用FcDA构筑FeNi羟基-有机骨架；半同系迁移：doc output_5溶剂热配位聚合物在3D金属基底呈Interconnected Nanosheet Morphology。④产物为纳米片阵列。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-018-04746-z",
+   "morphology_category": "纳米颗粒/多孔结构",
+   "synthesis_process": "以商用疏水镍泡沫为 Ni 源与基底、红磷粉为 P 源、Fe(NO3)3 为 Fe 源，在管式炉中进行 CVD 磷化：先将镍泡沫浸入 0.37 M Fe(NO3)3 水溶液，随后与上游布置的红磷粉一起在 Ar 气氛下 450 °C 磷化，原位转化为以 Ni2P 为主、少量 FeP（来自表面 Fe(NO3)3）的催化剂；Ar 保护下自然冷却后产物转亲水，再次浸入 Fe(NO3)3 溶液并进行第二次磷化以引入更多 FeP。对照样：不加 Fe(NO3)3 得到纯 Ni2P；用 0.37 M Ni(NO3)2 代替 Fe(NO3)3 得到 Ni2P*。通过改变 Fe(NO3)3 浓度（0.25/0.37/0.50 M）与 Ni(NO3)2 浓度（0.17/0.37/0.50 M）调控负载量（FeP 6.0/8.0/12.5 mg cm-2，Ni2P 3.0/7.5/10.5 mg cm-2），最优 FeP/Ni2P 负载约 8 mg cm-2。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒/多孔",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒/薄层（FeP/Ni2P 原位磷化于泡沫镍）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒/多孔",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物FeP/Ni2P：Ni泡沫既为Ni源又为基底，红磷CVD 450°C磷化整体转化为Ni2P，两次Fe(NO3)3浸渍-磷化引入FeP。②P蒸气沿泡沫韧带由表及里反应，产物保留三维泡沫骨架，表面颗粒化呈珊瑚状粗糙结构；FeP以纳米颗粒钉扎于Ni2P表面构成异质界面。③半同系迁移：库doc output_415《In situ growth of three-dimensional walnut-like…W-Ni2P@NiFe LDH/NF》核桃状/颗粒化Ni2P@NF，同为Ni2P-NF原位磷化；output_278为电沉积路线不采信。④多孔珊瑚状自支撑FeP纳米颗粒Ni2P异质结。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-021-24079-8",
+   "morphology_category": "纳米片/三维网络/单原子分散/核壳结构",
+   "synthesis_process": "（1）Ag NWs：油浴法，将乙二醇、FeCl3（7.19 mM）、AgNO3（0.051 M）和聚乙烯吡咯烷酮（0.012 M）混合溶液在 110 °C 油浴中保温 12 h，沉淀经丙酮和乙醇洗涤，再用喷涂法均匀分散到柔性织物上形成导电网络（负载量约 0.47 mg/cm2）。（2）NiO/Ni：以负载 Ag NWs 的织物为工作电极，在 20 mM 乙酸镍（C4H6NiO4·4H2O）水溶液中，以石墨片为对电极、饱和甘汞电极（SCE）为参比，恒电位计时电流法 −3 V（vs. SCE）沉积 200 s，得到均匀分布的 NiO/Ni（去离子水清洗、室温干燥）。（3）Pt 单原子：在含 50 μM H2PtCl6 的 1 M KOH 溶液中，以 NiO/Ni 电极进行多圈阴极极化（循环伏安，扫速 50 mV/s，0 至 −0.50 V vs. RHE，200 圈），将 Pt 单原子电化学还原并锚定于 NiO/Ni 异质界面。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米线/三维网络/单原子",
+     "hit": true,
+     "f1": 0.571
+    },
+    "expert": {
+     "prediction": "纳米线网络（Ag 纳米线）+ NiO/Ni 颗粒包覆",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米线/三维网络",
+     "hit": true,
+     "f1": 0.333
+    },
+    "plain_rag": {
+     "prediction": "纳米线",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物Pt SA/NiO/Ni/Ag NWs织物电极：多元醇油浴法合成Ag纳米线并喷涂成网络，电沉积NiO/Ni包覆，多圈阴极极化锚定Pt单原子。②PVP+FeCl3+乙二醇为经典五孪晶Ag纳米线配方，110°C/12 h产物即线状；50 μM稀H2PtCl6限域沉积使Pt保持单原子。③evidence compounds直书NWs；库doc output_80《电沉积普适制单原子催化剂》佐证Pt单原子锚定机制。④产物以Ag纳米线三维网络为骨架，负载NiO/Ni与Pt单原子。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1038/s41467-025-61763-5",
+   "morphology_category": "纳米颗粒",
+   "synthesis_process": "将 0.83 mmol RuCl3·xH2O 与各 0.055 mol 的 CoCl2·6H2O、NiCl2·6H2O、CuCl2·6H2O、MnCl2·4H2O、SmCl3·6H2O 溶液（Ru 与高熵元素 HEAE 摩尔比 3:1）与 1 M HCl 混合；加入 0.4 g 商业炭黑 BP2000，25 °C 搅拌分散一天，旋转蒸发收集前驱体。前驱体先在 Ar/H2 气氛 900 °C 煅烧 2 h，得到负载于炭黑上的 Ru3HEAE；再于空气中 450 °C 煅烧 3 h，将金属组分氧化为 Ru3HEAEOx 氧化物并同时烧除碳载体；最后取 0.1 g 粉末与 0.04 L 1 M HCl 于 25 °C 混合半日进行酸浸以除去不稳定氧化物，离心水洗多次并干燥，得到最终 RuO2-HEAE。纯 RuO2 与 RuO2-TM（TM = Co、Ni、Cu、Mn）采用类似方法以 RuCl3·xH2O 为前驱体制备。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒（高熵 RuO2-HEAE）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物RuO2-HEAE：氯盐浸渍BP2000炭黑→Ar/H2 900°C还原成Ru3HEAE合金→空气450°C烧碳并氧化→HCl酸浸除不稳定氧化物。②浸渍-还原在碳上生成合金纳米颗粒；烧碳移除模板，酸浸选择性溶解Co/Ni/Cu/Mn/Sm氧化物留下孔隙。③半同系迁移：库doc output_144碳载氯盐热解多金属纳米颗粒（同方法族）、output_184 Ru/RuO2体系。④高熵RuO2呈多孔纳米颗粒粉体。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.3390/nano15201559",
+   "morphology_category": "纳米纤维/异质结/花状微球",
+   "synthesis_process": "将 PAN (2.0 g) 溶于 20 mL DMF 室温搅拌 6 h，加入乙酸钴四水合物 (0.747 g) 继续搅拌 10 h；粉色溶液装入 20 mL 注射器，15 kV 电压、0.4 mL/h 流速、15 cm 接收距离静电纺丝（铝箔收集）；纤维先在空气中 220 ℃ 稳定化 5 h，再于 N2 气氛 700 ℃ 碳化并硫化 3 h（硫粉为硫源），得 Co9S8 嵌入碳纤维的 CS/CNF。水热生长：将 0.3 g CS/CNF 分散于 50 mL 去离子水，加入摩尔比 1:2 的 Ni(NO3)2·6H2O (1 mM) 与 Co(NO3)2·6H2O (2 mM)、硫脲 (4 mM)、NH4F (4 mM)，密封于内衬聚四氟乙烯反应釜 150 ℃ 保持 8 h；产物离心、水/乙醇各洗 6 次，80 ℃ 干燥过夜得 NCS/CS/CNF。纯 NiCo2S4 (NCS) 不加 CS/CNF 同条件水热制备",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米纤维/异质结",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米纤维（Co9S8@CNF）表面生长硫化物纳米片",
+     "hit": true,
+     "f1": 0.333
+    },
+    "no_kg": {
+     "prediction": "纳米纤维",
+     "hit": true,
+     "f1": 0.4
+    },
+    "plain_rag": {
+     "prediction": "纳米纤维",
+     "hit": true,
+     "f1": 0.4
+    }
+   },
+   "reason": "①最终产物NCS/CS/CNF：静电纺丝PAN/钴盐→220°C稳定化+700°C N2碳硫化得Co9S8@碳纳米纤维，再150°C水热生长NiCo2S4。②电纺纤维为骨架，硫脲缓释S2-与NH4F刻蚀使NiCo2S4沿纤维表面成片状壳层。③库doc output_396（Co9S8/CC）形态标签Nanofibers，同Co9S8碳基纤维直接对上；output_469之Co9S8 nanoparticles佐证纤维内Co9S8为纳米颗粒。④碳纳米纤维网络负载NiCo2S4纳米片异质结构。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1021/acs.chemmater.6c00346",
+   "morphology_category": "纳米片/纳米花/纳米针",
+   "synthesis_process": "以 Fe-NiOxHy/NF 为例：将 Ni(NO3)2·6H2O (2.0 mmol)、FeCl2·4H2O (0.5 mmol，替代 Fe(NO3)3)、NH4F (10.0 mmol)、尿素 (25.0 mmol) 溶于 40 mL 去离子水形成均相前驱体溶液；镍泡沫 (10×40 mm) 依次经丙酮、3 M HCl、乙醇超声清洗去表面污染物与氧化层，去离子水冲洗后浸入前驱体溶液，装入 45 mL 特氟龙内衬不锈钢高压釜密封，120 °C 水热 16 h——尿素热分解原位缓释 OH- 促进 Ni-Fe 羟基氧化物直接在镍基底上成核生长；自然冷却后取出，去离子水与乙醇充分洗涤，60 °C 干燥 2 h。其余 M (Mn/Co/Ni/Pd) 系以对应金属氯化物 (MnCl2·4H2O/CoCl2·6H2O/NiCl2·6H2O/PdCl2) 等摩尔替换 Fe 前驱体，尿素、NH4F 浓度、反应体积与条件保持一致。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "垂直纳米片阵列（Fe-NiOxHy/NF）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物M-NiOxHy/NF：Ni(NO3)2+MClx+NH4F+尿素120°C水热在泡沫镍上直接生长羟基(氧化物)。②尿素原位缓释OH-、NH4F刻蚀导向，使M-NiOxHy沿NF骨架垂直成核互锁；FeCl2等摩尔替换只改组成不改生长模式。③因果链Ni5Co3Mo-OH nanosheets（score1.0，缓释碱水热族氢氧化物纳米片）；PdCl2相关doc无同方法形貌不采信。④产物为自支撑M-NiOxHy纳米片阵列。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1126/sciadv.aee7510",
+   "morphology_category": "纳米片",
+   "synthesis_process": "(1) α-Fe2O3：将 1.01 mmol FeCl3·6H2O 溶于 10.0 mL 乙醇并剧烈搅拌，加入 0.7 mL 水；溶解完全后加入 9.76 mmol 醋酸钠，密封于 25 mL 特氟龙内衬不锈钢高压釜，180 °C 溶剂热结晶 12 h；冷却后去离子水多次洗涤、真空抽滤分离，60 °C 烘箱干燥过夜。(2) Ir 浸渍：将 0.62 mmol Fe2O3 分散于 20 mL 水超声 25 min；取一定量 H2IrCl6·xH2O 溶于另 20 mL 水，室温剧烈搅拌下注入 Fe2O3 悬浮液，反应 12 h；真空抽滤去除部分水，剩余样品 80 °C 干燥 12 h，空气 350 °C 煅烧 1 h。H2IrCl6 浓度 1.06/5.84/19.42 mM 分别得 2Ir/6Ir/12Ir-Fe2O3（ICP-OES 测定 Ir 含量 1.8/6.3/12.1%）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒（α-Fe2O3 溶剂热）表面 Ir 颗粒",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒/单原子",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为Ir修饰的α-Fe2O3（2/6/12Ir-Fe2O3）：FeCl3+醋酸钠在乙醇/水180℃溶剂热12h得α-Fe2O3，再H2IrCl6浸渍12h、350℃空气煅烧。②醋酸钠缓释碱控制水解成核，乙醇主导体系中形成分散细小的赤铁矿颗粒；浸渍+煅烧为保形后处理，Ir以氧化物物种锚定于颗粒表面，不改变载体形貌。③库doc output_374（Fe2O3标题命中《Ru, Ni-doped Fe2O3 lily》）形态标签含Nanoparticles，同Fe2O3体系半同系支持颗粒状。④结论：Ir/Fe2O3呈纳米颗粒。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/ncomms13638",
+   "morphology_category": "单原子分散/纳米簇",
+   "synthesis_process": "载体合成：石墨氧化物经改进 Hummers 法制得后，在 1050 ℃ Ar 气氛下快速热剥离得到石墨烯（GNs）；NGNs 通过在 900 ℃ 高纯 NH3 与 Ar 混合气氛中后处理 10 min 制得。Pt 沉积：采用 Savannah 100 ALD 系统（Cambridge Nanotechnology 公司），以 MeCpPtMe3 与 O2 为前驱体，高纯 N2（99.9995%）兼作吹扫气和载气；NGNs（或 GNs）置于反应腔室内，沉积温度 250 ℃，MeCpPtMe3 源瓶保持 65 ℃ 提供稳态前驱体通量，输气管线保持 100 ℃ 防止前驱体冷凝；每个 ALD 循环为 1 s MeCpPtMe3 脉冲与 5 s O2 脉冲，两者间以 20 s N2 吹扫分隔；通过调节 ALD 循环次数（如 50、100 次）精准控制 Pt 催化剂的尺寸、密度与分布。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒/纳米片",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "二维石墨烯纳米片 + 原子级 Pt 颗粒/岛",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒/纳米片",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒/纳米片",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为NGNs上ALD生长的Pt：GO快速热剥离得石墨烯，900℃ NH3氮化得NGNs，250℃ MeCpPtMe3/O2循环ALD沉积Pt（50/100圈）。②石墨烯为二维纳米片载体；ALD自限制反应使Pt在N缺陷位点择位成核，形成尺寸/密度由循环数控制的分散Pt团簇-纳米颗粒。③库doc output_356（NGNs fts命中）标签'Pt nanoparticles on carbon support'直接支持；output_325标签Graphene Nanosheets支持载体片状。④结论：Pt纳米颗粒负载于氮掺杂石墨烯纳米片。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1038/s41467-024-45654-9",
+   "morphology_category": "异质结/纳米颗粒",
+   "synthesis_process": "RuO2 合成：将 5 g NaNO3 在空气气氛烘箱中于 400 °C 加热 30 min 熔融，随后把 50 mg RuCl3 粉末倒入熔融 NaNO3 中并保持 400 °C 反应 10 min；冷却后的固体用水洗涤 3 次以除去 NaNO3，干燥过夜得到富晶界 RuO2。Pt 掺杂：将 50 mg 所得 RuO2 分散于 18 mL 水中，把溶于 2 mL 水的 7 mg PtCl4 在持续搅拌下逐滴加入上述溶液；形成均匀混合物后加热至 90 °C 并持续搅拌 16 h，使 Pt 物种吸附于 RuO2 表面；产物用水洗 3 次、离心收集，最后在 Ar 气氛下 450 °C 煅烧 2 h（升温速率 5 °C min−1），得到 Pt–Ru/RuO2（煅烧过程中 RuO2 部分还原形成 Ru/RuO2 异质界面）。对照样品 Ru/RuO2 除不添加 PtCl4 外采用相同方法制备。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "异质结/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒（富晶界 RuO2）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒/异质结",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物Pt–Ru/RuO2：RuCl3倒入400℃熔融NaNO3反应10 min得富晶界RuO2，PtCl4吸附90℃/16h后Ar 450℃煅烧使RuO2部分还原。②熔融盐瞬时氧化限制晶体长大，得到晶界丰富的细小RuO2颗粒；Ar煅烧表层还原出Ru构建Ru/RuO2异质界面，Pt掺杂促进界面形成。③库doc output_184（RuO2标题命中《hetero-interfaced Ru/RuO2 through Pt s…》）与本条同体系，形态标签Pt Nanoparticles。④结论：纳米颗粒+异质结+单原子。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1039/d5na00797f",
+   "morphology_category": "纳米颗粒/纳米纤维(一体化)",
+   "synthesis_process": "将聚丙烯腈 PAN (1.1 g)、Ni(NO3)2·6H2O (1.0 mmol) 和硫脲 (1.0 mmol) 溶于 10 mL DMF，混合液以 0.02 mL min-1 进料速率、15 kV 静电电压进行静电纺丝，收集浅蓝色前驱体；前驱体先在 N2 气氛 200 °C 预氧化 5 h（升温 2 °C min-1）得预处理片。路线一（二次碳化）：预处理纤维在 N2 气氛下 500/550/600/700/800 °C 各退火 2 h（2 °C min-1），得 NiS-500~800@CNFs；路线二（气相硫化）：将预处理纤维与硫脲（0/1/2 mmol）同置瓷舟、硫脲位于气流上游，N2 气氛 500 °C 硫化 1 h（2 °C min-1），得 NiS-0/1/2@CNFs。所有 NiSx@CNFs 样品直接作为自支撑工作电极用于 HER 测试。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米纤维/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米纤维（NiS@CNFs）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米纤维/三维网络",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "纳米纤维/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物NiSx@CNFs自支撑电极：PAN/Ni盐/硫脲/DMF静电纺丝成浅蓝纤维前驱体，200℃预氧化后N2下500–800℃二次碳化或气相硫化得NiS@CNFs。②静电纺丝定向一维成型，碳化/硫化保形，纤维形貌必然保留；Ni2+与硫脲原位反应，在纤维内分解形核为NiS纳米颗粒。③库doc output_66节点CoP/CNFs同属碳纳米纤维负载电催化体系（同CNF基底可迁移）；output_17标签含Fiber。④结论：碳纳米纤维（纳米纤维）内嵌NiS纳米颗粒。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1016/j.isci.2026.114714",
+   "morphology_category": "单层薄膜/纳米片",
+   "synthesis_process": "两步顺序合成：(I) CVD 生长 MoS2——采用三温区管式炉，以 SiO2(300 nm)/P++Si 为衬底；硫粉（Alfa Aesar，99.9%）置于 I 区、三氧化钼 MoO3（Alfa Aesar，99.999%）置于 II 区，两源间距 22 cm，衬底置于 III 区；MoO3、S 与衬底温度分别为 560、120 和 780 °C，生长前各温区稳定 20 min；以氩气为载气（130 sccm），真空压力保持 0.67 Torr。(II) 氮等离子体掺杂——将 MoS2 置于远程等离子体系统中，以氮气为等离子体源；等离子体点火功率 50 W、实验温度 50 °C、气体流量 70 sccm；在此条件下调节氮等离子体刻蚀时间（5/10/20 min）得到不同氮含量的氮掺杂 MoS2（10 min 为最优，N 含量约 8.15%）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "薄膜/纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "少层 MoS2 薄膜/晶片（CVD，N 掺杂保形）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "薄膜",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "薄膜",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为氮掺杂MoS2：三温区CVD以MoO3+S在SiO2/Si衬底780℃（Ar，0.67 Torr）生长MoS2，再50℃远程N2等离子体渗氮5–20 min。②CVD气相外延在平坦绝缘衬底上长成二维连续薄膜（单层/少层三角畴合并长大）；等离子体低温刻蚀掺杂不改形貌，只引入N缺陷。③库doc output_454（MoS2标题命中）为液相路线MoS2纳米颗粒，方法不同、形态不迁移；本条形貌由CVD-on-衬底机理判定。④结论：MoS2薄膜（二维纳米片畴）为最终形貌。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-021-23306-6",
+   "morphology_category": "单原子分散/纳米片",
+   "synthesis_process": "先滴铸 5 μL 均匀分散的化学剥离 TMDs（ce-MoS2、ce-WS2、ce-MoSe2 或 ce-WSe2）悬液于玻碳电极（GCE，直径 3 mm）制成工作电极；随后在 Ar 饱和的含 2 mM CuSO4 的 0.1 M H2SO4 溶液中于 +0.10 V（vs Ag/AgCl）电位下进行 Cu 欠电位沉积（UPD）；UPD 后电极迅速转移至 Ar 饱和的含 5 mM K2PtCl4 的 0.05 M H2SO4 溶液中，在开路电位下保持 20 min 以上，使 Cu 被 Pt(II) 完全电化学置换，形成原子级分散 Pt 装饰的 ce-TMDs（Pt-SAs/TMDs）。表面受限的 UPD 技术形成能量有利的金属-载体键并自动终止金属键的连续形成，实现 Pt 单原子自限制生长。ce-TMDs 的详细合成见补充方法（正文未展开）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/单原子",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "单层/少层 TMD 纳米片（化学剥离，Pt 单原子修饰）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "单原子/纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片/单原子",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物Pt-SAs/TMDs：化学剥离ce-MoS2/WS2/MoSe2/WSe2滴涂GCE，+0.10 V下Cu欠电位沉积，再开路被K2PtCl4完全电化学置换。②液相剥离得单层/少层二维TMD纳米片；UPD表面自限制（金属-载体键有利且自动终止）使Pt以孤立原子锚定于S空位/表面，不聚集成颗粒。③库doc output_1446（TMDs标题命中《Rolling 2D TMDs Nanosheets…》）标签Nanosheets，同TMDs族支持二维片状。④结论：Pt单原子/纳米片。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1021/acsami.5c11704",
+   "morphology_category": "空心微球",
+   "synthesis_process": "将 Fe(NO3)3·9H2O (5.252 g)、(NH4)6Mo7O24·4H2O (2.295 g)、Co(NO3)2·6H2O (3.783 g) 或 Ni(NO3)2·6H2O (3.78 g) 与 (NH4)2HPO4 (1.717 g) 按目标摩尔比 (Fe/Mo/(Ni或Co)/P = 0.5:0.5:0.5:0.5) 逐步溶解于 250 mL 0.4 M 柠檬酸溶液中（柠檬酸/金属/磷 总量 2:1:0.5 配比）；均质化后用蠕动泵（吸液速率 30%）吸入喷雾干燥器（TEFIC TFS-2L），进口空气温度 300 °C，旋风分离器风机转速 70% 收集干燥前驱体粉末；随后将前驱体置于还原气氛管式炉中，在 H2 气流 (66 mL min-1) 下于 650 °C 热处理得到磷化物 MoFeP、MoFeNiP、MoFeCoP。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "微球/空心",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "球形颗粒（喷雾干燥前驱体→磷化物微球）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "微球",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "微球/空心",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物MoFeP/MoFeNiP/MoFeCoP磷化物：硝酸盐+柠檬酸水溶液喷雾干燥（进口300℃）得前驱体粉，H2 650℃还原磷化。②喷雾干燥工艺必然产出球形二级团聚颗粒（微米级）；高配比柠檬酸络合及还原磷化过程释放气体，造出内部空心结构，磷化保形转化。③库内链chem_Ni5Co3Mo-OH nanosheets（Ni/Co/Mo元素同族）为水热氢氧化物体系、方法不符，仅查证不采；doc_693为泡沫镍阵列体系，亦不采。④结论：空心微球（球状二次颗粒）。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-024-46815-6",
+   "morphology_category": "多孔/纳米颗粒",
+   "synthesis_process": "将 TEOS（334 μL）溶于 30 mL 乙醇（C2H6O）配成 0.05 mmol mL−1 的 TEOS 溶液；把 68 mg（0.25 mmol Ru）干燥 RuCl3·xH2O 粉末溶于 1 mL 超纯水。随后将 500 µL TEOS 溶液与上述 RuCl3 溶液依次加入 1.5 g 粉末状阳离子交换树脂（CER）中，充分研磨 30 min；静置 2 h 后于 60 °C 干燥 8 h，再于常压空气中 450 °C 煅烧 8 h；炉冷后收集黑色产物，用 40 mL 去离子水于 80 °C 多次洗涤，60 °C 真空干燥，得到 Si-RuO2−0.1。Si-RuO2−0、−0.05、−0.2、−0.3 采用相同流程，仅改变 TEOS 溶液加入量（分别为 0、250、1000、1500 µL）。煅烧过程中 CER 起骨架防团聚与软模板造孔作用。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "多孔/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "多孔/介孔纳米颗粒（Si-RuO2）",
+     "hit": true,
+     "f1": 0.8
+    },
+    "no_kg": {
+     "prediction": "多孔/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "多孔/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物Si-RuO2：RuCl3溶液+TEOS与阳离子交换树脂（CER）粉末研磨复合，60℃干燥8h、空气450℃煅烧8h后水洗。②CER作硬骨架防止团聚并充当软模板，烧除后遗留连通孔隙；RuO2在树脂限域内成核为细小晶粒聚集体，TEOS引入Si掺杂进入晶格。③库doc output_9（CER节点命中）标签含Porous Aggregated Material、Nanoparticles，直接支持多孔颗粒聚集体；output_95的Hollow属溶解-再沉积中空机制，体系不符不采。④结论：多孔纳米颗粒聚集体。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-019-13092-7",
+   "morphology_category": "纳米棒/纳米颗粒/核壳结构/三维网络",
+   "synthesis_process": "（1）NiMoO4：将清洗后的泡沫镍（2×5 cm2）置于含 0.04 M Ni(NO3)2·6H2O 与 0.01 M (NH4)6Mo7O24·4H2O 的 50 mL 水溶液的 PPL 内衬不锈钢高压釜中，150 °C 水热 6 h，洗涤后 60 °C 真空干燥过夜。（2）NiMoN：NiMoO4/Ni foam（约 1 cm2）置于管式炉中部，500 °C 下以 120 sccm NH3 + 30 sccm Ar 热氮化 1 h，Ar 气氛自然冷却。（3）NiMoN@NiFeN：将 NiMoO4/Ni foam 浸泡于 NiFe 前驱体墨水（Ni(NO3)2·6H2O 与 Fe(NO3)3·9H2O 摩尔比 1:1 溶于 DMF），室温风干后在相同条件下热氮化，即得 NiFeN 包覆 NiMoN。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米棒/核壳",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米线阵列（NiMoN@NiFeN 核壳线）",
+     "hit": true,
+     "f1": 0.333
+    },
+    "no_kg": {
+     "prediction": "纳米线阵列/核壳",
+     "hit": true,
+     "f1": 0.333
+    },
+    "plain_rag": {
+     "prediction": "纳米线阵列/异质结",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物NiMoN@NiFeN：泡沫镍于Ni(NO3)2+钼酸铵水溶液150℃水热6h长NiMoO4，500℃ NH3/Ar氮化得NiMoN，再浸NiFe墨水同条件二次氮化包覆。②水热在NF上长成纳米棒阵列，氮化保形；外层NiFeN形成核壳包覆。③库doc output_6节点NiMoN@NiFeN，标签'NiMoO4 nanowire arrays on NF'；doc output_1329《Hierarchical Interconnected NiMoN》标签nanorods同证。④结论：核壳纳米棒阵列。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1039/d5ra04999g",
+   "morphology_category": "纳米颗粒/多孔碳层",
+   "synthesis_process": "将 Ni(NO3)2·6H2O (76 mg, 0.26 mmol) 与 Co(NO3)2·6H2O (76 mg, 0.26 mmol) 以及对苯二甲酸 H2BDC (83 mg, 0.5 mmol) 溶于 10 mL DMF 中连续搅拌 15 min 形成均相溶液；加入 NaOH (0.4 M, 1 mL) 后转移至 20 mL 特氟龙内衬高压釜，于 120 °C 烘箱中反应 15 h。自然冷却后收集 NiCoBDC MOF 粉末（约 80 mg），过滤并用甲醇多次洗涤，60 °C 空气烘箱干燥。取 1.2 g 已制备的 NiCoBDC MOF 置于坩埚舟中，在 Vulcan 炉中于空气气氛 450 °C 碳化 2 h（升温速率 2 °C min-1），获得约 0.350 g 的 Ni/Co 氧化物掺杂碳 (NCC) 产物。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "多孔/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米棒/纳米片（NiCoBDC MOF 衍生 NCC）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片/多孔",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "多孔/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物NCC（Ni/Co氧化物掺杂碳）：NiCo-BDC MOF（DMF+NaOH、120℃溶剂热15h）于空气450℃碳化2h。②煅烧烧失有机配体、金属氧化，MOF通常坍缩为氧化物纳米颗粒并弥散于残余碳中，形成多孔聚集体，母体晶体外形仅部分保留。③库doc output_186（NCC节点命中）标签Nanoparticles/NiCluster支持颗粒弥散；链chem_Ni5Co3Mo-OH nanosheets为水热氢氧化物体系、方法不符，不采。④结论：多孔碳基体中弥散Ni/Co氧化物纳米颗粒。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1002/adma.202512658",
+   "morphology_category": "纳米片/多孔",
+   "synthesis_process": "木片先在去离子水中 80 ℃ 预处理 10 h，再于 NaClO2/CH3COOH 溶液 75 ℃ 脱木质素 2 h。预处理木片真空浸渍 Ni(NO3)2·6H2O 溶液(0.14 mmol/mL) 8 h，随后 Ar 气氛 800 ℃ 碳化得 Ni/CW。将 Ni/CW 浸入含 Na2MoO4 (400 mg) 与 Fe(NO3)3·9H2O (298 mg) 的水溶液，溶剂热 180 ℃ 处理 8 h，洗涤干燥后于 H2/Ar (5% H2) 气氛 450 ℃ 退火得 Ni3Fe/MoO2/CW。对照样：不加 Na2MoO4 得 Ni3Fe/CW；以 Na2MoO4 替代 Ni 盐得 MoO2/CW；未处理木片直接 800 ℃ 碳化得 CW；RuO2/C/CW、Pt/C/CW 以 Nafion 粘结剂负载商业催化剂制得",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "多孔/纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "三维多孔碳（木材通道模板）+ 表面纳米颗粒",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "多孔/三维网络",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "多孔/纳米颗粒",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①最终产物为碳化木上Ni3Fe/MoO2：Ni/CW经Na2MoO4+Fe(NO3)3于180℃溶剂热8h生长Fe-Mo物种，H2/Ar 450℃还原退火。②钼酸盐水/溶剂热在碳基底上优先生长垂直薄片，还原退火仅相变不改变形貌。③库doc output_258（Na2MoO4节点）形态标签：Ni-Mo Nanoflakes on Carbon Textiles、Ni-Mo Nanoflowers——同Na2MoO4体系+碳基底→纳米片；因果链chem_Ni5Co3Mo-OH（Ni-Mo-OH族nanosheets）佐证。④预测Ni3Fe/MoO2呈纳米片阵列锚定于碳化木孔道壁。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1039/d5sc01249j",
+   "morphology_category": "纳米颗粒",
+   "synthesis_process": "室温三电极体系电合成：工作电极为 HCl (1.0 M) 预处理的泡沫镍(1×1 cm2)，对电极为铂片，参比电极为 Ag/AgCl。电解液含 NiCl2·6H2O (0.05 M)、CoCl2·6H2O (0.05 M)、FeCl3·6H2O (0.05 M)、CH3COONa (0.2 M, pH 约 4.5-5.5 缓冲) 与 NaCl (0.1 M 支持电解质)；加入绿色磷源 NaH2PO2·H2O (0.2 M) 后搅拌 2 h（金属离子总摩尔浓度低于磷源）。电合成采用双阴极电位脉冲：成核脉冲 -1.5 V (0.3 s) + 生长脉冲 -0.75 V (0.3 s)，重复 200 个循环（约 2 min），负载量约 2 mg/cm2，得非晶 NCFP 催化剂（NCFP2 与 NCFP1 为不同脉冲参数的系列样）",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "非晶颗粒膜（双阴极脉冲电沉积 NCFP）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "薄膜",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "非晶/纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为泡沫镍上非晶Ni-Co-Fe-P（NCFP）：双阴极脉冲电合成（成核-1.5V/0.3s+生长-0.75V/0.3s×200循环，约2min），次磷酸盐磷化。②高过电位成核脉冲产生高密度晶核，短生长脉冲抑制各向异性定向生长，无模板、无缓释剂→等轴细颗粒紧密堆叠涂层；快速非平衡沉积伴磷析出→非晶态。③库doc output_80（fts FeCl3）《Electrochemical deposition as a universal route for fabricating single-atom catalysts》同属电沉积路线（组成不同，仅方法可迁移）。④预测：纳米颗粒。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1021/acsami.6c00103",
+   "morphology_category": "纳米颗粒/纳米管(管状碳封装)",
+   "synthesis_process": "(1) g-C3N4 前驱体：将三聚氰胺在马弗炉中 550 °C 热解 4 h（升温 5 °C min-1）得黄色 g-C3N4。(2) 浸渍：将 SnCl2·2H2O (0.265 g, 1.4 mmol) 与 FeCl3·6H2O (0.76 g, 2.8 mmol) 溶于 50 mL 乙醇，加入 2 g g-C3N4 与 1 g 硫脲 (CH4N2S)，50 °C 搅拌 16 h 使金属离子与硫脲配位并充分吸附于 g-C3N4 表面；蒸发溶剂得干燥粉末。(3) 热解：将干燥前驱体在 N2 气氛下分别于 750/850/950 °C 热解 2 h（升温 5 °C min-1），得 S、N 共掺杂催化剂 SnFe/SNC_750/850/950；最优 SnFe/SNC_850 用于 AEMFC 阴极验证。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/纳米颗粒",
+     "hit": true,
+     "f1": 0.5
+    },
+    "expert": {
+     "prediction": "二维片层 g-C3N4 负载 SnFe 纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒/纳米片",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "纳米片/纳米颗粒",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①最终产物为S,N共掺碳载Sn-Fe催化剂SnFe/SNC：三聚氰胺550℃热聚成g-C3N4，乙醇中浸渍SnCl2/FeCl3+硫脲配位吸附，N2下850℃热解2h。②g-C3N4二维片层作模板与N源，金属-硫脲配合物锚定层间限域，热解中C3N4分解形成S,N掺杂薄碳并将Sn/Fe锁定，抑制团聚。③库doc output_80（fts FeCl3）限域分散制催化剂路线可参考；无同体系文档，Ga-S Polyhedron组成方法均不符不采信。④预测：纳米颗粒/纳米片。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.3390/molecules29153591",
+   "morphology_category": "纳米片",
+   "synthesis_process": "泡沫镍(3×1×0.1 cm3)经 1.0 M HCl 超声 15 min 除杂、去离子水与乙醇各洗 10 min、真空干燥 8 h。依次向 100 mL 烧杯中加入 15.0 mL 去离子水、NH4VO3 (0.18 g)、(NH4)2MoO4 (0.15 g)、CoCl2·6H2O (0.18 g)、NaOH (0.90 g)、CH4N2O (1.00 g)，浸入处理后的泡沫镍，超声 5 min 后加入 (NH4)2S2O8 (1.00 g)；25 ℃ 搅拌 12 h 后，将溶液与泡沫镍转入 25 mL 内衬聚四氟乙烯不锈钢反应釜，150 ℃ 保持 10 h；产物依次用去离子水与乙醇洗涤，60 ℃ 真空干燥 10 h 得 VMoCoCOx@NF。对照样 VCoCOx@NF、VMoCOx@NF 同条件制备",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米片/纳米花（VMoCoCOx/NF 阵列）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为泡沫镍上VMoCoCOx：浓NaOH+尿素+(NH4)2S2O8室温氧化沉淀12h，150℃水热10h。②强碱均相沉淀+尿素缓释利于层状Co基羟基/碳酸盐沿NF骨架垂直生长为超薄片阵列，过硫酸铵氧化促成CoOOH型层板。③因果链chem_Ni5Co3Mo-OH→Ni-Co-Mo羟基nanosheets grown on nickel foam，同Co-Mo羟基族+NF基底+水热法，迁移性强；库doc output_6（fts MoO4）NiMoO4 nanowire arrays on NF为二组成钼酸盐相，参考性次之。④预测：纳米片。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-024-47409-y",
+   "morphology_category": "纳米颗粒",
+   "synthesis_process": "将化学计量比的 Co(NO3)2 与 Mn(NO3)2 溶解于超纯水/乙酸混合溶液（体积比 75:25，总金属浓度 0.6 M）中；将溶液以 20 mL min−1 流量泵送至喷嘴并由火焰燃烧（分散用 O2 35 L min−1、助燃 O2 17 L min−1、乙炔 13 L min−1），收集火焰喷雾热解粉末，随后在马弗炉中 500 °C 退火 4 h 以消除次相，得到 CoxMn1-xOy 系列（x = 1、0.9、0.67、0.5、0.33、0.1、0）。Co-CeO2（Co(NO3)2 + Ce(NO3)3，Co/Ce 摩尔比 5:95，FSS 后即为结晶 CeO2 相，无需退火）、FeCo2O4（Fe/Co = 33:67）与 CoCr2O4（Cr/Co = 67:33）采用类似流程合成。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒（火焰喷雾热解 FSS 初级粒子）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为CoxMn1-xOy尖晶石系列（及Co-CeO2、FeCo2O4、CoCr2O4）：硝酸盐水/乙酸溶液火焰喷雾热解（乙炔焰裂解），500℃退火4h除次相。②液滴在焰中微爆蒸发、气相成核-聚结-烧结，无模板、无基底取向约束，FSP必然产出近球形纳米颗粒团聚体；退火仅晶化不改形貌。③库内无火焰热解同法文档：doc output_630（FeCo2O4 node水热纳米针）、output_33（电沉积）方法均不匹配，依规不采信；因果链（LDH nanosheets）亦不迁移。④预测：纳米颗粒。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1038/s41467-026-70731-6",
+   "morphology_category": "异质结构/多孔",
+   "synthesis_process": "Co2N0.67：原始钴泡沫浸入乙酸溶液 10 s，室温(约 25 ℃)空气干燥 15 h，表面自发形成均匀醋酸钴膜（金属 Co 与乙酸反应，随后热退火或干燥分解为氧化钴）；干燥后转入管式炉，Ar 保护气与高纯 NH3 为氮源，以 5 ℃/min 升温至 360 ℃ 保持 2 h，得 Co2N0.67 支撑体。Co2N0.67/CoP：以 Co2N0.67 泡沫为导电支撑，浸入钴前驱体墨水数秒（0.5 g Co(NO3)2·6H2O 溶于 5 mL 乙醇），室温空气干燥 15 h；随后管式炉热磷化——50 mg 红磷置于上游(390 ℃)、样品置于下游(400 ℃)，Ar 气氛下以 10 ℃/min 升温，自然冷却得 Co2N0.67/CoP 混杂催化剂。纯 CoP 直接以原始钴泡沫同法磷化制备",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "核壳/多孔",
+     "hit": true,
+     "f1": 0.5
+    },
+    "expert": {
+     "prediction": "纳米片/粗糙薄层（Co2N0.67 氮化层 + CoP 层）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "薄膜/多孔",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "薄膜/多孔",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①最终产物为钴泡沫自支撑Co2N0.67/CoP：乙酸浸10s成醋酸钴膜→NH3/Ar 360℃氮化得Co2N0.67→Co(NO3)2浸渍+红磷390/400℃气相磷化。②乙酸膜-氮化-磷化为逐层固相保形转化：Co泡沫骨架为核，表面依次生成Co2N0.67、CoP壳层，三维多孔骨架宏观保留。③库内无同法文档：output_879（Co-V体系Nanofibers）、output_5（Ti毡磷化物互连纳米片）组成或方法不符不采信；机理指向保形壳层+泡沫骨架。④预测：多孔/核壳。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1021/jacs.7b03507",
+   "morphology_category": "纳米片阵列",
+   "synthesis_process": "NF 预处理：乙醇/丙酮（1:1）超声清洗 30 min，3 M HCl 超声 15 min 去氧化层，水与乙醇各洗两次后干燥。合成 Co1Mn1CH/NF：将 2 mmol 乙酸钴四水合物、2 mmol 乙酸锰四水合物与 250 mg 六次甲基四胺溶解于乙二醇（13 mL）与乙醇（14 mL）混合溶剂中，连续搅拌 30 min 至澄清；转移至 50 mL 特氟龙内衬不锈钢高压釜，放入预处理 NF（2 cm×4 cm），170 °C 保持 8 h，自然冷却至室温；产物以乙醇洗三次、空气中干燥过夜，催化剂负载量约 5.6 mg cm-2。控制样 CoCH、Co1.5Mn0.5CH、Co0.5Mn1.5CH、MnCO3 通过调节 Co/Mn 投料比（金属前驱体总量恒为 4 mmol）按同样方法制备",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米片阵列（CoMnCH/NF 碳酸盐氢氧化物）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为NF上Co1Mn1CH碳酸羟基盐：乙酸钴/锰+HMTA于EG/乙醇170℃溶剂热8h。②HMTA缓释OH⁻/CO3²⁻，层状碱式碳酸钴锰沿NF骨架二维生长为超薄纳米片阵列；EG醇热体系利于2D生长。③库doc output_79（HCl节点）形态标签：cobalt hydroxide nanosheet on nickel foam、Intertwined Nanosheet/Nanowire Morphology——同钴羟基族+NF碱性生长，迁移性强；因果链chem_Ni5Co3Mo-OH nanosheets（三元羟基盐）佐证；output_430为铁钨酸盐综述，组成/方法不符不采信。④预测：纳米片阵列。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-025-59933-6",
+   "morphology_category": "纳米片/多孔/异质结构",
+   "synthesis_process": "将 1.00 g (NH4)6Mo7O24·4H2O、0.10 g PVP 与 0.10 g NH4F 溶于 30 mL 去离子水形成无色溶液；将预清洗的 Ni 泡沫（1.5×2.5 cm）浸泡于无色溶液中，于 25 °C 振荡 2 h（腐蚀策略，PVP 作配体），形成白绿色悬浮液；随后将悬浮液与 Ni 泡沫转入反应釜，150 °C 水热反应 6 h；取出 Ni 泡沫用去离子水与乙醇洗涤，25 °C 真空干燥 12 h；所得前驱体在 H2/Ar（5:95）气氛下 500 °C 煅烧 2 h，得到 Int-Ni/MoO2（催化剂负载量 6.38 ± 0.37 mg cm−2，层间物负载 2.46 ± 0.15 mg cm−2）。对照中间层样品 I/NF 采用相同方法但不进行水热步骤。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/花状",
+     "hit": true,
+     "f1": 0.4
+    },
+    "expert": {
+     "prediction": "纳米片/纳米线（Int-Ni/MoO2 阵列）",
+     "hit": true,
+     "f1": 0.4
+    },
+    "no_kg": {
+     "prediction": "纳米棒阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为Int-Ni/MoO2：Mo7O24+PVP+NH4F室温腐蚀NF 2h，150℃水热6h，H2/Ar 500℃煅烧。②F⁻/钼酸盐对NF腐蚀-再沉淀，水热生长NiMoO4基前驱体阵列，H2/Ar还原保形分解为Ni/MoO2层间键合结构。③库doc output_34（MoO2 title命中）《Interlayer-bonded Ni/MoO2 electrocatalyst…》含H2/Ar atmosphere标签，与本品同产物同气氛，形态标签：Flower-like hierarchical nanostructure。④预测：纳米片/花状。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1002/advs.202511806",
+   "morphology_category": "单原子/纳米管",
+   "synthesis_process": "将金属 Co 粉、Ni 粉、PtO2 粉与石墨粉混合并填充入定制中空石墨棒作为 DCAD 腔阳极，纯石墨棒作阴极；在腔体内触发稳定电弧（核心温度高达约 6000 K，淬火速率约 166 K ms-1），阳极瞬间蒸发：Co 和 Ni 蒸发温度最低、扩散最快，先蒸发并扩散冷凝至冷却壁形成 CoNi 合金；随后原子化的 Pt 迁移至冷却壁被先前形成的 CoNi 合金捕获；在 CoNi 合金催化下蒸发碳原子生长为碳管（顶端生长机制）。单批次约 30 min 至阳极烧尽，从壁面收集冷凝产物得到 CoNiPtSA@G（克级产率，Pt 利用率 72.15%，成本约 4.6 美元 g-1）。对比样 Pt@G（无 Co/Ni）、CoPt@G、NiPt@G、CoNi@G 按相同流程制备。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米管/纳米颗粒/单原子",
+     "hit": true,
+     "f1": 0.8
+    },
+    "expert": {
+     "prediction": "碳纳米管 + 合金颗粒复合（电弧法）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米管/纳米颗粒",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "纳米管/纳米颗粒/单原子",
+     "hit": true,
+     "f1": 0.8
+    }
+   },
+   "reason": "①最终产物为CoNiPtSA@G：中空石墨阳极填Co/Ni/PtO2/石墨粉，DC电弧放电（~6000K，骤冷166K/ms）壁面冷凝收集。②合成明示顶端生长机制：Co/Ni先蒸发冷凝成CoNi合金纳米颗粒，Pt原子化后被合金捕获成单原子，碳在CoNi催化下长成碳管。③产物名CoNiPtSA与碳管生长描述直接给出单原子+纳米管+合金颗粒；库doc output_362（CoNi title）FeCoNi合金nanoparticles、output_4 Platinum Nanoparticles佐证颗粒形态。④预测：纳米管/单原子/纳米颗粒。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1038/s41467-020-19214-w",
+   "morphology_category": "纳米棒/纳米片/三维网络/异质结",
+   "synthesis_process": "（1）水热：将 0.07 M Ni(NO3)2·6H2O、0.01 M (NH4)Mo7O24·4H2O 与 0.30 M 硫脲溶于 15 mL 去离子水，室温搅拌 10 min 后转入含泡沫镍的 25 mL 聚四氟乙烯内衬不锈钢高压釜，200 °C 水热 24 h，洗涤后 60 °C 烘箱干燥得 NiMoS 前驱体。（2）氧化处理：前驱体在氧气流下经射频（RF）等离子体辐照（RF 功率 50–150 W）进行氧化。（3）氢化退火：随后在 H2/Ar（0.05/0.95）气氛、300–500 °C 退火，通过氧化/氢化诱导的表面重构策略得到 NiMoOx/NiMoS 异质结构。对照组 NiOx/Ni3S2 与 MoOx/MoS2省去相应金属盐前驱体、程序相同。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米棒/异质结",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米花/纳米片（NiMoOx/NiMoS 异质阵列）",
+     "hit": true,
+     "f1": 0.333
+    },
+    "no_kg": {
+     "prediction": "纳米片/异质结",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米片/异质结",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为NF上NiMoOx/NiMoS异质结构：Ni(NO3)2+Mo7O24+硫脲200℃水热24h得NiMoS前驱体，O2射频等离子体氧化+H2/Ar 300-500℃退火表面重构。②硫脲硫源+NF自供镍水热长Ni(Mo)S阵列，等离子体氧化/氢化仅重构表面、保形。③库doc output_693（fts Mo7O24）《Engineering active sites on hierarchical…heterostructure array》形态标签：NiMoOx/NiMoS heterostructure array——与本品同产物；doc output_525（Ni3S2 title）coaxial Ni3S2@CoMoS4 nanorods示同NF+硫脲硫化体系呈纳米棒。④预测：纳米棒/异质结。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1186/s40543-024-00466-w",
+   "morphology_category": "多孔/纳米颗粒",
+   "synthesis_process": "配制电解液：1 M Na2MoO4·2H2O 与 0.1 M Na2S·xH2O 溶于 20 mL Milli-Q 水中，磁力搅拌 30 min 并维持 65–70 °C；采用三电极体系（Cu 箔为工作电极、Pt 网为对电极、饱和 KCl-Ag/AgCl 为参比电极），在 -0.9、-1.0、-1.1、-1.2 V 恒电位沉积 200 s，分别得到 FNMoS2、SSMoS2、HPMoS2、LPMoS2；沉积完成后用去离子水清洗电极去除残余电解液，滴加 1:1 的 Nafion 与乙醇混合液改善附着力，室温干燥过夜。电沉积过程中 [MoS4]2- 先氧化生成 MoS3 再还原沉积为 MoS2，遵循 Scharifker-Hills 三维瞬时/渐进成核模型",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "多孔/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒膜（电沉积 MoS2，三维成核）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "薄膜",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "薄膜/纳米颗粒",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①最终产物为 Cu 箔上电沉积 MoS2（-0.9~-1.2 V 恒电位 200 s，四样品）。②[MoS4]2- 经 MoS3 还原沉积，Scharifker-Hills 三维成核下晶核半球状密排生长，短时沉积成致密薄层；电位越负成核密度越高、颗粒越细、表面转疏松。③库证据：doc output_525 同为 MoS4 电沉积路线（标签 Electrodeposition）；doc output_200（Na2MoO4 命中）标签 Nanoparticles，支持 Mo 系电沉积颗粒堆积成层。④预测“多孔/纳米颗粒”。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-021-24828-9",
+   "morphology_category": "纳米片阵列",
+   "synthesis_process": "电沉积液含 0.12 M Ni(NO3)2·6H2O、0.12 M Fe(NO3)3·9H2O、0.001 M Al(NO3)3·9H2O 与 0.01–0.06 M RuCl3·xH2O；以镍泡沫为工作电极，在 -1.0 V (vs. Ag/AgCl) 恒电位电沉积一定时间，得到 Ru 单原子稳定的 NiFeAl LDH 前驱体（Ru1/NiFeAl LDH）；随后将负载于镍泡沫上的前驱体浸入 5 M NaOH 溶液并持续搅拌刻蚀（12、24、36 h），碱性刻蚀选择性溶出 Al 并引入缺陷，得 Ru1/D-NiFe LDH。对照样品：Ru1/NiFe LDH（同法但不刻蚀）、NiFe LDH（不加 RuCl3 且不刻蚀）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列/多孔",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米片（Ru1/D-NiFe LDH，多孔缺陷片）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列/单原子",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列/多孔",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为泡沫镍上 Ru 单原子稳定缺陷 NiFe LDH（电沉积 NiFeAl LDH，再 5 M NaOH 刻蚀溶出 Al）。②LDH 在泡沫镍上垂直/交联生长为片状层；碱刻蚀选择性溶 Al 保形，引入缺陷孔隙、片状骨架保留。③库证据：doc output_722 节点 NiFeAl DH 标签 Green flake-like structure（同组成直接命中）；doc output_3 同 NiFe-LDH+刻蚀体系，标签 Flake-like/Porous NiFe Framework。④预测“纳米片阵列/多孔”，高置信。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.3390/molecules30040844",
+   "morphology_category": "纳米花",
+   "synthesis_process": "将 3 mmol 硝酸钴（或硝酸铁）溶于 50 mL 去离子水搅拌 30 min，随后依次加入 3 mmol 钼酸钠与 5 mmol 尿素，继续搅拌 30 min 至完全溶解；碳纸基底(1×1 cm, TGP-H-060)浸入溶液再搅拌 40 min；混合物转入 100 mL 内衬聚四氟乙烯不锈钢反应釜，140 ℃ 水热 12 h，缓慢冷却后取出碳纸复合材料，75 ℃ 恒温干燥至恒重得 CoMoO@CP。FeMoO@CP 以 3 mmol 硝酸铁替代硝酸钴同法制备；Co/Fe 比 2:8-8:2 系列（总金属 3 mmol）命名为 CoxFe10-xMoO@CP（如 Co2Fe8MoO@CP），表征前以超声分散分离活性组分",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米花",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米线/纳米片阵列（CoMoO/FeMoO@CP）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为碳纸上水热生长的 CoMoO（硝酸盐+钼酸钠+尿素 140 °C 12 h）。②尿素缓释 OH-/CO3²⁻ 均相沉淀，Co-Mo-O 各向异性长成薄片并自组装；Fe 取代仅调组成不改路径。③库证据：doc output_567 直接命中 CoMoO，标签 NiCoMoO nano-sheet precursors（同组成纳米片）；因果链 chem_Ni5Co3Mo-OH --produces--> nanosheets；半同系迁移 doc output_258 Ni-Mo Nanoflowers（同 Mo 水热族）。④预测“纳米花状”。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-018-04501-4",
+   "morphology_category": "纳米花/纳米片",
+   "synthesis_process": "（1）溶剂热法制备 MoS2：0.5213 g (NH4)6Mo7O24·4H2O 与 1.035 g 硫脲（CH4N2S）溶于 30 mL 水，超声 1 h 形成均一溶液，转入 50 mL 聚四氟乙烯内衬不锈钢高压釜，180°C 反应 24 h；冷却后离心（去离子水洗涤 4 次），50°C 干燥 12 h。（2）Pd 原子界面掺杂：40 mg MoS2 粉体分散于 30 mL 水中超声 1 h，加入 Pd(OAc)2 前驱液（对照用 H2PtCl6、H2AuCl4），60°C 加热 12 h，经抽滤与去离子水透析得到产物；Pd 经自发界面氧化还原取代 Mo 位点（约 1 wt%），同时引入 S 空位并稳定 1T 相。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米花/纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米花/纳米片（MoS2，Pd 界面掺杂保形）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米花",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米花/纳米片",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为溶剂热 MoS2 及 Pd 界面掺杂 MoS2（钼酸铵+硫脲 180 °C 24 h；Pd(OAc)2 60 °C 取代 Mo 位点并引 S 空位）。②硫脲缓释 S²⁻，MoS2 沿 (002) 各向异性生长为弯曲纳米片并自组装成花状微球；低温取代保形不改花貌。③库证据：doc output_258 节点 CH4N2S 同 Ni/Mo+硫脲体系标签 Ni-Mo Nanoflowers/Nanoflakes（同试剂同体系强迁移）；doc output_454 同 MoS2 体系。④预测“纳米花/纳米片”，高置信。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1039/d5ra09363e",
+   "morphology_category": "纳米颗粒/纳米片",
+   "synthesis_process": "（1）rGO 制备：氧化石墨烯（GO）由改良 Hummers 法合成；1 g GO 分散于 100 mL 去离子水超声分散，逐滴加入 10 mL 水合肼（99%），100 °C 回流 24 h 还原；产物用去离子水多次洗涤至中性，乙醇洗涤，60 °C 真空干燥 24 h 得 rGO。（2）对照 CeO2 制备：2 g Ce(NO3)3·6H2O 溶于 20 mL 水超声 1 h；逐滴加入 20 mL 淀粉溶液，再加 5 M NaOH 调 pH 至 10；搅拌 4 h 至均一，转入 100 mL 高压釜 120 °C 水热 3 天（72 h）；冷却后沉淀用蒸馏水洗涤，700 °C 煅烧 3 h，乙醇清洗后 60 °C 热风干燥 6 h，得黄色 ceria。（3）CeO2/rGO 复合：50 mg rGO 加入 50 mL 去离子水超声 30 min；加入 15 mL 硝酸铈溶液搅拌 2 h；再加入 20 mL 淀粉溶液与 5 M NaOH 调 pH 10；乙醇洗涤后转入不锈钢聚四氟乙烯反应釜 100 °C 水热 48 h；沉淀依次用蒸馏水、乙醇洗涤，空气烘箱 60 °C 干燥 6 h 得 CeO2/rGO。（4）电极制备：泡沫镍（1 cm²）依次用 HCl、乙醇清洗；将 80 wt% 活性材料（CeO2、rGO 或 CeO2/rGO）与 10% 炭黑、10% PVDF 研磨成粉，加 NMP 调成浆料，涂覆于泡沫镍，80 °C 烘干过夜。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒/纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒/纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒/纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒/纳米片",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为 CeO2/rGO 复合（肼还原 rGO；Ce 盐+淀粉水热 120 °C 72 h、700 °C 煅烧制 CeO2，100 °C 水热复合）。②肼还原保留 rGO 二维片层；CeO2 萤石结构各向同性、淀粉软模板作用弱，CeO2 以颗粒锚定 rGO。③库证据：因果链 chem_CeNiFe_CuO --produces--> Ce-decorated nanosheets array（同 Ce 体系）；doc output_1342（CeO2 命中）标签 Ce 颗粒。④rGO 片为骨架、CeO2 颗粒负载，预测“纳米片/纳米颗粒”。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.20517/energymater.2024.134",
+   "morphology_category": "核壳/微球",
+   "synthesis_process": "将 PVP (200 mg) 超声 20 min 分散于蒸馏水中，加入钼酸铵 (NH4)6Mo7O24·4H2O (50 mg) 溶解，再加入硫酸镍 NiSO4·6H2O 与硫脲 CH4N2S 溶解；混合液转入 30 mL 聚四氟乙烯内衬不锈钢反应釜，180 °C 水热反应 12 h；冷却后离心收集，去离子水和乙醇各洗涤 4 次，50 °C 真空干燥 15 h；最后于惰性气氛下 600 °C 煅烧 2 h，PVP 转化为 N 掺杂碳（NC），得到 NiS@MoS2/NCx。系列样品通过改变钼前驱体 (NH4)6Mo7O24·4H2O 用量（x = 25/50/75/100 mg）调控组成与性能。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "核壳/微球",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米花/片（NiS@MoS2）碳包覆（NC）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "花状/微球",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①最终产物为 NiS@MoS2/NC（PVP+钼酸铵+NiSO4+硫脲 180 °C 水热 12 h；600 °C 煅烧 PVP→N 掺杂碳）。②NiS 先成核、MoS2 沿其表面各向异性包覆生长；硫脲体系纳米片弯曲包裹成聚集体，煅烧保形并生成多孔碳壳。③库证据：doc output_258 节点 CH4N2S 同 Ni+Mo+硫脲水热体系标签 Ni-Mo Nanoflakes（同元素族+同试剂半同系迁移）。④预测“核壳/纳米微球”。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/ncomms15437",
+   "morphology_category": "立方块/纳米颗粒/多孔结构",
+   "synthesis_process": "（1）前驱体：依次用乙醇、1 M HCl 与去离子水清洗商业泡沫镍，将一块泡沫镍（约 1×3 cm2）浸入含 0.04 M Ni(NO3)2·6H2O 与 0.01 M (NH4)6Mo7O24·4H2O 的 15 mL 水的聚四氟乙烯高压釜中，150 °C 干燥烘箱中水热 6 h，洗涤后在泡沫镍上得到 NiMoO4。（2）退火：将所得 NiMoO4 在 H2/Ar（4:96）气氛、500 °C 加热 2 h，通过控制镍原子向外扩散使前驱体转化，得到锚定于 MoO2 上的 MoNi4 电催化剂。纯 Ni、MoO2 及碳布负载对照组通过更换前驱体/衬底、程序相同制得。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米线阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米线阵列（MoNi4/MoO2，继承 NiMoO4）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米棒阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米线阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为泡沫镍上 MoNi4/MoO2（150 °C 水热 6 h 制 NF 上 NiMoO4 前驱体；H2/Ar 500 °C 退火 2 h）。②NiMoO4 在泡沫镍上各向异性长成一维纳米棒/线阵列；退火经 Ni 外扩散保形转化，一维骨架阵列保留，MoNi4 锚定于 MoO2。③库证据：doc output_34《Interlayer-bonded Ni/MoO2…》同 MoO2+H2/Ar 体系标签 Rod-like morphology（同方法同气氛）；doc output_789 直接命中 MoNi4。④预测“纳米棒阵列/纳米线”，高置信。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1038/s41467-024-54601-7",
+   "morphology_category": "纳米片/多孔/气凝胶",
+   "synthesis_process": "将 10 mg Pd(acac)2 与 8 mg W(CO)6 加入 10 mL 乙酸（CH3COOH）中超声分散；通入 CO 气流鼓泡 10 min 后加热至 50 °C，1 h 后瓶底形成 Pd 凝胶（Pdene gels，CO 介导凝胶化）。随后加入 10 mL DMF，于 160 °C 保持 16 h，利用 DMF 受热分解产生的氢原子原位插入 Pd 晶格，得到 β-PdHene 凝胶（α-PdHene 为 120 °C、混合相为 140 °C 处理）。凝胶经纯化后采用超临界 CO2 干燥得到整体式 β-PdHene。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "气凝胶/三维网络/多孔",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "超薄纳米片网络/多孔凝胶（β-PdHene 整体式）",
+     "hit": true,
+     "f1": 0.8
+    },
+    "no_kg": {
+     "prediction": "气凝胶/三维网络",
+     "hit": true,
+     "f1": 0.4
+    },
+    "plain_rag": {
+     "prediction": "气凝胶",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①最终产物为 β-PdHene 整体式凝胶（CO 介导凝胶化：Pd(acac)2+W(CO)6/乙酸 50 °C 成胶；DMF 160 °C 原位氢插入；超临界 CO2 干燥）。②CO 桥连 Pd 胶体粒子凝胶化为连续三维骨架，超临界干燥消除弯月面收缩、保留联通孔道，氢插入不改骨架连通性，得金属气凝胶。③库内 doc_hits 均为 DMF 溶剂弱相关，chains/precedents 为空，无组成或方法吻合先例，不采信，仅依机理。④预测“气凝胶/三维网络/多孔”，高置信。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1039/d4ra02712d",
+   "morphology_category": "微球/纳米片",
+   "synthesis_process": "两步法合成：(1) 先制备 CoMo-LDH 前驱体（具体前驱体与条件见 ESI，正文未详述）；(2) 在管式炉石英管中对 CoMo-LDH 前驱体同时进行磷酸化与硫化处理（phosphating and vulcanizing），考察 450/550/650 °C 三个温度，550 °C 所得样品结晶性最好；全程在石英管式炉中真空（低真空度导致少量氧掺入）下进行。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/多孔",
+     "hit": true,
+     "f1": 0.5
+    },
+    "expert": {
+     "prediction": "纳米片/纳米棒（磷化硫化 CoMo-LDH 衍生）",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "纳米片/多孔",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为 CoMo-LDH 前驱体磷硫化所得 CoMo(P,S)（管式炉 550 °C 最佳）。②LDH 层状氢氧化物前驱体惯态为二维纳米片；磷硫化阴离子置换保形，产气与氧掺入致片层多孔。③库证据：doc output_2《NiCoMo Hydroxide Nanosheet Arrays…》同 CoMo 氢氧化物体系，标签 nanosheets/Porous Morphology（同组成迁移）；因果链 chem_Ni5Co3Mo-OH --produces--> nanosheets。④预测“纳米片/多孔”，中置信（前驱体细节缺失）。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1021/acsomega.5c12581",
+   "morphology_category": "纳米片",
+   "synthesis_process": "将 NiCl2·6H2O 与 RuCl3 按 3:1 摩尔比溶解于 10 mL 蒸馏水；另取 4 mL 甲酰胺加入 16 mL 蒸馏水作为阴离子源兼层间距调节剂；将盐溶液逐滴加入甲酰胺溶液，同时滴加 0.5 M NaOH 维持 pH 9–10；反应温度分别设为 20、50、80 °C，各搅拌 2 h，产物标记为 NiRu-LDH-20/50/80；冷却至室温后离心收集，用乙醇和蒸馏水反复洗涤，真空烘箱 60 °C 干燥 12 h。对照样品 RuO2-50 采用相同方法（50 °C、无 Ni2+）合成。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米片（NiRu-LDH，甲酰胺调层间距）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为 NiRu-LDH（NiCl2:RuCl3=3:1，甲酰胺作阴离子源兼层间距调节剂，NaOH 维 pH9-10，20-80 °C 共沉淀 2 h）。②LDH 水镁石层板二维结晶习性：共沉淀均匀成核，晶粒以六方纳米片生长并团聚；甲酰胺插层扩大层间距使片更薄；粉末产物无基底故不成阵列。③库证据：半同系迁移库内 LDH 家族先例 Porous Hollow NiFe LDH（doc output_3，同 LDH 二维片层；其空心源于腐蚀法，不迁移）；doc output_69 同 LDH 体系佐证。④预测“纳米片”，高置信。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1039/d4ra02680b",
+   "morphology_category": "纳米颗粒",
+   "synthesis_process": "按化学计量比将金属乙酸盐或硝酸盐溶于超纯水中，加入柠檬酸和丙烯酰胺（柠檬酸:丙烯酰胺:总金属阳离子摩尔比 = 1.5:4:1），剧烈搅拌 1 h 形成溶胶；溶胶转入 80 ℃ 油浴蒸发水分形成凝胶；凝胶依次在 150 ℃ 加热 6 h、400 ℃ 煅烧 3 h、750 ℃ 煅烧 3 h，得到 La(CrMnFeCoNi)0.2O3。Sr 掺杂系列 La1−xSrx(CrMnFeCoNi)0.2O3（x = 0.1、0.3、0.5、0.7、0.9）采用相同流程，仅额外加入一定量硝酸锶。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒/多孔团聚体（高熵钙钛矿）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为高熵钙钛矿 La(CrMnFeCoNi)0.2O3：柠檬酸/丙烯酰胺凝胶，150/400/750℃ 分段煅烧。②凝胶络合缓释金属离子，煅烧中配体分解大量产气，中温成相形成纳米颗粒团聚的多孔框架，无各向异性生长驱动力。③半同系迁移：doc output_120（fts 命中 CrMnFeCoNi，高熵电催化体系）标签含 nanoparticles，doc output_91（node CrMnFeCoNiCuZn）标签 MgO nanoparticles，同高熵/同元素族均呈纳米颗粒。④预测纳米颗粒，置信中。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41467-024-49015-4",
+   "morphology_category": "纳米颗粒/负载型",
+   "synthesis_process": "碳纸预处理：依次在 1 M HNO3 与去离子水中超声洗涤各 15 min 以去除杂质并提高亲水性。将 0.2448 g 乙酸镍（99 wt%，Alfa Aesar）与 0.2300 g 硫代乙酰胺（99 wt%，Alfa Aesar）溶于 35 mL 去离子水，搅拌后将混合液转入 50 mL 高压反应釜，并放入一片碳纸（0.5×1.5 cm²）；在烘箱中 120 °C 水热生长 12 h；自然冷却至室温后取出样品，去离子水洗涤，室温真空干燥，得到 NiS/碳纸电极。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米片/纳米线（NiS/碳纸阵列）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为碳纸上原位水热生长的 NiS：乙酸镍+硫代乙酰胺 120℃ 水热 12 h。②TAA 缓释 S²⁻ 降低过饱和度，NiS 于碳纤维表面择优二维成核生长为薄片并直立排布成阵列；无模板、无强螯合剂，利于片层堆叠。③库 doc output_3（node 命中 NiS）形貌标签 Flake-like Structures / Flake-like Surface Morphology；doc output_17（title 命中 NiS）同为碳纤维骨架基底负载，佐证原位生长模式。④预测碳纸表面纳米片阵列，置信中。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1039/d5na01130b",
+   "morphology_category": "纳米颗粒",
+   "synthesis_process": "将 0.4 M Co(NO3)2 与 NH4VO3 溶于 100 mL 去离子水，90 °C 持续搅拌 45 min 保证均一；加入适量沉淀剂 NaOH 调节 pH 至约 11 促使沉淀形成；对于 PEG/PAA 掺杂样品，在调 pH 前将预定量的 PEG (3 wt%) 与 PAA (2/4 wt%) 掺入 Co(NO3)2/NH4VO3 溶液；所得沉淀以 8000 rpm 离心 8 min，去离子水充分洗涤除杂，150 °C 干燥 12 h，研磨得细粉。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒/纳米片聚集体（Co-V 氧化物沉淀）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为 Co-V 钒酸盐/羟基盐粉体：Co(NO3)2 与 NH4VO3 于 pH≈11 共沉淀，掺 PEG/PAA，150℃ 干燥研磨。②碱性共沉淀生成层状 Co-V 羟基/钒酸盐相，PEG/PAA 螯合与空间位阻抑制三维团聚，利于各向异性薄片生长。③因果链 chem_Ni5Co3Mo-OH（score 1.0）末端 morph=nanosheets，同为碱沉淀过渡金属-OH 体系，半同系迁移；doc output_504（node 命中 PAA）标签 nanoparticles 。④预测纳米颗粒，置信中。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1002/open.202500137",
+   "morphology_category": "多孔/纳米颗粒",
+   "synthesis_process": "（1）按化学计量比（燃料比 φ = 1）称取 Ni(NO3)2·6H2O（金属硝酸盐前驱体）与甘氨酸 (C2H5NO2)（燃料），溶于去离子水并搅拌 15 min 至视觉均一的溶液；（2）在加热板上持续加热搅拌浓缩成粘稠凝胶；（3）继续加热至 200 °C 以上，凝胶膨胀并达到着火温度后自燃（前驱体分解产物 HNO3 与 NH3 之间发生气相放热反应），生成黑色粉末；（4）用手动研钵研磨即得 NiO/Ni 催化剂（无需额外煅烧）。（5）电极制备：5 mg 催化剂与 300 μL 异丙醇、30 μL 5 wt% Nafion 溶液混合，控温超声 30 min 分散；取 3 μL 墨水滴涂于 5 mm 玻碳盘电极（RDE），250 rpm 旋转室温干燥 1.5 h。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "多孔/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "多孔蓬松片状网络（燃烧合成 NiO/Ni）",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "泡沫状/多孔",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "多孔/纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为 NiO/Ni 复合粉体：硝酸盐-甘氨酸燃烧合成（燃料比 φ=1），200℃ 以上自燃成黑色粉末后仅研磨。②HNO3 与 NH3 气相放热燃烧瞬时成核并大量放气，产物蓬松多孔；无模板、无定向生长助剂，NiO/Ni 以细小团簇/颗粒聚集体存在。③库 doc output_189（node 命中 HNO3）形貌标签直接含 NiS₂ particles——同 NiO 产物呈颗粒状，组成对应。④预测纳米颗粒/多孔，置信中。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41598-024-66775-7",
+   "morphology_category": "纳米颗粒",
+   "synthesis_process": "第一步制备 Sm 掺杂 Ni(OH)2：将 NiSO4·6H2O（2.037 g，约 7.75 mmol）与 Sm(NO3)3·6H2O（0.101 g，对应 3% mol Sm）溶于 155 mL 去离子水配成前驱体溶液，缓慢滴加 15 mL 1.0 M NaOH 溶液作沉淀剂；混合液转入 230 mL 聚四氟乙烯内衬不锈钢高压釜，110 °C 保温 12 h；所得 Sm-doped Ni(OH)2 沉淀用去离子水多次洗涤，空气中自然干燥。第二步气相-固相磷化（VSR）：Sm-doped Ni(OH)2 粉末与 NaH2PO2·H2O 按摩尔比 1:5 置于管式炉中，350 °C 加热 2 h，冷却后即得 Sm-doped Ni2P；纯 Ni2P 按相同流程但不加 Sm 前驱体制备。电极制备：催化剂 10 mg 分散于 200 µL 去离子水 + 750 µL 乙醇 + 50 µL 5 wt% PVDF（NMP 溶解）中，超声 30 min 成均匀油墨，滴涂于预处理（水洗、砂纸打磨、6.0 M HCl 刻蚀）的钛片（20×10×1 mm）上室温晾干。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米片/纳米花（Sm 掺杂 Ni2P，继承 Ni(OH)2）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为 Sm-Ni2P 粉体：水热沉淀 Sm-Ni(OH)2 后与 NaH2PO2 于 350℃ 气相磷化（VSR）。②低温气相磷化近保形转化，形貌继承水热氢氧化物前驱体（板片/颗粒），PH3 释放伴轻微孔化。③doc output_415（title Ni2P）标签 Nanoparticles/Nanofibrous spheres，doc output_761（VSR fts）标签 Nanoparticles——同 Ni2P 同路线均呈纳米颗粒；先例 Ni-Mo Nanoflowers 不符弃用。④预测纳米颗粒，置信中。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1039/d4ra02344g",
+   "morphology_category": "纳米片/多孔",
+   "synthesis_process": "LDH（2.2）：Ni(NO3)2·6H2O（0.15 mmol, 0.043 g）、Co(NO3)2·6H2O（0.12 mmol, 0.035 g）、Fe(NO3)2·9H2O（0.03 mmol, 0.012 g）溶于 20 mL 去离子水，加入油胺（0.5 mL）与乙醇（20 mL）组成的混合溶剂（溶剂体系 1），搅拌 30 min 以上；转入 50 mL 聚四氟乙烯内衬不锈钢高压釜，以 2 °C/min 升温至 180 °C 保温 12 h；冷却后离心，乙醇与超纯水多次洗涤，80 °C 真空干燥过夜得 NiCoFeLDH PNSs。对照 NiCoFeLDH-W PNSs 将溶剂体系 1 换成溶剂体系 2（尿素与 NH4F 按摩尔比 1:2 溶于 20 mL 去离子水）。空气煅烧（2.3）：LDH 置于管式炉瓷舟，5 °C/min 升至 350 °C 保温 2 h，得 NiCoFeOx(-W) PNSs。磷化（2.4）：NiCoFeOx 与 NaH2PO2 按 1:10 质量比分别置于瓷舟两端（NaH2PO2 上游，N2 流量 5 sccm），5 °C/min 升至 350 °C 保温 2 h，冷却收集黑色 NiCoFePx(-W) PNSs。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/多孔",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "超薄纳米片（NiCoFe PNSs，溶剂热 LDH）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米片/多孔",
+     "hit": true,
+     "f1": 1.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片/多孔",
+     "hit": true,
+     "f1": 1.0
+    }
+   },
+   "reason": "①最终产物为 NiCoFePx 多孔纳米片（PNSs）：油胺/乙醇溶剂热 180℃ 得 NiCoFe-LDH 片，350℃ 煅烧成 NiCoFeOx，再 NaH2PO2 磷化。②溶剂热自组装定向生成超薄 LDH 纳米片，煅烧与低温磷化均为保形（假晶）转化，形貌逐级继承，磷化产气致孔。③因果链 chem_Ni5Co3Mo-OH（score 1.0）→ nanosheets，同 LDH/-OH 家族半同系迁移；产品命名 PNSs 即 porous nanosheets，为最强直接证据。④预测纳米片/多孔，置信高。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.3390/nano14221849",
+   "morphology_category": "纳米纤维/纳米颗粒/多孔",
+   "synthesis_process": "前驱体溶液：8 g PAN 溶于 52 g DMF，60 °C 机械搅拌 12 h；植酸（50 wt% 水溶液，先用旋蒸蒸发除去全部水）2.56 g 与 Co(NO3)2·6H2O 1.6 g 溶于 16 g DMF，室温机械搅拌 12 h；两溶液混合均匀后静电纺丝（NF-103 机型）：流速 2.2–2.5 mL/h，电压 29 kV，收集辊转速 300 rpm，针尖-收集距离 14.5 cm，三支 21 号不锈钢针头，约 21 °C、相对湿度约 45%；纺丝 6–14 h 得到不同厚度的纤维膜。热处理两步：先在空气气氛 280 °C 稳定化 1.5 h（升温 1 °C/min，PAN 交联成耐热梯形结构），再于 Ar 气氛 1000 °C 碳化 1 或 2 h（升温 5 °C/min）；高温下 Co-PA 的 P–O 键被碳还原断裂，释放的 P 掺入 Co 晶格形成 Co2P。样品命名 Co2P@1h(160)、Co2P@2h(120)、Co2P@2h(140)、Co2P@2h(165)（括号为膜厚 µm）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米纤维",
+     "hit": true,
+     "f1": 0.5
+    },
+    "expert": {
+     "prediction": "纳米纤维（Co2P@碳纤维，电纺）",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "纳米纤维",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "纳米纤维",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①最终产物为 Co2P@碳复合纤维膜：PAN+植酸+Co(NO3)2 静电纺丝，280℃ 空气稳定化、1000℃ Ar 碳化，P–O 键被碳还原原位生成 Co2P。②静电纺丝决定一维纤维形貌，稳定化交联与碳化保形，Co2P 锚定于碳纤维内。③doc output_144（fts 命中 CoCl2）标签 PAN nanofibers、PAN nanofiber preparation and carbonization、Carbon nanofiber substrate——同 PAN 纺丝+碳化方法直接对应。④预测纳米纤维，置信高。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1002/cssc.202401586",
+   "morphology_category": "纳米颗粒/空心",
+   "synthesis_process": "全部合成于严格无水无氧 Ar（>99.9999%）气氛下进行（Schlenk 线/手套箱）。Ni 前驱体 Ni(acac)2 与 P 源 TOP 溶于油胺（OAm），用加热套程序升温：第一步 220 °C 先生成前驱体，再分别于 350 °C（Ni2P）或 300 °C（Ni12P5）进一步反应结晶（配比 Table 2：Ni12P5 为 Ni(acac)2 7.8 mmol/TOP 15.6 mmol/OAm 78.8 mmol；Ni2P 为 7.8/23.4/78.8 mmol；NixPy 为 7.8/46.8/46.8 mmol，220 °C 一步合成、TOP 过量）。产物经化学清洗（溶剂沉淀-再分散）去除表面配体；NixPy 进一步于 400 °C 分别在空气、Ar、5% H2/Ar 三种气氛退火 4 h，得 NixPy-air（Ni3P）、NixPy-Ar、NixPy-H2/Ar。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米颗粒/短棒（Ni2P/Ni12P5 热注射）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为胶体 Ni2P/Ni12P5/NixPy（NixPy 另经 400℃ 退火）：Ni(acac)2+TOP 溶于油胺，300–350℃ 热解结晶，去配体。②胶体高温成核-生长无模板无基底，经典单分散纳米颗粒，退火仅调相。③doc output_175（title TOP）标签 Nanoparticle/Alloy Nanoparticle——同 TOP 高温有机相路线强迁移；doc output_415（title Ni2P）Nanoparticles 同产物佐证；output_136 纳米线属电沉积体系弃用。④预测纳米颗粒，置信高。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1039/d5na00213c",
+   "morphology_category": "纳米颗粒/微球/多孔",
+   "synthesis_process": "碳基底 MT：桑树皮水洗、日光晾干除水、研磨过 75 µm 筛，取筛分粉末于石英管式炉中 N2 气氛 1000 °C 热解碳化；产物依次用 0.1 N HCl、水、乙醇洗涤并热风干燥，得碳球（标记 MT）。MT/CoPB：20 mL 去离子水烧杯中按碳-金属质量比 C:M=1:1、2:1、3:1 加入 MT 与 CoCl2·6H2O；加入 NaH2PO2·H2O（温和还原剂兼磷源）与 NaBH4（强还原剂兼硼源），搅拌 10 min；NaBH4 加入引发冒泡并生成黑色沉淀，继续搅拌至气泡停止；产物用蒸馏水与乙醇充分洗涤。为保证完全还原，NaH2PO2 与 NaBH4 对 Co 的总摩尔比保持 5:1；B/P 比通过调节两者摩尔浓度优化。对照样 CoB、CoPB（不加 MT）以及 MT/CoB（不加 NaH2PO2）同法合成。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "微球/纳米颗粒/多孔",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "碳球（MT）+ 无定形 Co-B/P 纳米颗粒",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "微球/纳米颗粒",
+     "hit": true,
+     "f1": 0.8
+    },
+    "plain_rag": {
+     "prediction": "微球/纳米颗粒",
+     "hit": true,
+     "f1": 0.8
+    }
+   },
+   "reason": "①最终产物为碳球负载 Co-B-P（MT/CoPB）：桑树皮 1000℃ 热解得碳球 MT，CoCl2 经 NaH2PO2+NaBH4 室温还原沉积。②NaBH4 室温还原沉淀快、无退火，Co-B-P 呈非晶纳米颗粒锚定于碳微球表面。③doc output_144（fts CoCl2）标签 nanoparticles+carbon substrate，同钴盐+碳基底半同系；doc output_5（title CoB）电沉积纳米片，方法不符弃用；先例 CuPd nanocubes、链 Ni5Co3Mo-OH 皆弃用。④预测非晶纳米颗粒/碳微球/多孔，置信中。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1021/acsaem.5c02096",
+   "morphology_category": "花状（分级结构）",
+   "synthesis_process": "电解液：20 mM (CH3COO)2Co·4H2O + 5 mM Na2SeO3（支持电解质 0.1 M KCl），用少量浓 HCl 调 pH 至 2.3 以保证试剂溶解。基底：直径 3 mm 玻碳电极（GCE），1 µm 金刚石悬液抛光、去离子水冲洗、超声 1 min、气流吹干。三电极体系：抛光 GCE 为工作电极、大面积 Pt 对电极、Ag/AgCl 参比电极。最优沉积条件为固定电位 −1.2 V (vs Ag/AgCl) 沉积 400 s；该负电位下同时发生析氢反应（电流信号可见气泡噪声）；沉积后去离子水充分冲洗，得 EDC@GCE。对照：仅含 Co2+（20 mM 醋酸钴+0.1 M KCl）或仅含 Se4+（5 mM Na2SeO3+0.1 M KCl）的电解液电沉积。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米枝晶/多孔",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒膜（电沉积 CoSe）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "薄膜/多孔",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "薄膜",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为玻碳上电沉积 Co-Se（EDC@GCE）：−1.2 V 沉积 400 s，伴随明显析氢电流噪声。②阴极共还原与 HER 同步，氢气泡动态模板顶开沉积层成枝晶化多孔网络，扩散限制生长促进枝晶。③doc output_1263（node Na2SeO3）标签 3D hierarchical dendritic nanoforest-like Ni3Se2、microspheres——同 Se 源硒化物族枝晶状，半同系迁移；doc output_766（fts Na2SeO3）Nanofibers 次级参考。④预测纳米枝晶/多孔，置信中。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1038/s41598-025-18442-8",
+   "morphology_category": "微球球/纳米颗粒/多孔",
+   "synthesis_process": "Ni0.85Se（O1）：NiCl2·6H2O（0.607 g）与硒粉（0.237 g）溶于 60 mL 乙二醇（EG），磁力搅拌（300 rpm）1 h；加入 10 mL 水合肼（N2H4·H2O）再搅拌 30 min；转入 100 mL 聚四氟乙烯内衬不锈钢高压釜，电烘箱 180 °C 保温 12 h；沉淀用去离子水与乙醇充分洗涤，60 °C 干燥 7 h。FeNi0.85Se（O2）：相同步骤，初始混合液中额外加入 FeCl3·6H2O（72 mg）。FeNi0.85Se/rGO（O3）：先将 90 mg 氧化石墨烯于 60 mL 乙二醇中超声浴分散 30 min，其余步骤与 FeNi0.85Se 相同。电极制备：合成粉末与炭黑按 8.5:1 质量比加入 1 mL 去离子水超声分散，加 20 µL 10 wt% PTFE 水溶液再超声 10 s，涂覆于泡沫镍内表面室温晾干，10 MPa 压片 3 s（商业 RuO2、Pt/C 同法作对照）。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒/微球/多孔",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米片/纳米颗粒（FeNi0.85Se/rGO 复合）",
+     "hit": true,
+     "f1": 0.4
+    },
+    "no_kg": {
+     "prediction": "纳米片",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.5
+    }
+   },
+   "reason": "①最终产物为溶剂热 FeNi0.85Se（及 rGO 复合）粉末：NiCl2+Se 粉+水合肼在乙二醇中 180 °C 溶剂热 12 h。②肼缓慢还原 Se 生成 Se2-，EG 配位抑制各向异性生长，成核-聚集形成由纳米颗粒组装的多孔球形二次粒子，Fe 掺杂与 rGO 包覆不改变此倾向。③库内无同方法命中：output_200（Fe-S 纳米纤维，方法体系不合）、output_203（NiFe LDH 电沉积，方法不合）均不可迁移。④结论：多孔微球/纳米颗粒，中置信。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.3390/ma18215025",
+   "morphology_category": "多面体/纳米片阵列/多孔",
+   "synthesis_process": "泡沫镍（300×200 mm2，厚 1.6 mm，孔径约 450 µm）依次用丙酮、稀 HCl、乙醇、去离子水超声清洗。Co3O4 模板：CoCl2·6H2O（6 mmol）与柠檬酸三钠二水合物 C6H5Na3O7·2H2O（6 mmol）溶于 50 mL 去离子水搅拌，加入硫代乙酰胺 C2H5NS（18 mmol）再搅拌 30 min；预清洗 NF（沉积面积 1×1 cm2、总尺寸 5×1 cm2）与前驱体溶液转入聚四氟乙烯内衬不锈钢高压釜，150 °C 保温 6 h；自然冷却后水与乙醇冲洗，空气气氛 400 °C 退火 2 h 得 Co3O4。阴离子交换：Co3O4 电极浸入 50 mL 0.1 M Na2S 溶液，120 °C 水热 10 h，O2− 逐渐被 S2− 取代（Co3O4 + 8H2O + 4S2− ↔ Co3S4 + 4H2O + 8OH−）得 Co3S4 电极。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列/多孔",
+     "hit": true,
+     "f1": 0.8
+    },
+    "expert": {
+     "prediction": "纳米片/纳米阵列（Co3O4→Co3S4 阴离子交换）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": true,
+     "f1": 0.5
+    },
+    "plain_rag": {
+     "prediction": "纳米线阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为 Co3O4 模板经 0.1 M Na2S 120 °C 水热阴离子交换所得 Co3S4/NF 电极。②柠檬酸钠螯合缓释成核、硫代乙酰胺缓释硫，NF 上水热倾向生成竖直纳米片阵列；S2- 取代 O2- 属拓扑保形转变，保留片状并因离子交换产生孔洞。③库因果链 chem_Ni5Co3Mo-OH（score 1.0）末端形貌 nanosheets，同 Co 基水热氢氧化物体系，支持片状；output_258 为 Ni-Mo-S 纳米花，方法相近但元素不同，仅作旁证。④结论：纳米片阵列/多孔，中置信。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1021/acsaem.5c02386",
+   "morphology_category": "纳米棒/多孔",
+   "synthesis_process": "玻璃器皿 150 °C 烘烤过夜；β-FeOOH（方法见作者既往工作）0.100 g 与油胺（oleylamine）3.00 mL 混合，120 °C 真空脱气 2 h；Ar 气氛下升温至注射温度 200 °C，迅速注入三(二乙氨基)膦 P(NEt2)3（1.00 mL）；继续升温至 280 °C 保温 60 min；冷却后加入 10–15 mL 己烷沉淀，8000 rpm 离心 2 min 分离固体；黑色固体用过量乙醇与氯仿多次洗涤至上层清液澄清，得 FeP。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米棒",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米棒/纳米线（FeP 热注射，继承 β-FeOOH）",
+     "hit": true,
+     "f1": 0.5
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米棒",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为胶体 FeP：β-FeOOH 于油胺中 200 °C 注入 P(NEt2)3、280 °C 磷化 1 h。②β-FeOOH（akaganeite）本征沿 c 轴一维生长呈棒/针状；油胺介质中磷化属 O/OH→P 拓扑交换的保形转化，一维形貌保留，不引入表面活性剂则不球化。③库内无同法命中：output_350 的 FeOOH flower 来自电沉积体系、output_278 为电沉积 NiCoFeP 纳米线，方法均不合，不作迁移。④结论：纳米棒，中置信。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1021/acsaenm.5c00785",
+   "morphology_category": "纳米纤维/多孔/核壳",
+   "synthesis_process": "RAFT 嵌段共聚物：先合成 PMMA 大分子链转移剂——MMA（35.0 mL, 310 mmol）、CDB（84.3 mg, 0.309 mmol）、AIBN（25.4 mg, 0.155 mmol）溶于苯（51.6 mL），三次冷冻-泵-解冻（FPT）循环充 N2 后于 60 °C 油浴搅拌 24 h，甲醇沉淀、60 °C 真空干燥 12 h；再以 macro-PMMA（0.65 g, 11 mmol）、丙烯腈（2.6 mL, 43 mmol）、AIBN（0.44 mg, 2.7 mmol）与 DMSO（7.22 mL）混合，三次 FPT 后 65 °C 搅拌 24 h，甲醇沉淀、真空干燥 12 h 得 PAN-b-PMMA。纺丝前驱液：Ni(acac)2（2.25 mmol）、Fe(acac)3（1.25 mmol）、P2O5 与 PAN-b-PMMA 溶于 10 mL DMF，70 °C 过夜搅拌；转注射器 18 kV、1.5 mL/h 静电纺丝，收集于旋转铝鼓；膜 60 °C 真空干燥 6 h；空气气氛 280 °C 氧化 8 h（升温 1 °C/min）；N2 气氛 800 °C 热解 1 h（升温 10 °C/min）得 NiFeP-PCF。单金属 NiP-PCF、FeP-PCF 用相应无机前驱体同法制备。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米纤维/多孔",
+     "hit": true,
+     "f1": 0.8
+    },
+    "expert": {
+     "prediction": "多孔碳纳米纤维（NiFeP-PCF，电纺嵌段共聚物）",
+     "hit": true,
+     "f1": 0.8
+    },
+    "no_kg": {
+     "prediction": "纳米纤维/多孔",
+     "hit": true,
+     "f1": 0.8
+    },
+    "plain_rag": {
+     "prediction": "纳米纤维/多孔",
+     "hit": true,
+     "f1": 0.8
+    }
+   },
+   "reason": "①最终产物 NiFeP-PCF：PAN-b-PMMA/Ni(acac)2/Fe(acac)3/P2O5 纺丝液静电纺丝成膜，280 °C 氧化、800 °C N2 热解磷化。②静电纺丝直接定义一维纤维形貌，煅烧与磷化保形保留纤维骨架；P2O5+嵌段共聚物造孔，磷化物纳米颗粒嵌入多孔碳纤维。③库 doc output_278 含 'Magnified nanofiber region' 但其为电沉积体系，仅旁证不迁移。④结论：纳米纤维/多孔，高置信。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1039/d5ra08754f",
+   "morphology_category": "珊瑚状/纳米棒阵列/多孔",
+   "synthesis_process": "泡沫镍预处理：3 M HCl 与丙酮各超声清洗 15 min，干燥储存备用。称取 Ni(CH3COO)2·4H2O（2.50 g）、(NH4)6Mo7O24·4H2O（1.77 g）、硫脲 CH4N2S（1.52 g）、尿素 CO(NH2)2（0.60 g）、NH4F（0.74 g），溶于 50 mL 20% 乙二醇水溶液（超声+磁力搅拌）；放入两片预处理泡沫镍（1×1 cm），转入 100 mL 聚四氟乙烯内衬高压釜，160 °C 保温 8 h；冷却后取出电极片，去离子水多次洗涤，冷冻干燥得目标电催化剂。对照 Ni-Mo-Pre 采用相同流程但不加硫脲；商业 Pt/C、IrO2 负载泡沫镍电极按文献法制备作参比。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米花/纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米片/纳米花（NiMoS/NF 阵列）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为泡沫镍上 160 °C 水热生长的 Ni-Mo-S（Ni(CH3COO)2+钼酸铵+硫脲+尿素+NH4F）。②尿素/NH4F 缓释碱并 F 刻蚀促 NF 上各向异性生长，硫脲缓释 S2- 硫化，该类体系典型呈片组装花状阵列。③半同系迁移：库 doc output_258《Defect-Engineered 3D hierarchical NiMo3S4 nanoflowers》同为 Ni+Mo+S 水热硫化，形貌标签 Ni-Mo Nanoflowers/Nanoflakes，强支持；因果链 chem_Ni5Co3Mo-OH 标签 nanosheets 旁证。④结论：纳米花/纳米片阵列，中置信。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1039/d5ra09427e",
+   "morphology_category": "核壳/纳米片阵列/异质结构/多孔",
+   "synthesis_process": "Co3O4/NF：Co(NO3)2·6H2O（0.582 g）、NH4F（0.07 g）、CO(NH2)2（0.6 g）溶于 60 mL 去离子水搅拌至完全溶解，浸入泡沫镍；转入 100 mL 聚四氟乙烯内衬高压釜，120 °C 保温 8 h；产物用 C2H5OH 与去离子水反复洗涤，60 °C 干燥 7 h；随后马弗炉以 2 °C/min 升温至 350 °C 保温 2 h 得 Co3O4/NF。Co3O4@CoNi2S4/NF：Co(NO3)2·6H2O（0.582 g）、Ni(NO3)2·6H2O（0.2908 g）、Na2S（0.2 g）溶于 60 mL 去离子水剧烈磁力搅拌，浸入已煅烧的 Co3O4/NF，高压釜 120 °C 保温 8 h，自然冷却；洗涤后烘箱干燥 7 h。Co3O4@Zn-CoNi2S4/NF：前驱体溶液额外加入 Zn(NO3)2·6H2O（0.06 g），水热与干燥步骤相同。系列实验：硫化物负载量通过前驱体总金属离子浓度 0.025/0.100/0.150 M 调控（Co:Ni 恒为 1:2，样品 C-25/C-100/C-150）；Zn 掺杂量 1/5/6 at% 系列。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片阵列/核壳",
+     "hit": true,
+     "f1": 0.667
+    },
+    "expert": {
+     "prediction": "纳米片阵列（Co3O4@CoNi2S4/NF，多级阵列）",
+     "hit": true,
+     "f1": 0.4
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列/核壳",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列/核壳",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物 Co3O4@Zn-CoNi2S4/NF：Co(NO3)2+NH4F+尿素 120 °C 水热、350 °C 煅烧得 Co3O4，再于 Na2S+Co/Ni 硝酸盐中 120 °C 二次水热生长硫化物壳。②该配方是 NF 上 Co3O4 纳米片阵列的经典路线；二次硫化在线表面包覆 CoNi2S4 壳，'@' 命名即核壳结构，拓扑硫化保形并致孔。③机理与 '@' 命名主导；库 doc output_258 同为 Na2S 水热硫化路线（方法吻合、元素不同），仅作旁证。④结论：核壳/纳米片阵列，高置信。",
+   "confidence": "高"
+  },
+  {
+   "doi": "10.1039/d5ra04957a",
+   "morphology_category": "花状/纳米片/异质结构",
+   "synthesis_process": "前驱体：泡沫镍裁成 4×4 cm，于 3 M HCl 浸泡 30 min、去离子水超声 10 min 预处理；NH4VO3（1.5 mmol）与 CoCl2·6H2O（2 mmol）溶于 60 mL 去离子水，磁力搅拌至透明粉红色溶液；与预处理 NF 一同转入 100 mL 聚四氟乙烯内衬高压釜，160 °C 保温 13 h；自然冷却后取出，乙醇与去离子水充分洗涤，60 °C 干燥 6 h 得 Co-V 双金属前驱体。Ru-CoVO-P：RuCl3·3H2O（0.3 mmol）分散于水-乙醇混合溶剂（1:1, v/v），剧烈搅拌下快速加入 NaBH4 溶液（0.05 mmol）；将负载前驱体的泡沫镍浸入混合液反应 4 h；乙醇与去离子水充分洗涤后，置于 Ar 气流管式炉中、上游放置 NaH2PO2·H2O（500 mg）作磷化源，350 °C 退火 120 min，得 Ru-CoVO-P。对照样：不经过退火步骤者标记 Ru-CoVO-1；仅浸 RuCl3·3H2O 溶液者 Ru-CoVO-2；仅浸 NaBH4 溶液者 CoVO。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/多孔",
+     "hit": true,
+     "f1": 0.4
+    },
+    "expert": {
+     "prediction": "纳米线/纳米片阵列（Ru-CoVO-P/NF）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物 Ru-CoVO-P/NF：NH4VO3+CoCl2 160 °C 水热生长 Co-V 前驱体，RuCl3+NaBH4 还原沉积 Ru，350 °C NaH2PO2 气相磷化。②无缓释模板下钒酸盐水热在 NF 上多呈二维纳米片（阵列）；350 °C 磷化属拓扑保形转变，保留片状并因 P/O 交换产生多孔结构。③半同系迁移：库 doc output_910 含 Co-V-O 纳米颗粒/多孔微结构标签（同 Co-V-O 组成）；output_879（CoVO 纳米纤维，方法不合）、output_869（Pt 沉积）不采。④结论：纳米片/多孔，中置信。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.1007/s40820-026-02072-4",
+   "morphology_category": "纳米片/多孔",
+   "synthesis_process": "泡沫镍（2×3 cm2）依次在丙酮、1 M HCl 溶液、去离子水、乙醇中各超声清洗 15 min，保存于乙醇备用。前驱体溶液：Fe(NO3)3·9H2O（4.04 g）与 RuCl3（50 mg）溶于 50 mL 去离子水搅拌溶解；乙醇中保存的泡沫镍用镜面纸吸干后浸入前驱体溶液 1 min（期间每 30 s 翻面一次）；取出后于 60 °C 真空烘箱干燥过夜，得 RuSA-NiFeOOH/Ni。Ru 负载系列：RuCl3 用量 25/50/100/150/200 mg 同法制备。对照样 NiFeOOH/Ni 与 NiFe-LDH/Ni 的制备见 SI。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米片/单原子",
+     "hit": true,
+     "f1": 0.5
+    },
+    "expert": {
+     "prediction": "纳米片/颗粒膜（RuSA-NiFeOOH/Ni，原位表面生长）",
+     "hit": true,
+     "f1": 0.667
+    },
+    "no_kg": {
+     "prediction": "纳米片阵列/单原子",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米片阵列",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物 RuSA-NiFeOOH/Ni：泡沫镍在 Fe(NO3)3+RuCl3 水溶液中仅浸渍 1 min 后干燥。②Fe3+ 强水解酸性刻蚀 NF 表面，原位析出超薄非晶 NiFeOOH 纳米片层，短时浸渍为表面形核层，Ru 以单原子锚定于片上。③半同系迁移：库 doc output_3《Acid-Corrosion-Induced Hollow-Structured NiFe-LDH》同为酸刻蚀 NF 转 NiFe-LDH，形貌标签 Flake-like Structures（其空心框架系长时间腐蚀产物，不迁移空心）；output_525 电沉积体系不采。④结论：纳米片/单原子，中置信。",
+   "confidence": "中"
+  },
+  {
+   "doi": "10.3390/ma19020430",
+   "morphology_category": "异质结构/多孔/纳米球",
+   "synthesis_process": "将 Co(NO3)2·6H2O、Bi(NO3)2·5H2O、Fe(NO3)2·9H2O（各 1 mmol）与表面活性剂（HO(CH2CH2O)nH 与 C19H42BrN）溶于水-乙醇混合溶剂配成 Solution A；将 Se 与 NaBH4 溶于相同溶剂配成 Solution B；两溶液混合后进行水热反应，200 °C 保温 16 h；产物经离心、洗涤、60 °C 干燥。单相 BiSe2、CoSe2、FeSe2 仅使用对应单一金属盐前驱体在相同条件下合成。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒/纳米片",
+     "hit": false,
+     "f1": 0.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒/纳米棒（Co/Bi/Fe 硒化物混相）",
+     "hit": false,
+     "f1": 0.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": false,
+     "f1": 0.0
+    }
+   },
+   "reason": "①最终产物为水热 200 °C 16 h 合成的 Bi-Co-Fe 三元硒化物粉末（CTAB+PEG 双表面活性剂，Se/NaBH4 原位生成 Se2-）。②水热胶体成核加双表面活性剂限域，倾向一次纳米颗粒聚集体；Bi 系硒化物另有二维片状化倾向，两机理竞争。③半同系迁移：库节点 output_299（NiFeSe2/CNS，同 M-Se 组成）含 nanosheet/nanocube/nanoparticle 混合标签；doc output_78 Ni-Fe-Se 纳米片为电沉积法（方法不合），仅弱旁证。④证据分歧，结论：纳米颗粒/纳米片，低置信。",
+   "confidence": "低"
+  },
+  {
+   "doi": "10.1002/smll.202409389",
+   "morphology_category": "纳米颗粒/纳米棒",
+   "synthesis_process": "酰基膦前体制备：(1) 手套箱内 100 mL 三颈瓶加入红磷粉末（3.1 g, 100 mmol）、萘（2.6 g, 20 mmol）与 80 mL 干 DME（钠/二苯甲酮回流干燥），Ar 下加入钠块（8.1 g, 350 mmol），80 °C 搅拌过夜（溶液红→深绿→黑）；冷却后离心（4500 rpm, 10 min）取沉淀，30 mL 干 DME 再分散-离心重复两次，最终再分散于 300 mL DME 转移至脱气三颈瓶；冰浴 0 °C 下注射泵缓慢加入 t-BuOH（21.2 mL, 210 mmol）/DME（30 mL）溶液，随后以丁酰氯（得 (PrCO)3P）或苯甲酰氯（得 Bz3P）酰化。TMP 制备：手套箱内 25 mL 三颈瓶装入金属氯化物（0.5 mmol）、TOP（900 µL, 2 mmol）与 5 mL 干脱气 ODE；Schlenk 线 Ar 下 170 °C 保温 15 min 溶解金属前驱体，冷却至 90 °C 真空（0.1 mbar）脱气 30 min 后回充 Ar；另配磷源溶液（67.5 µL (PrCO)3P（0.25 mmol）/1 mL ODE，或 86.5 mg Bz3P（0.25 mmol）/1 mL 无水甲苯）注入反应瓶，抽真空 5 min 除溶剂；快速升温至 250/275/305 °C 保温 25 min（Mo 磷化物 2 h）成核生长；冷却后用 2-丙醇/甲醇（2:1）与己烷多次沉淀-再分散纯化。HPF6 配体剥离后作酸性 HER 电催化剂。",
+   "evaluators": {
+    "kg_causal": {
+     "prediction": "纳米颗粒/纳米棒",
+     "hit": true,
+     "f1": 1.0
+    },
+    "expert": {
+     "prediction": "纳米颗粒/纳米棒（过渡金属磷化物热注射）",
+     "hit": true,
+     "f1": 1.0
+    },
+    "no_kg": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    },
+    "plain_rag": {
+     "prediction": "纳米颗粒",
+     "hit": true,
+     "f1": 0.667
+    }
+   },
+   "reason": "①最终产物为溶液相热注入合成的过渡金属磷化物（含 MoP）：金属氯化物+TOP/ODE，注入酰基膦磷源后 250-305 °C 快速成核生长 25 min-2 h，HPF6 剥离配体。②胶体热注入+短生长时间+TOP 配位控制得到单分散纳米颗粒；无各向异性导向剂，不会生成一维结构。③半同系迁移：库 doc output_175 同用 TOP 胶体合成路线（方法吻合），形貌标签 Nanoparticles；output_63 棒状为 MOF 热剥离产物。④结论：纳米颗粒/纳米棒，高置信。",
+   "confidence": "高"
+  }
+ ]
+}

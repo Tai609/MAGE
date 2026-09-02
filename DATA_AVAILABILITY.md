@@ -11,6 +11,16 @@ token usage and Overall scores. It also includes audit formulas, variable defini
 provenance table. A machine-readable file manifest with a SHA-256 checksum is available at
 [`source_data/MANIFEST.csv`](source_data/MANIFEST.csv).
 
+The original analysis data package is available under
+[`source_data/original_data/`](source_data/original_data/). It contains 1,539 fused MAGE-Graph
+JSON outputs, one four-way morphology-evaluation JSON file and nine CSV tables supporting the
+morphology-classification and SHAP analyses, including training records, out-of-fold predictions,
+model summaries, fold audits and point-level SHAP values. A per-file path, size and SHA-256
+manifest is provided at
+[`source_data/original_data_manifest.csv`](source_data/original_data_manifest.csv), and the
+deposit summary is available at
+[`source_data/original_data_summary.md`](source_data/original_data_summary.md).
+
 The deposited workbook contains derived benchmark measurements and does not redistribute article
 PDFs, publisher-controlled figures, private uploads, API requests or responses, generated model
 traces, or credentials. These materials are excluded because redistribution may be restricted by
@@ -33,6 +43,7 @@ or process environment and are not stored in the repository.
 
 - [x] Deposit the Figure 2 source data needed to verify the plotted results.
 - [x] Add a machine-readable manifest mapping the deposited workbook to the figure.
+- [x] Deposit the MAGE-Graph and morphology/SHAP original analysis data package with per-file checksums.
 - [ ] Assign and record a data licence.
 - [ ] Add an immutable release tag or archival DOI/accession, if required by the target journal.
 - [ ] Deposit any additional source data needed for other manuscript figures and tables.

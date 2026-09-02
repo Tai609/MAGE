@@ -1,0 +1,71 @@
+label_col,label_display,algorithm,algorithm_label,fold,train_rows,heldout_rows_explained,train_groups,heldout_groups_explained,feature_count
+morph_hc_is_1d_wire_rod_tube,1D Wire Rod Tube,random_forest,Random forest,1,2460,224,2460,224,216
+morph_hc_is_1d_wire_rod_tube,1D Wire Rod Tube,random_forest,Random forest,2,2460,211,2460,211,217
+morph_hc_is_1d_wire_rod_tube,1D Wire Rod Tube,random_forest,Random forest,3,2460,188,2460,188,216
+morph_hc_is_1d_wire_rod_tube,1D Wire Rod Tube,random_forest,Random forest,4,2460,216,2460,216,217
+morph_hc_is_1d_wire_rod_tube,1D Wire Rod Tube,random_forest,Random forest,5,2460,211,2460,211,219
+morph_hc_is_2d_sheet,2D Sheet,random_forest,Random forest,1,2460,217,2460,217,216
+morph_hc_is_2d_sheet,2D Sheet,random_forest,Random forest,2,2460,216,2460,216,217
+morph_hc_is_2d_sheet,2D Sheet,random_forest,Random forest,3,2460,211,2460,211,216
+morph_hc_is_2d_sheet,2D Sheet,random_forest,Random forest,4,2460,218,2460,218,217
+morph_hc_is_2d_sheet,2D Sheet,random_forest,Random forest,5,2460,188,2460,188,219
+morph_hc_is_amorphous,Amorphous,random_forest,Random forest,1,2460,215,2460,215,216
+morph_hc_is_amorphous,Amorphous,random_forest,Random forest,2,2460,212,2460,212,217
+morph_hc_is_amorphous,Amorphous,random_forest,Random forest,3,2460,218,2460,218,216
+morph_hc_is_amorphous,Amorphous,random_forest,Random forest,4,2460,205,2460,205,217
+morph_hc_is_amorphous,Amorphous,random_forest,Random forest,5,2460,200,2460,200,219
+morph_hc_is_array_or_aligned,Array Or Aligned,random_forest,Random forest,1,2460,223,2460,223,216
+morph_hc_is_array_or_aligned,Array Or Aligned,random_forest,Random forest,2,2460,200,2460,200,217
+morph_hc_is_array_or_aligned,Array Or Aligned,random_forest,Random forest,3,2460,192,2460,192,216
+morph_hc_is_array_or_aligned,Array Or Aligned,random_forest,Random forest,4,2460,231,2460,231,217
+morph_hc_is_array_or_aligned,Array Or Aligned,random_forest,Random forest,5,2460,204,2460,204,219
+morph_hc_is_crystalline,Crystalline,random_forest,Random forest,1,2460,197,2460,197,216
+morph_hc_is_crystalline,Crystalline,random_forest,Random forest,2,2460,216,2460,216,217
+morph_hc_is_crystalline,Crystalline,random_forest,Random forest,3,2460,226,2460,226,216
+morph_hc_is_crystalline,Crystalline,random_forest,Random forest,4,2460,207,2460,207,217
+morph_hc_is_crystalline,Crystalline,random_forest,Random forest,5,2460,204,2460,204,219
+morph_hc_is_faceted_polyhedron,Faceted Polyhedron,random_forest,Random forest,1,2460,219,2460,219,216
+morph_hc_is_faceted_polyhedron,Faceted Polyhedron,random_forest,Random forest,2,2460,199,2460,199,217
+morph_hc_is_faceted_polyhedron,Faceted Polyhedron,random_forest,Random forest,3,2460,211,2460,211,216
+morph_hc_is_faceted_polyhedron,Faceted Polyhedron,random_forest,Random forest,4,2460,200,2460,200,217
+morph_hc_is_faceted_polyhedron,Faceted Polyhedron,random_forest,Random forest,5,2460,221,2460,221,219
+morph_hc_is_film_coating,Film Coating,random_forest,Random forest,1,2460,208,2460,208,216
+morph_hc_is_film_coating,Film Coating,random_forest,Random forest,2,2460,198,2460,198,217
+morph_hc_is_film_coating,Film Coating,random_forest,Random forest,3,2460,222,2460,222,216
+morph_hc_is_film_coating,Film Coating,random_forest,Random forest,4,2460,219,2460,219,217
+morph_hc_is_film_coating,Film Coating,random_forest,Random forest,5,2460,203,2460,203,219
+morph_hc_is_flower_urchin_dendrite,Flower Urchin Dendrite,random_forest,Random forest,1,2460,206,2460,206,216
+morph_hc_is_flower_urchin_dendrite,Flower Urchin Dendrite,random_forest,Random forest,2,2460,213,2460,213,217
+morph_hc_is_flower_urchin_dendrite,Flower Urchin Dendrite,random_forest,Random forest,3,2460,228,2460,228,216
+morph_hc_is_flower_urchin_dendrite,Flower Urchin Dendrite,random_forest,Random forest,4,2460,212,2460,212,217
+morph_hc_is_flower_urchin_dendrite,Flower Urchin Dendrite,random_forest,Random forest,5,2460,191,2460,191,219
+morph_hc_is_generic_nanostructure,Generic Nanostructure,random_forest,Random forest,1,2460,214,2460,214,216
+morph_hc_is_generic_nanostructure,Generic Nanostructure,random_forest,Random forest,2,2460,206,2460,206,217
+morph_hc_is_generic_nanostructure,Generic Nanostructure,random_forest,Random forest,3,2460,215,2460,215,216
+morph_hc_is_generic_nanostructure,Generic Nanostructure,random_forest,Random forest,4,2460,192,2460,192,217
+morph_hc_is_generic_nanostructure,Generic Nanostructure,random_forest,Random forest,5,2460,223,2460,223,219
+morph_hc_is_hierarchical,Hierarchical,random_forest,Random forest,1,2460,218,2460,218,216
+morph_hc_is_hierarchical,Hierarchical,random_forest,Random forest,2,2460,196,2460,196,217
+morph_hc_is_hierarchical,Hierarchical,random_forest,Random forest,3,2460,198,2460,198,216
+morph_hc_is_hierarchical,Hierarchical,random_forest,Random forest,4,2460,221,2460,221,217
+morph_hc_is_hierarchical,Hierarchical,random_forest,Random forest,5,2460,217,2460,217,219
+morph_hc_is_hollow_core_shell,Hollow Core Shell,random_forest,Random forest,1,2460,211,2460,211,216
+morph_hc_is_hollow_core_shell,Hollow Core Shell,random_forest,Random forest,2,2460,205,2460,205,217
+morph_hc_is_hollow_core_shell,Hollow Core Shell,random_forest,Random forest,3,2460,215,2460,215,216
+morph_hc_is_hollow_core_shell,Hollow Core Shell,random_forest,Random forest,4,2460,208,2460,208,217
+morph_hc_is_hollow_core_shell,Hollow Core Shell,random_forest,Random forest,5,2460,211,2460,211,219
+morph_hc_is_particle_cluster,Particle/Cluster,random_forest,Random forest,1,2460,225,2460,225,216
+morph_hc_is_particle_cluster,Particle/Cluster,random_forest,Random forest,2,2460,205,2460,205,217
+morph_hc_is_particle_cluster,Particle/Cluster,random_forest,Random forest,3,2460,210,2460,210,216
+morph_hc_is_particle_cluster,Particle/Cluster,random_forest,Random forest,4,2460,213,2460,213,217
+morph_hc_is_particle_cluster,Particle/Cluster,random_forest,Random forest,5,2460,197,2460,197,219
+morph_hc_is_porous_network,Porous Network,random_forest,Random forest,1,2460,190,2460,190,216
+morph_hc_is_porous_network,Porous Network,random_forest,Random forest,2,2460,213,2460,213,217
+morph_hc_is_porous_network,Porous Network,random_forest,Random forest,3,2460,221,2460,221,216
+morph_hc_is_porous_network,Porous Network,random_forest,Random forest,4,2460,218,2460,218,217
+morph_hc_is_porous_network,Porous Network,random_forest,Random forest,5,2460,208,2460,208,219
+morph_hc_is_rough_wrinkled,Rough Wrinkled,random_forest,Random forest,1,2460,208,2460,208,216
+morph_hc_is_rough_wrinkled,Rough Wrinkled,random_forest,Random forest,2,2460,210,2460,210,217
+morph_hc_is_rough_wrinkled,Rough Wrinkled,random_forest,Random forest,3,2460,212,2460,212,216
+morph_hc_is_rough_wrinkled,Rough Wrinkled,random_forest,Random forest,4,2460,218,2460,218,217
+morph_hc_is_rough_wrinkled,Rough Wrinkled,random_forest,Random forest,5,2460,202,2460,202,219
