@@ -1,5 +1,6 @@
 """
-Module for interacting with Gemini models via OpenAI-compatible proxy endpoint.
+Module for Gemini models through Google's official OpenAI-compatible endpoint
+or an explicitly configured gateway.
 """
 
 import logging
@@ -11,6 +12,7 @@ from dotenv import load_dotenv
 from langchain_core.callbacks.usage import get_usage_metadata_callback
 from langchain_openai import ChatOpenAI
 from models.httpx_clients import build_httpx_clients
+from models.provider_config import resolve_provider_connection
 
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
@@ -18,24 +20,23 @@ load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 logger = logging.getLogger(__name__)
 
 
-PROXY_BASE_URL = os.getenv("APIYI_BASE_URL", "https://api.apiyi.com/v1")
-PROXY_API_KEY = (
-    os.getenv("APIYI_API_KEY")
-    or os.getenv("OPENAI_API_KEY")
-    or os.getenv("GOOGLE_API_KEY")
-    or ""
-)
-
-
 def get_google_model(model_name: str, **kwargs: Any) -> ChatOpenAI:
     """
-    Initializes and returns a Gemini model instance through proxy endpoint.
+    Initializes and returns a Gemini model instance through a safe endpoint.
 
     Args:
         model_name: Model name (e.g. 'gemini-3-pro-preview-thinking').
         **kwargs: Extra args forwarded to ChatOpenAI.
     """
     try:
+        explicit_api_key = kwargs.pop("openai_api_key", kwargs.pop("api_key", ""))
+        explicit_base_url = kwargs.pop("openai_api_base", kwargs.pop("base_url", ""))
+        resolved_api_key, resolved_base_url = resolve_provider_connection(
+            "google",
+            explicit_api_key=explicit_api_key,
+            explicit_base_url=explicit_base_url,
+        )
+
         if "model" not in kwargs:
             kwargs["model"] = model_name
         elif kwargs["model"] != model_name:
@@ -65,25 +66,25 @@ def get_google_model(model_name: str, **kwargs: Any) -> ChatOpenAI:
         if "openai_proxy" not in kwargs:
             kwargs["openai_proxy"] = None
 
-        if not PROXY_API_KEY:
+        if not resolved_api_key:
             logger.warning(
-                "No API key found in APIYI_API_KEY/OPENAI_API_KEY/GOOGLE_API_KEY; model calls may fail."
+                "No Google credential found for the resolved endpoint; model calls may fail."
             )
 
-        logger.info("Initializing Gemini via proxy: %s", model_name)
+        logger.info("Initializing Gemini through the resolved endpoint: %s", model_name)
         llm = ChatOpenAI(
-            openai_api_base=PROXY_BASE_URL,
-            openai_api_key=PROXY_API_KEY,
+            openai_api_base=resolved_base_url,
+            openai_api_key=resolved_api_key,
             **kwargs,
         )
         return llm
     except ImportError as e:
         logger.error("Failed to import ChatOpenAI. Ensure 'langchain-openai' is installed.")
         raise ImportError(
-            "The 'langchain-openai' package is required for proxy Gemini calls."
+            "The 'langchain-openai' package is required for Gemini calls."
         ) from e
     except Exception as e:
-        logger.error("Error initializing Google model '%s' through proxy: %s", model_name, e)
+        logger.error("Error initializing Google model '%s': %s", model_name, e)
         raise
 
 

@@ -1,7 +1,7 @@
 """
 OpenAI model configuration module.
-This module provides functions to initialize and configure OpenAI models
-through an OpenAI-compatible proxy endpoint.
+This module defaults to the official OpenAI endpoint and supports explicitly
+configured OpenAI-compatible endpoints.
 """
 
 import os
@@ -17,50 +17,26 @@ except ImportError:
     ChatOpenAI = None
 try:
     from .httpx_clients import build_httpx_clients
+    from .provider_config import resolve_provider_connection
 except ImportError:
     from models.httpx_clients import build_httpx_clients
+    from models.provider_config import resolve_provider_connection
 
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 
-def _current_route() -> str:
-    return str(os.getenv("MAGE_LLM_ROUTE", "") or "").strip().lower()
-
-
-def _resolve_api_key(default: str = "") -> str:
-    route = _current_route()
-    if route == "extract":
-        return (
-            str(default or "").strip()
-            or str(os.getenv("APIYI_API_KEY", "")).strip()
-            or str(os.getenv("OPENAI_API_KEY", "")).strip()
-            or str(os.getenv("GOOGLE_API_KEY", "")).strip()
-            or ""
-        )
-    return (
-        str(default or "").strip()
-        or str(os.getenv("OPENAI_API_KEY", "")).strip()
-        or str(os.getenv("APIYI_API_KEY", "")).strip()
-        or str(os.getenv("GOOGLE_API_KEY", "")).strip()
-        or ""
+def _resolve_api_key(default: str = "", base_url: str = "") -> str:
+    api_key, _ = resolve_provider_connection(
+        "openai",
+        explicit_api_key=default,
+        explicit_base_url=base_url,
     )
+    return api_key
 
 
 def _resolve_base_url(default: str = "") -> str:
-    route = _current_route()
-    if route == "extract":
-        return (
-            str(default or "").strip()
-            or str(os.getenv("APIYI_BASE_URL", "")).strip()
-            or str(os.getenv("OPENAI_API_BASE", "")).strip()
-            or "https://api.apiyi.com/v1"
-        ).rstrip("/")
-    return (
-        str(default or "").strip()
-        or str(os.getenv("OPENAI_API_BASE", "")).strip()
-        or str(os.getenv("APIYI_BASE_URL", "")).strip()
-        or "https://api.apiyi.com/v1"
-    ).rstrip("/")
+    _, base_url = resolve_provider_connection("openai", explicit_base_url=default)
+    return base_url
 
 
 @dataclass
@@ -85,8 +61,11 @@ class OpenAIProxyChatModel:
         self.max_retries = kwargs.pop("max_retries", int(os.getenv("LLM_MAX_RETRIES", "0")))
         self.request_kwargs = dict(kwargs)
         self.http_client, _ = build_httpx_clients(timeout=self.timeout)
-        resolved_api_key = _resolve_api_key(default=explicit_api_key)
-        resolved_base_url = _resolve_base_url(default=explicit_base_url)
+        resolved_api_key, resolved_base_url = resolve_provider_connection(
+            "openai",
+            explicit_api_key=explicit_api_key,
+            explicit_base_url=explicit_base_url,
+        )
         self.client = OpenAI(
             api_key=resolved_api_key,
             base_url=resolved_base_url,
@@ -120,11 +99,14 @@ class OpenAIProxyChatModel:
 
 
 def get_openai_model(model_name: str, temperature=0, **kwargs):
-    """Get a configured OpenAI chat model instance through proxy."""
+    """Get a configured OpenAI or explicitly routed compatible chat model."""
     explicit_api_key = kwargs.pop("openai_api_key", kwargs.pop("api_key", ""))
     explicit_base_url = kwargs.pop("openai_api_base", kwargs.pop("base_url", ""))
-    resolved_api_key = _resolve_api_key(default=explicit_api_key)
-    resolved_base_url = _resolve_base_url(default=explicit_base_url)
+    resolved_api_key, resolved_base_url = resolve_provider_connection(
+        "openai",
+        explicit_api_key=explicit_api_key,
+        explicit_base_url=explicit_base_url,
+    )
 
     if "max_tokens" not in kwargs:
         kwargs["max_tokens"] = int(os.getenv("LLM_MAX_TOKENS", "8192"))
@@ -169,18 +151,19 @@ def get_openai_model(model_name: str, temperature=0, **kwargs):
 
 
 def get_available_models():
-    """Get a list of available models from the proxy API."""
+    """Get a list of models from the resolved OpenAI-compatible endpoint."""
     try:
         http_client, _ = build_httpx_clients()
+        api_key, base_url = resolve_provider_connection("openai")
         client = OpenAI(
-            api_key=_resolve_api_key(),
-            base_url=_resolve_base_url(),
+            api_key=api_key,
+            base_url=base_url,
             http_client=http_client,
         )
         models = client.models.list()
         return [m.id for m in models.data]
     except Exception as e:
-        print(f"Error fetching models from proxy API: {e}")
+        print(f"Error fetching models from configured API: {e}")
         return []
 
 

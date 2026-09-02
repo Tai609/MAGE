@@ -8,14 +8,14 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Set, Tuple
 
-# 寮曞叆妯″潡
+# Alignment dependencies
 from tools.cat_graph.aligner.knn.clip_knn import get_mutual_knn_pairs, center_embeddings
 from tools.cat_graph.entity_embedder import ImageTextEmbedder
 from models.models import get_model
 from prompts.image_prompts import entity_resolution_prompt
 from tqdm import tqdm
 
-# 瀵归綈妯″瀷閰嶇疆锛堢敤浜?LLM 鍐崇瓥姝ラ锛?
+# Model used for the LLM alignment decision step
 ALIGNER_MODEL_CONFIG = 'google_gemini-2.5-flash'
 LLM_ALIGNMENT_MAX_ATTEMPTS = 3  # initial attempt + 2 repair retries
 LLM_ALIGNMENT_RETRY_BACKOFF_SECONDS = float(os.getenv("CATGRAPH_ALIGNMENT_RETRY_BACKOFF_SECONDS", "3"))
@@ -32,7 +32,7 @@ SUGGESTION_FALLBACK_MIN_SCORE = 0.15
 
 logger = logging.getLogger(__name__)
 
-# 鍏ㄥ眬鍗曚緥
+# Lazily initialized global embedder
 _CLIP_EMBEDDER = None
 
 
@@ -402,7 +402,7 @@ def _select_with_priority(
     return selected
 
 # ==========================================
-# 1. 鍏佽瀵归綈鐨勮妭鐐圭被鍨?
+# 1. Node types eligible for alignment
 # ==========================================
 ALIGN_TARGET_TYPES = [
     "characterization", 
@@ -420,14 +420,12 @@ ALIGN_TARGET_TYPES = [
 ]
 
 def _is_target_type(node):
-    """鍒ゆ柇鑺傜偣鏄惁灞炰簬闇€瑕佸榻愮殑绫诲瀷"""
+    """Return whether a node belongs to an alignable type."""
     n_type = node.get("type", "").lower()
     return any(k in n_type for k in ALIGN_TARGET_TYPES)
 
 def _get_node_text_representation(node):
-    """
-    [Embedding 浼樺寲]: 涓?CLIP 鎻愬彇鏈€鏈夋剰涔夌殑鏂囨湰鎻忚堪
-    """
+    """Build the most informative text representation for CLIP."""
     parts = []
     if node.get("method_name"): parts.append(str(node.get("method_name"))) 
     if node.get("name"): parts.append(str(node.get("name")))
@@ -444,9 +442,7 @@ def align_and_merge_graphs(
     image_graph: Dict[str, Any], 
     model: Any
 ) -> Dict[str, Any]:
-    """
-    鎵ц瀹炰綋瀵归綈锛歋tructure-Guided Mutual kNN + Context-Aware LLM Decision
-    """
+    """Align entities with mutual kNN hints and a context-aware LLM decision."""
     ablation_flags = _get_ablation_flags()
     disable_structural_hints = ablation_flags["disable_structural_hints"]
     disable_figure_grounding = ablation_flags["disable_figure_grounding"]
@@ -462,15 +458,15 @@ def align_and_merge_graphs(
     )
 
     # ----------------------------------------------------
-    # 2. 绛涢€夊緟瀵归綈鑺傜偣
+    # 2. Select candidate nodes for alignment
     # ----------------------------------------------------
     
-    # Text Nodes: 淇濈暀鎵€鏈夌洰鏍囩被鍨嬬殑鏂囨湰鑺傜偣
-    # 鍗充娇鍖呭惈 "Figure S4" 涔熻淇濈暀锛屽洜涓哄彲鑳藉悓鏃跺寘鍚?"Figure 1e"
+    # Retain all text nodes with target types. A snippet may mention both a
+    # supplementary figure and a main-text figure, so do not filter here.
     text_nodes = [n for n in text_graph.get("nodes", []) if _is_target_type(n)]
     valid_text_ids: Set[str] = {str(n.get("id")).strip() for n in text_nodes if n.get("id")}
     
-    # Image Nodes: 鐢ㄦ埛纭鎻愬彇鍑虹殑鍏ㄦ槸涓诲浘锛屽洜姝や笉鍋?SI 杩囨护
+    # Image nodes are already limited to the user-supplied figure set.
     image_nodes = [n for n in image_graph.get("nodes", []) if _is_target_type(n)]
     valid_image_ids: Set[str] = {str(n.get("id")).strip() for n in image_nodes if n.get("id")}
     
@@ -479,7 +475,7 @@ def align_and_merge_graphs(
         return _simple_merge(text_graph, image_graph)
 
     # ----------------------------------------------------
-    # 3. [STRUCTURE] 璁＄畻缁撴瀯鍖栧缓璁?(CLIP Mutual kNN)
+    # 3. Generate structural suggestions with CLIP mutual kNN
     # ----------------------------------------------------
     suggestions = []
     if disable_structural_hints:
@@ -523,7 +519,7 @@ def align_and_merge_graphs(
             logger.error(f"Structure alignment calculation failed: {e}. Proceeding with LLM only.", exc_info=True)
 
     # ----------------------------------------------------
-    # 4. [浼樺寲鏍稿績] LLM 鍐崇瓥 - 娉ㄥ叆涓板瘜涓婁笅鏂?
+    # 4. Resolve candidates with an LLM using the available context
     # ----------------------------------------------------
     mapping = {}
     alignment_pairs_from_llm = 0
@@ -531,7 +527,7 @@ def align_and_merge_graphs(
     alignment_retry_count = 0
     llm_attempts_used = 0
 
-    # 鍒濆鍖栫嫭绔嬬殑瀵归綈妯″瀷锛堜笉浣跨敤浼犲叆鐨勮瑙夋ā鍨嬶級
+    # Prefer the dedicated alignment model; fall back to the supplied model.
     aligner_model = None
     try:
         logger.info(f"Initializing aligner model for LLM decision: {ALIGNER_MODEL_CONFIG}")
@@ -546,7 +542,7 @@ def align_and_merge_graphs(
 
     if suggestions or (text_nodes and image_nodes):
         try:
-            # === A. 鏋勯€?Text Summary (鍏抽敭锛氳繃婊?SI 寮曠敤) ===
+            # A. Build a compact text-entity summary with figure grounding.
             text_summary_enhanced = []
             for n in text_nodes:
                 item = {
@@ -576,7 +572,7 @@ def align_and_merge_graphs(
                 
                 text_summary_enhanced.append(item)
 
-            # === B. 鏋勯€?Image Summary ===
+            # B. Build an image-entity summary.
             image_summary = []
             for n in image_nodes:
                 img_item = { 
@@ -585,13 +581,13 @@ def align_and_merge_graphs(
                     "type": n.get("type")
                 }
                 
-                # 鎻愬彇鏂囦欢鍚?(鍋囪鐢ㄦ埛宸茬粡纭 Image Nodes 閮芥槸涓诲浘)
+                # Retain the basename of the source image.
                 src = n.get("source_image_file", "")
                 if src:
-                    # 绠€鍖栨枃浠跺悕锛屼緥濡?"Figure_1.jpg"
+                    # Normalize either POSIX or Windows path separators.
                     img_item["filename"] = src.split("/")[-1].split("\\")[-1]
 
-                # 鎻忚堪淇℃伅
+                # Include a concise visual description when available.
                 if n.get("properties", {}).get("description"):
                     img_item["ocr_desc"] = n.get("properties", {}).get("description")[:150]
                 elif n.get("properties", {}).get("technique"):
@@ -605,7 +601,7 @@ def align_and_merge_graphs(
             logger.debug(f"[LLM Merge] Text Summary: {json.dumps(text_summary_enhanced, ensure_ascii=False, indent=2)}")
             logger.debug(f"[LLM Merge] Image Summary: {json.dumps(image_summary, ensure_ascii=False, indent=2)}")
 
-            # === C. Prompt 寮哄寲 ===
+            # C. Build the context-rich resolver prompt.
             final_prompt = (
                 f"{entity_resolution_prompt.format(TEXT_ENTITIES_JSON=json.dumps(text_summary_enhanced), IMAGE_ENTITIES_JSON=json.dumps(image_summary))}\n\n"
                 f"### Structural Alignment Hints (High Confidence):\n"
@@ -852,7 +848,7 @@ def align_and_merge_graphs(
             logger.error(f"LLM Entity Resolution failed: {e}")
 
     # ----------------------------------------------------
-    # 5. 鎵ц鍚堝苟 (娣卞害鎸傝浇 - Deep Mount)
+    # 5. Merge aligned image evidence into text nodes.
     # ----------------------------------------------------
     final_graph = _deep_copy_graph(text_graph)
     text_node_map = {n["id"]: n for n in final_graph["nodes"]}
@@ -867,13 +863,13 @@ def align_and_merge_graphs(
             target_node = text_node_map.get(target_text_id)
 
             if target_node:
-                # 1. 璁板綍鍥剧墖鏉ユ簮璺緞
+                # Record the image provenance path.
                 if "related_images" not in target_node: target_node["related_images"] = []
                 if "source_image_file" in img_node:
                      if img_node["source_image_file"] not in target_node["related_images"]:
                         target_node["related_images"].append(img_node["source_image_file"])
 
-                # 2. 娣卞害鎸傝浇
+                # Mount the full image evidence on the matched text node.
                 if "visual_evidence" not in target_node: target_node["visual_evidence"] = []
 
                 evidence_data = img_node.copy()
@@ -893,7 +889,7 @@ def align_and_merge_graphs(
 
     logger.info(f"Merge complete: {merged_count} nodes merged, {added_count} nodes added as new entities")
 
-    # 6. 鍚堝苟杈?
+    # 6. Merge image edges after applying the alignment mapping.
     for edge in image_graph.get("edges", []):
         src = edge.get("source_id")
         tgt = edge.get("target_id")

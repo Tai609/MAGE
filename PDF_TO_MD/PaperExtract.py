@@ -7,19 +7,41 @@ import time
 import traceback
 import warnings
 from io import StringIO
-import cv2
+from pathlib import Path
 import fitz
 import pandas as pd
 import requests
 from PIL import Image
-from PaperPreprocess.src.parseutils import is_image_based_pdf
-from PaperPreprocess.src.direct_parser import extract_text_blocks_with_fitz
-from PaperPreprocess.src.settings import (ocr_settings, predefined_section_names, substitute_special_char,
-                                          azure_api_key,azure_api_endpoint, azure_auto_load, azure_output_dpi)
+
+if __package__:
+    from .parseutils import is_image_based_pdf
+    from .direct_parser import extract_text_blocks_with_fitz
+    from .settings import (
+        ocr_settings,
+        predefined_section_names,
+        substitute_special_char,
+        azure_api_key,
+        azure_api_endpoint,
+        azure_auto_load,
+        azure_output_dpi,
+    )
+else:
+    from parseutils import is_image_based_pdf
+    from direct_parser import extract_text_blocks_with_fitz
+    from settings import (
+        ocr_settings,
+        predefined_section_names,
+        substitute_special_char,
+        azure_api_key,
+        azure_api_endpoint,
+        azure_auto_load,
+        azure_output_dpi,
+    )
 
 # Global variable to store the layout ocr engine
 layout_ocr_engine = None
 global_extractor = None
+cv2 = None
 
 class BaseExtractor:
     def __init__(self):
@@ -130,8 +152,20 @@ class FitzExtractor(BaseExtractor):
         table_dir = os.path.join(base_save_dir, 'tables')
         self._check_create_dir(table_dir)
         # Use camelot to extract tables
-        import camelot
-        tables = camelot.read_pdf(self.paperpath, pages='all')
+        try:
+            import camelot
+        except ImportError:
+            warnings.warn(
+                "Camelot is not installed; Fitz text and figure extraction completed, "
+                "but table extraction was skipped.",
+                RuntimeWarning,
+            )
+            return
+        try:
+            tables = camelot.read_pdf(self.paperpath, pages='all')
+        except Exception as exc:
+            warnings.warn(f"Camelot table extraction failed and was skipped: {exc}", RuntimeWarning)
+            return
         for table_num, table in enumerate(tables):
             save_path = os.path.join(table_dir, f'table{table_num}.csv')
             table.to_csv(save_path)
@@ -164,6 +198,20 @@ class FitzExtractor(BaseExtractor):
 
 class PaddleExtractor(BaseExtractor):
     def initialize(self):
+        image_parser_path = Path(__file__).with_name("image_parser.py")
+        if not image_parser_path.exists():
+            raise RuntimeError(
+                "The Paddle image_parser.py helper is not included in this public release. "
+                "Use extraction_engine='fitz' or provide the helper explicitly."
+            )
+        global cv2
+        try:
+            import cv2 as cv2_module
+        except ImportError as exc:
+            raise ImportError(
+                "Paddle PDF extraction requires opencv-python-headless."
+            ) from exc
+        cv2 = cv2_module
         from paddleocr import PPStructure
         global layout_ocr_engine
         if layout_ocr_engine is None:
@@ -172,7 +220,10 @@ class PaddleExtractor(BaseExtractor):
             print('Layout ocr engine loaded')
 
     def _text_block_extract(self):
-        from PaperPreprocess.src.image_parser import extract_text_with_ppstructure
+        if __package__:
+            from .image_parser import extract_text_with_ppstructure
+        else:
+            from image_parser import extract_text_with_ppstructure
         self.text_blocks, paper_section_titles, self.ocr_res = extract_text_with_ppstructure(self.paperpath,
                                                                                              layout_ocr_engine)
         # Extend the section titles

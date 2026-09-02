@@ -308,7 +308,7 @@ Represent this information as **nodes** (`chemical`, `testing`) and **edges** (`
 ────────────────────────────────────────────────
 A. **Chemical nodes** `type: "chemical"` (Tested Catalysts not exist in synthesis stage, but exist in testing section)
 • `id`   Unique machine-friendly identifier
-\- Use a canonical formula when obvious (`"chem_TiO2"`), otherwise snake-case the primary name (`"chem_toluene"`).
+\\- Use a canonical formula when obvious (`"chem_TiO2"`), otherwise snake-case the primary name (`"chem_toluene"`).
 • `name` Human-readable primary name (exactly as written once in the text).
 • `aliases` All other spellings/formulas that explicitly refer to the same entity.
 • `formula` (String,Optional) If the chemical entity is a pure substance / single element / pure solution and have a chemical formula, write it down here.
@@ -544,7 +544,7 @@ Now Please **critically review** the initial testing graph you generated against
           - Scan Rate...
       - For results, focus on Performance results and metrics mentioned in the text.
         Common metrics include:
-          - Overpotential (e.g., at $10\ mA/cm^2$)
+          - Overpotential (e.g., at $10\\ mA/cm^2$)
           - Tafel Slope
           - Current Density (at a given potential)
           - Stability (chronoamperometry/chronopotentiometry)
@@ -622,7 +622,7 @@ Omit if none.
     ────────────────────────────────────────────────
     ▶ 3.  EDGE TYPES & REQUIRED FIELDS (Catalyst Characterization Focus)
     ────────────────────────────────────────────────
-    A. **characterized\_in**
+    A. **characterized\\_in**
     Connects a **catalyst chemical** node to a characterization node where this catalyst was examined.
     • `id` "edge_characterized_<chem_id>_<char_id>"
     • `source_id` `<chem_id>` (must exist in `{CATALYST_IDS_FROM_SYNTHESIS}` or among new chemical nodes you created in this stage)
@@ -812,8 +812,8 @@ CRITICAL EXTRACTION STRATEGIES
     * **Onset**: Look for "onset potential" or "onset overpotential" (start of current).
     * **High Current Dict**: If text says "requires 240 and 310 mV to reach 50 and 100 mA/cm²", extract as `{{ "50": "240 mV", "100": "310 mV" }}`.
     * **Calculation Rule**: If the text gives Potential vs RHE (e.g., "1.45 V vs RHE" for OER), you MUST calculate Overpotential:
-        * **OER**: $\eta = E_{{RHE}} - 1.23 V$ (e.g., 1.45 - 1.23 = 220 mV).
-        * **HER**: $\eta = |E_{{RHE}} - 0 V|$ (e.g., -0.05 V = 50 mV).
+        * **OER**: $\\eta = E_{{RHE}} - 1.23 V$ (e.g., 1.45 - 1.23 = 220 mV).
+        * **HER**: $\\eta = |E_{{RHE}} - 0 V|$ (e.g., -0.05 V = 50 mV).
 
 2.  **Stability Context**:
     * When extracting `Stability Duration` (e.g., "50 h"), ALWAYS look for the associated condition: "at 10 mA/cm²" or "at 1.5 V".

@@ -1,13 +1,15 @@
-import os
-import json
-import re
 import base64
 import logging
-import json5
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, Any
 from langchain_core.messages import HumanMessage
 from tqdm import tqdm
+
+from tools.cat_graph.image_utils import (
+    image_media_type,
+    namespace_generated_node_ids,
+    parse_graph_response,
+)
 
 # 尝试导入 Prompt，如果找不到则使用默认兜底
 try:
@@ -74,6 +76,7 @@ def extract_graph_from_images_via_api(
         try:
             logger.info(f"Processing image: {img_path.name}")
             base64_image = encode_image(img_path)
+            media_type = image_media_type(img_path)
             
             # --- 核心：构造多模态消息 (LangChain 格式) ---
             # 这与您原来的 OpenAI 格式类似，但使用了 HumanMessage 类
@@ -85,7 +88,7 @@ def extract_graph_from_images_via_api(
                     },
                     {
                         "type": "image_url",
-                        "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"},
+                        "image_url": {"url": f"data:{media_type};base64,{base64_image}"},
                     },
                 ]
             )
@@ -96,32 +99,23 @@ def extract_graph_from_images_via_api(
             content = response.content
             
             # 4. 解析返回的 JSON
-            match = re.search(r"```json\n(.*?)\n```|(\{.*?\})", content, re.DOTALL | re.IGNORECASE)
-            if match:
-                json_str = next(g for g in match.groups() if g)
-                try:
-                    graph_data = json5.loads(json_str)
-                    
-                    # 后处理：为节点添加 source_image_file 和唯一 ID
-                    nodes = graph_data.get("nodes", [])
-                    for node in nodes:
-                        original_id = node.get("id", "unknown")
-                        # 加上图片名前缀防止 ID 冲突
-                        if "node" in str(original_id).lower() or str(original_id).isdigit():
-                            node["id"] = f"{img_path.stem}_{original_id}"
-                        
-                        node["source_image_file"] = img_path.name
-                        
-                        if "properties" not in node: node["properties"] = {}
-                        node["properties"]["extracted_from_image"] = img_path.name
+            graph_data = parse_graph_response(content)
+            namespace_generated_node_ids(graph_data, img_path.stem)
 
-                    combined_image_graph["nodes"].extend(nodes)
-                    combined_image_graph["edges"].extend(graph_data.get("edges", []))
-                    
-                except Exception as e:
-                    logger.warning(f"Failed to parse JSON from image {img_path.name}: {e}")
-            else:
-                logger.warning(f"No JSON block found in response for {img_path.name}")
+            # 后处理：为节点添加图片来源信息
+            nodes = graph_data.get("nodes", [])
+            for node in nodes:
+                if not isinstance(node, dict):
+                    continue
+                node["source_image_file"] = img_path.name
+                properties = node.setdefault("properties", {})
+                if not isinstance(properties, dict):
+                    properties = {"original_value": properties}
+                    node["properties"] = properties
+                properties["extracted_from_image"] = img_path.name
+
+            combined_image_graph["nodes"].extend(nodes)
+            combined_image_graph["edges"].extend(graph_data.get("edges", []))
                 
         except Exception as e:
             logger.error(f"Error processing image {img_path.name}: {e}")

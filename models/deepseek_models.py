@@ -9,19 +9,12 @@ from pathlib import Path
 from langchain_openai import ChatOpenAI
 from models.utils import check_model
 from models.httpx_clients import build_httpx_clients
+from models.provider_config import resolve_provider_connection
 from dotenv import load_dotenv  
 
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 logger = logging.getLogger(__name__)
 
-PROXY_BASE_URL = os.getenv("APIYI_BASE_URL", "https://api.apiyi.com/v1")
-PROXY_API_KEY = (
-    os.getenv("APIYI_API_KEY")
-    or os.getenv("OPENAI_API_KEY")
-    or os.getenv("GOOGLE_API_KEY")
-    or os.getenv("DEEPSEEK_API_KEY")
-    or ""
-)
 temp = 0
 
 def get_deepseek_model(model_name: str, temperature=temp, api_key: str = "", **kwargs):
@@ -30,7 +23,7 @@ def get_deepseek_model(model_name: str, temperature=temp, api_key: str = "", **k
     Args:
         model_name (str): The specific Deepseek model to use (e.g., 'deepseek-chat', 'deepseek-v3').
         temperature (float): Sampling temperature for the model
-        api_key (str): API key for authentication. If empty, falls back to PROXY_API_KEY.
+        api_key (str): Explicit API key. If empty, the key is selected for the resolved endpoint.
         **kwargs: Additional arguments to pass to the model constructor
     
     Returns:
@@ -56,16 +49,21 @@ def get_deepseek_model(model_name: str, temperature=temp, api_key: str = "", **k
     if "openai_proxy" not in kwargs:
         kwargs["openai_proxy"] = None
 
-    resolved_api_key = api_key or PROXY_API_KEY
+    explicit_api_key = api_key or kwargs.pop("openai_api_key", kwargs.pop("api_key", ""))
+    explicit_base_url = kwargs.pop("openai_api_base", kwargs.pop("base_url", ""))
+    resolved_api_key, resolved_base_url = resolve_provider_connection(
+        "deepseek",
+        explicit_api_key=explicit_api_key,
+        explicit_base_url=explicit_base_url,
+    )
     if not resolved_api_key:
         logger.warning(
-            "No API key found in APIYI_API_KEY/OPENAI_API_KEY/GOOGLE_API_KEY/DEEPSEEK_API_KEY; "
-            "deepseek calls may fail."
+            "No DeepSeek credential found for the resolved endpoint; model calls may fail."
         )
 
     model = ChatOpenAI(
         model=model_name,
-        openai_api_base=PROXY_BASE_URL,
+        openai_api_base=resolved_base_url,
         openai_api_key=resolved_api_key,
         temperature=temperature,
         verbose=True,

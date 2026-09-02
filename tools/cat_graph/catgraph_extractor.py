@@ -22,13 +22,13 @@ from prompts.extract_HER_prompt_v3_2 import (
 
 from models.models import get_model
 
-# 瑙嗚妯″瀷閰嶇疆
+# Vision model configuration
 VISION_MODEL_CONFIG = 'google_gemini-2.5-flash' 
 
-# 瀹炰綋瀵归綈绛栫暐閫夋嫨 ('knn' or 'llm')
+# Entity-alignment strategy ('knn' or 'llm')
 ALIGNMENT_STRATEGY = 'knn' 
 
-# 瀹氫箟闇€瑕佺Щ闄ょ殑鎺у埗瀛楃
+# Control characters removed from model output
 CONTROL_SYMBOLS_TO_REMOVE = [
     "",
     "\u2605",  # black star
@@ -596,8 +596,8 @@ def extract_catgraph(file_path: Path, output_dir: Path, model, model_name: str) 
             synthesis_data = normalize_graph_payload(safe_json_load(json_str), "Synthesis")
         except Exception as e:
             logger.error(f"Synthesis Parse Error: {e}")
-            # raise ValueError(f"Synthesis Parse Error: {e}") # 寤鸿娉ㄩ噴鎺?raise锛岄槻姝腑鏂?
-        # --- Synthesis Validation (鍙嶆€?淇) ---
+            # Continue so the caller receives a structured extraction result.
+        # --- Synthesis Validation (reflection and correction) ---
         if synthesis_data:
             try:
                 synthesis_checklist = build_stage_quality_checklist("synthesis", synthesis_data)
@@ -615,7 +615,7 @@ def extract_catgraph(file_path: Path, output_dir: Path, model, model_name: str) 
                     AIMessage(content=resp_text),
                     HumanMessage(content=validation_prompt),
                 ]
-                # [鏂板鏃ュ織] 鏄庣‘鏄剧ず寮€濮嬫牎楠?                logger.info(f"[{os.getpid()}] Running Synthesis Validation (Reflection)...")
+                logger.info(f"[{os.getpid()}] Running Synthesis Validation (Reflection)...")
                 
                 check_resp = invoke_with_usage_tracking(
                     model=model,
@@ -660,7 +660,7 @@ def extract_catgraph(file_path: Path, output_dir: Path, model, model_name: str) 
                 json_str = extract_json_payload_text(resp_text)
                 testing_data = normalize_graph_payload(safe_json_load(json_str), "Testing")
                 
-                # --- Testing Validation (鍙嶆€?淇) ---
+                # --- Testing Validation (reflection and correction) ---
                 if testing_data:
                     testing_checklist = build_stage_quality_checklist("testing", testing_data)
                     if testing_checklist:
@@ -678,7 +678,7 @@ def extract_catgraph(file_path: Path, output_dir: Path, model, model_name: str) 
                         AIMessage(content=resp_text),
                         HumanMessage(content=validation_prompt),
                     ]
-                    # [鏂板鏃ュ織] 鏄庣‘鏄剧ず寮€濮嬫牎楠?                    logger.info(f"[{os.getpid()}] Running Testing Validation (Reflection)...")
+                    logger.info(f"[{os.getpid()}] Running Testing Validation (Reflection)...")
                     
                     check_resp = invoke_with_usage_tracking(
                         model=model,
@@ -735,7 +735,7 @@ def extract_catgraph(file_path: Path, output_dir: Path, model, model_name: str) 
                 json_str = extract_json_payload_text(resp_text)
                 char_data = normalize_graph_payload(safe_json_load(json_str), "Characterization")
                 
-                # --- Characterization Validation (鍙嶆€?淇) ---
+                # --- Characterization Validation (reflection and correction) ---
                 if char_data:
                     try:
                         char_checklist = build_stage_quality_checklist("characterization", char_data)
@@ -754,7 +754,7 @@ def extract_catgraph(file_path: Path, output_dir: Path, model, model_name: str) 
                             AIMessage(content=resp_text),
                             HumanMessage(content=validation_prompt),
                         ]
-                        # [鏂板鏃ュ織] 鏄庣‘鏄剧ず寮€濮嬫牎楠?                        logger.info(f"[{os.getpid()}] Running Characterization Validation (Reflection)...")
+                        logger.info(f"[{os.getpid()}] Running Characterization Validation (Reflection)...")
                         
                         check_resp = invoke_with_usage_tracking(
                             model=model,
@@ -773,7 +773,7 @@ def extract_catgraph(file_path: Path, output_dir: Path, model, model_name: str) 
                 else:
                     logger.warning(f"[{os.getpid()}] Skipping Characterization Validation (No data extracted).")
 
-                # 鍚堝苟鑺傜偣閫昏緫 (淇濇寔涓嶅彉)
+                # Merge characterization chemical nodes into the synthesis graph.
                 if char_data:
                     syn_nodes = synthesis_data.setdefault("nodes", [])
                     syn_ids = {n.get("id") for n in syn_nodes if isinstance(n, dict)}
@@ -784,8 +784,7 @@ def extract_catgraph(file_path: Path, output_dir: Path, model, model_name: str) 
             except Exception as e: 
                 logger.warning(f"Characterization Extraction Error: {e}")
 
-        # ... (Multimodal & Save 閫昏緫淇濇寔涓嶅彉) ...
-        # ... (Multimodal & Alignment 鍙?Save 閫昏緫淇濇寔涓嶅彉) ...
+        # Continue with multimodal alignment and persistence.
         text_extraction_duration_sec = time.time() - text_stage_started_at
 
         # 4. Multimodal & Alignment

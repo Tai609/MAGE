@@ -56,6 +56,32 @@ The dependency file is intentionally pinned to the validated research environmen
 installation is needed, install only the packages used by the selected provider and stage, then
 record the resulting versions in the repository release notes.
 
+### Provider routing and credential safety
+
+Without a custom base URL, each credential is sent only to its official provider endpoint:
+
+- `OPENAI_API_KEY` → `api.openai.com`;
+- `GOOGLE_API_KEY` → `generativelanguage.googleapis.com`;
+- `DEEPSEEK_API_KEY` → `api.deepseek.com`.
+
+To use APIYi or another OpenAI-compatible gateway, configure its base URL explicitly. APIYi
+requires both `APIYI_BASE_URL` and `APIYI_API_KEY`; MAGE does not fall back to an official-provider
+key for an APIYi endpoint. Provider-specific custom endpoints can be set with
+`OPENAI_API_BASE`, `GOOGLE_API_BASE`, or `DEEPSEEK_API_BASE`.
+
+### Optional PDF preprocessing
+
+The main MAGE pipeline starts from Markdown and images. To enable the optional public Fitz
+PDF-to-Markdown helper, install its additional dependency:
+
+```powershell
+pip install -r PDF_TO_MD\requirements.txt
+```
+
+Camelot table extraction is skipped with a warning when Camelot is unavailable. The legacy Paddle
+adapter depends on a project-specific `image_parser.py` that is not part of this public release and
+therefore fails with an explicit message instead of an unresolved import.
+
 ## Input convention
 
 For one article, keep the Markdown and its images together:
@@ -145,6 +171,18 @@ python import_catgraph.py ..\outputs\paper_1\graph\full_output.json `
 ```
 
 Do not place Neo4j passwords in command history shared with collaborators or in issue reports.
+
+## Tests
+
+The minimal regression suite covers nested image JSON parsing, node/edge ID consistency, MIME
+selection and provider credential routing:
+
+```powershell
+python -m unittest discover -s tests -v
+python -m ruff check --select E9,F63,F7,F82 .
+```
+
+The same checks run automatically in GitHub Actions.
 
 ## Security and provenance
 

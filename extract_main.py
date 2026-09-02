@@ -48,10 +48,6 @@ ALIGNMENT_MODEL_NAME = 'google_gemini-2.5-flash'
 SUPPORTED_MODEL_PROVIDERS = {"openai", "google", "deepseek"}
 
 
-def configure_llm_route(route_name: str) -> None:
-    os.environ["MAGE_LLM_ROUTE"] = str(route_name or "").strip().lower() or "default"
-
-
 def normalize_model_identifier(raw_model_name: str, default_provider: str = "openai") -> str:
     """
     Accept either:
@@ -112,22 +108,6 @@ def configure_extraction_runtime_models(vision_model_name: str, alignment_model_
     except Exception as e:
         logger.warning(f"Failed to configure llm ALIGNER_MODEL_CONFIG='{alignment_model_name}': {e}")
 
-    # Keep evaluator defaults aligned with extraction runtime settings.
-    try:
-        import tools.cat_graph.evaluator_entity as evaluator_entity_mod
-        evaluator_entity_mod.EVALUATOR_MODEL_CONFIG = alignment_model_name
-    except Exception as e:
-        logger.warning(f"Failed to configure evaluator_entity model='{alignment_model_name}': {e}")
-
-    try:
-        import tools.cat_graph.evaluator_characterization_method as evaluator_char_mod
-        evaluator_char_mod.EVALUATOR_MODEL_CONFIG = alignment_model_name
-    except Exception as e:
-        logger.warning(
-            f"Failed to configure evaluator_characterization_method model='{alignment_model_name}': {e}"
-        )
-
-
 # --- Worker Function for Multiprocessing ---
 def process_file_wrapper(args_tuple: Tuple[str, str, str, str, str, str, bool, str]) -> Dict:
     """
@@ -150,7 +130,6 @@ def process_file_wrapper(args_tuple: Tuple[str, str, str, str, str, str, bool, s
     feature_file_path = Path(feature_file_str) if feature_file_str else None
     pid = os.getpid()
     logger.info(f"[{pid}] Worker started for file: {file_path}")
-    configure_llm_route("extract")
     if ENABLE_PRINT:
         set_verbose(True)
 
@@ -173,20 +152,19 @@ def process_file_wrapper(args_tuple: Tuple[str, str, str, str, str, str, bool, s
             # Call the main extraction function
             result = extract_catgraph(file_path, output_dir, model, model_name)
             
-            # 娣诲姞妫€鏌ヤ互澶勭悊None缁撴灉
+            # Preserve a structured diagnostic when extraction returns no result.
             if result is None:
                 logger.error(f"[{pid}] Received None result from extract_catgraph: {file_path}")
-                result_data = {
+                result = {
                     'file': str(file_path),
                     'status': 'error_none_result',
-                    'error_message': 'extract_catgraph杩斿洖None',
+                    'error_message': 'extract_catgraph returned None',
                     'run_id': file_path.stem,
                     'model_name': model_name,
                     'usage_metadata_stage1': str(usage_cb.usage_metadata)
                 }
             else:
                 result['usage_metadata_stage1'] = str(usage_cb.usage_metadata)
-                result_data = result
 
             # --- Conditionally Generate ML Dataset Rows ---
             if gen_ml_flag and result['status'] == 'success' and result.get('output_graph_file'):
@@ -253,7 +231,6 @@ def process_ml_generation_from_graph(args_tuple: Tuple[str, str, str, str]) -> D
     feature_file_path = Path(feature_file_str) if feature_file_str else None
     pid = os.getpid()
     logger.info(f"[{pid}] ML-Gen worker started for graph file: {graph_file_path.name}")
-    configure_llm_route("extract")
     if ENABLE_PRINT:
         set_verbose(True)
     # Derive run_id from filename (e.g., "my_run_id_output.json" -> "my_run_id")
@@ -362,8 +339,6 @@ def main():
 
 
     args = parser.parse_args()
-    configure_llm_route("extract")
-
     input_path = Path(args.input_path)
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)

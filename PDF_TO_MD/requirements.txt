@@ -1,0 +1,6 @@
+# Baseline dependency for the public Fitz PDF-to-Markdown helper.
+PyMuPDF==1.27.2.2
+
+# Camelot table extraction is optional. Install camelot-py separately if needed.
+# The Paddle adapter also requires project-specific image_parser.py, which is not
+# included in the public release; selecting it now raises an explicit error.

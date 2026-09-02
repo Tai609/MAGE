@@ -179,9 +179,7 @@ def run_one(
     print(f"[{now()}] Running: {printable}")
     started_at = datetime.now()
     started_perf = time.perf_counter()
-    child_env = os.environ.copy()
-    child_env["MAGE_LLM_ROUTE"] = "extract"
-    result = subprocess.run(cmd, cwd=project_root, env=child_env)
+    result = subprocess.run(cmd, cwd=project_root, env=os.environ.copy())
     elapsed_seconds = time.perf_counter() - started_perf
     finished_at = datetime.now()
     return {
