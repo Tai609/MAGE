@@ -1,0 +1,2 @@
+file_id,relative_path,kind,description,supports_figures_or_tables,source_or_provenance,licence,access,sha256
+mage-fig2-source-001,source_data/figure_2/MAGE_Figure2_Source_Data.xlsx,processed source data,"Workbook containing source values, audit formulas, data dictionary and provenance for the five-panel benchmark figure",Figure 2a-e,Derived from MAGE benchmark result tables; detailed relative provenance is embedded in the workbook,not separately specified,public,07cfe972fe05bef904b6040342dbc838e1532cce087ec11ed467a9e1b0cd4a07

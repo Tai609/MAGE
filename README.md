@@ -32,13 +32,15 @@ independently with `--alignment-model`; no model name or credential is hard-code
 - `PDF_TO_MD/` — optional PDF-to-Markdown preprocessing helpers (credentials are placeholders).
 - `tools/neo4j/` — optional import utilities for a local Neo4j instance.
 - `examples/` — minimal graph fixtures that contain no API responses or credentials.
+- `source_data/` — non-sensitive derived source-data workbooks and manifests supporting manuscript figures.
 - `docs/` — CatGraph schema and data-format documentation.
 - `.env.example` — safe configuration template; copy it to `.env` locally.
 
 Large article collections, uploaded files, model responses, generated graphs, logs and private
-benchmark material are intentionally excluded from this public release. See
-[`DATA_AVAILABILITY.md`](DATA_AVAILABILITY.md) for the manuscript-ready wording and the fields
-that must be filled after the GitHub repository and any archival dataset deposit are created.
+benchmark material are intentionally excluded from this public release. Permitted derived figure
+source data are provided under `source_data/`. See
+[`DATA_AVAILABILITY.md`](DATA_AVAILABILITY.md) for the current availability statement and the
+remaining pre-submission checklist items.
 
 ## Installation (Windows PowerShell)
 
